@@ -1,12 +1,9 @@
 from FacebookCrawl.scraperCrawl import *
 from FacebookCrawl.seleniumCrawl import *
 from datetime import datetime
-from App.Controllers import index
-import json
+from App.Controllers.index import *
 import traceback
 import threading
-import sys
-import os
 class Threading(threading.Thread):
     def __init__(self, driver, cookie, type="fanpage", nameOrID = 103274306376166, numberPost = 100, txt = None, timeout = 60):
         threading.Thread.__init__(self)
@@ -100,6 +97,6 @@ def getContentPostByScraper(*,type = 'fanpage', nameOrID, numberPost = 100):
                     break
 if __name__ == "__main__":
     try:
-        test = index.index()
+        test = index()
     except Exception:
         traceback.print_exc()
