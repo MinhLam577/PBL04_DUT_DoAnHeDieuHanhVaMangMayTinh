@@ -56,13 +56,7 @@ def get_db():
         yield db
     finally:
         db.close()
-def EncryptPassword(Password, Key):
-    fernet = Fernet(Key)
-    return fernet.encrypt(Password.encode())
 
-def DecryptPassword(EncodingPassword, Key):
-    fernet = Fernet(Key)
-    return fernet.decrypt(EncodingPassword).decode()
 class UserModel:
     def GetAllUser(self):
         with SessionLocal() as db:
