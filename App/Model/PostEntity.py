@@ -9,4 +9,3 @@ class Post(Base):
     NameUserSend = Column(String, notnull=True)
     LinkPost = Column(String, notnull=True)
     LinkImg = Column(String, notnull=True)
-Base.metadata.create_all(bind=engine)
