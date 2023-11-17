@@ -4,9 +4,14 @@ from App.Controllers.SiteController import *
 
 siteRouter = APIRouter()
 siteController = SiteController()
+
+@siteRouter.get("/", response_class=HTMLResponse)
+async def index(request: Request):
+    return siteController.index(request)
+
 @siteRouter.get("/Login/", response_class=HTMLResponse)
-async def Home(request: Request):
-    return siteController.Home(request)
+async def Login(request: Request):
+    return siteController.Login(request)
 
 @siteRouter.get("/Admin/", response_class=HTMLResponse)
 async def Admin(request: Request):

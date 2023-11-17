@@ -17,27 +17,27 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
    <!--Favicon-->
-   <link rel="shortcut icon" href="{{ url_for('static', path='/images/favicon.ico') }}" type="image/x-icon">
-   <link rel="icon" href="{{ url_for('static', path='/images/favicon.ico') }}" type="image/x-icon">
+   <link rel="shortcut icon" href="{{ url_for('static', path='/images/favicon.ico') }}"" type="image/x-icon">
+   <link rel="icon" href="{{ url_for('static', path='/images/favicon.ico') }}"" type="image/x-icon">
 
    <!-- CSS
 	================================================== -->
 
    <!-- Bootstrap -->
-   <link rel="stylesheet" href="{{ url_for('static', path='/css/bootstrap.min.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', path='/css/bootstrap.min.css') }}"">
    <!-- Template styles-->
-   <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}"">
    <!-- Responsive styles-->
-   <link rel="stylesheet" href="{{ url_for('static', path='/css/responsive.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', path='/css/responsive.css') }}"">
    <!-- FontAwesome -->
-   <link rel="stylesheet" href="{{ url_for('static', path='/css/font-awesome.min.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', path='/css/font-awesome.min.css') }}"">
    <!-- Animation -->
-   <link rel="stylesheet" href="{{ url_for('static', path='/css/animate.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', path='/css/animate.css') }}"">
    <!-- Owl Carousel -->
-   <link rel="stylesheet" href="{{ url_for('static', path='/css/owl.carousel.min.css') }}">
-   <link rel="stylesheet" href="{{ url_for('static', path='/css/owl.theme.default.min.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', path='/css/owl.carousel.min.css') }}"">
+   <link rel="stylesheet" href="{{ url_for('static', path='/css/owl.theme.default.min.css') }}"">
    <!-- Colorbox -->
-   <link rel="stylesheet" href="{{ url_for('static', path='/css/colorbox.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', path='/css/colorbox.css') }}"">
 
    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
    <!--[if lt IE 9]>
@@ -101,7 +101,8 @@
                <div class="col-md-3 col-sm-12">
                   <div class="logo">
                      <a href="index.html">
-                        <img src="images/logos/logo.png" alt="">
+                        
+                        <img src="{{ url_for('static', path='/images/logos/logo.png') }}"" alt="">
                      </a>
                   </div>
                </div><!-- logo col end -->
@@ -179,7 +180,7 @@
                                                       <div class="post-block-style clearfix">
                                                          <div class="post-thumb">
                                                             <a href="#"><img class="img-fluid"
-                                                                  src="images/news/lifestyle/health1.jpg" alt="" /></a>
+                                                                  src="{{ url_for('static', path='/images/news/lifestyle/health1.jpg') }}"" alt="" /></a>
                                                          </div>
                                                          <a class="post-cat" href="#">Health</a>
                                                          <div class="post-content">
@@ -194,7 +195,7 @@
                                                       <div class="post-block-style clearfix">
                                                          <div class="post-thumb">
                                                             <a href="#"><img class="img-fluid"
-                                                                  src="images/news/lifestyle/health2.jpg" alt="" /></a>
+                                                                  src="{{ url_for('static', path='/images/news/lifestyle/health2.jpg')}}" alt="" /></a>
                                                          </div>
                                                          <a class="post-cat" href="#">Health</a>
                                                          <div class="post-content">
@@ -209,7 +210,7 @@
                                                       <div class="post-block-style clearfix">
                                                          <div class="post-thumb">
                                                             <a href="#"><img class="img-fluid"
-                                                                  src="images/news/lifestyle/health3.jpg" alt="" /></a>
+                                                                  src="{{ url_for('static', path='/images/news/lifestyle/health3.jpg') }}"" alt="" /></a>
                                                          </div>
                                                          <a class="post-cat" href="#">Health</a>
                                                          <div class="post-content">
@@ -224,7 +225,7 @@
                                                       <div class="post-block-style clearfix">
                                                          <div class="post-thumb">
                                                             <a href="#"><img class="img-fluid"
-                                                                  src="images/news/lifestyle/health4.jpg" alt="" /></a>
+                                                                  src="{{ url_for('static', path='/images/news/lifestyle/health4.jpg') }}"" alt="" /></a>
                                                          </div>
                                                          <a class="post-cat" href="#">Health</a>
                                                          <div class="post-content">
@@ -244,7 +245,7 @@
                                                       <div class="post-block-style clearfix">
                                                          <div class="post-thumb">
                                                             <a href="#"><img class="img-fluid"
-                                                                  src="images/news/lifestyle/travel1.jpg" alt="" /></a>
+                                                                  src="{{ url_for('static', path='/images/news/lifestyle/travel1.jpg') }}" alt="" /></a>
                                                          </div>
                                                          <a class="post-cat" href="#">Travel</a>
                                                          <div class="post-content">
@@ -259,7 +260,7 @@
                                                       <div class="post-block-style clearfix">
                                                          <div class="post-thumb">
                                                             <a href="#"><img class="img-fluid"
-                                                                  src="images/news/lifestyle/travel2.jpg" alt="" /></a>
+                                                                  src="{{ url_for('static', path='/images/news/lifestyle/travel2.jpg') }}" alt="" /></a>
                                                          </div>
                                                          <a class="post-cat" href="#">Travel</a>
                                                          <div class="post-content">
@@ -274,7 +275,7 @@
                                                       <div class="post-block-style clearfix">
                                                          <div class="post-thumb">
                                                             <a href="#"><img class="img-fluid"
-                                                                  src="images/news/lifestyle/travel3.jpg" alt="" /></a>
+                                                                  src="{{ url_for('static', path='/images/news/lifestyle/travel3.jpg') }}" alt="" /></a>
                                                          </div>
                                                          <a class="post-cat" href="#">Travel</a>
                                                          <div class="post-content">
@@ -290,7 +291,7 @@
                                                       <div class="post-block-style clearfix">
                                                          <div class="post-thumb">
                                                             <a href="#"><img class="img-fluid"
-                                                                  src="images/news/lifestyle/travel4.jpg" alt="" /></a>
+                                                                  src="{{ url_for('static', path='/images/news/lifestyle/travel4.jpg') }}" alt="" /></a>
                                                          </div>
                                                          <a class="post-cat" href="#">Travel</a>
                                                          <div class="post-content">
@@ -309,7 +310,7 @@
                                                       <div class="post-block-style clearfix">
                                                          <div class="post-thumb">
                                                             <a href="#"><img class="img-fluid"
-                                                                  src="images/news/lifestyle/food1.jpg" alt="" /></a>
+                                                                  src="{{ url_for('static', path='/images/news/lifestyle/food1.jpg') }}" alt="" /></a>
                                                          </div>
                                                          <a class="post-cat" href="#">Food</a>
                                                          <div class="post-content">
@@ -326,7 +327,7 @@
                                                       <div class="post-block-style clearfix">
                                                          <div class="post-thumb">
                                                             <a href="#"><img class="img-fluid"
-                                                                  src="images/news/lifestyle/food2.jpg" alt="" /></a>
+                                                                  src="{{ url_for('static', path='/images/news/lifestyle/food2.jpg') }}" alt="" /></a>
                                                          </div>
                                                          <a class="post-cat" href="#">Food</a>
                                                          <div class="post-content">
@@ -341,7 +342,7 @@
                                                       <div class="post-block-style clearfix">
                                                          <div class="post-thumb">
                                                             <a href="#"><img class="img-fluid"
-                                                                  src="images/news/lifestyle/food3.jpg" alt="" /></a>
+                                                                  src="{{ url_for('static', path='/images/news/lifestyle/food3.jpg') }}" alt="" /></a>
                                                          </div>
                                                          <a class="post-cat" href="#">Food</a>
                                                          <div class="post-content">
@@ -357,7 +358,7 @@
                                                       <div class="post-block-style clearfix">
                                                          <div class="post-thumb">
                                                             <a href="#"><img class="img-fluid"
-                                                                  src="images/news/lifestyle/food4.jpg" alt="" /></a>
+                                                                  src="{{ url_for('static', path='/images/news/lifestyle/food4.jpg') }}" alt="" /></a>
                                                          </div>
                                                          <a class="post-cat" href="#">Food</a>
                                                          <div class="post-content">
@@ -390,7 +391,7 @@
                                           <div class="col-md-3">
                                              <div class="post-block-style clearfix">
                                                 <div class="post-thumb">
-                                                   <img class="img-fluid" src="images/news/video/video4.jpg" alt="" />
+                                                   <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video4.jpg') }}" alt="" />
                                                    <a class="popup"
                                                       href="https://www.youtube.com/embed/XhveHKJWnOQ?autoplay=1&amp;loop=1">
                                                       <div class="video-icon">
@@ -409,7 +410,7 @@
                                           <div class="col-md-3">
                                              <div class="post-block-style clearfix">
                                                 <div class="post-thumb">
-                                                   <img class="img-fluid" src="images/news/video/video3.jpg" alt="" />
+                                                   <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video3.jpg') }}" alt="" />
                                                    <a class="popup"
                                                       href="https://www.youtube.com/embed/wJF5NXygL4k?autoplay=1&amp;loop=1">
                                                       <div class="video-icon">
@@ -428,7 +429,7 @@
                                           <div class="col-md-3">
                                              <div class="post-block-style clearfix">
                                                 <div class="post-thumb">
-                                                   <img class="img-fluid" src="images/news/video/video2.jpg" alt="" />
+                                                   <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video2.jpg') }}" alt="" />
                                                    <a class="popup"
                                                       href="https://www.youtube.com/embed/DQNDcxRo-2M?autoplay=1&amp;loop=1">
                                                       <div class="video-icon">
@@ -446,7 +447,7 @@
                                           <div class="col-md-3">
                                              <div class="post-block-style clearfix">
                                                 <div class="post-thumb">
-                                                   <img class="img-fluid" src="images/news/video/video1.jpg" alt="" />
+                                                   <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video1.jpg') }}" alt="" />
                                                    <a class="popup"
                                                       href="https://www.youtube.com/embed/DQNDcxRo-2M?autoplay=1&amp;loop=1">
                                                       <div class="video-icon">
@@ -576,7 +577,7 @@
             <div class="row">
                <div class="col-md-7 col-xs-12 pad-r">
                   <div id="featured-slider" class="owl-carousel owl-theme featured-slider content-bottom">
-                     <div class="item" style="background-image:url(images/news/lifestyle/health5.jpg)">
+                     <div class="item" style="background-image:url({{ url_for('static', path='/images/news/lifestyle/health5.jpg') }}">
                         <div class="featured-post">
                            <div class="post-content">
                               <a class="post-cat" href="#">Health</a>
@@ -590,7 +591,7 @@
 
                      </div><!-- Item 1 end -->
 
-                     <div class="item" style="background-image:url(images/news/tech/gadget2.jpg)">
+                     <div class="item" style="background-image:url({{ url_for('static', path='/images/news/tech/gadget2.jpg') }}">
                         <div class="featured-post">
                            <div class="post-content">
                               <a class="post-cat" href="#">Gadget</a>
@@ -602,7 +603,7 @@
                         </div><!--/ Featured post end -->
                      </div><!-- Item 2 end -->
 
-                     <div class="item" style="background-image:url(images/news/lifestyle/travel5.jpg)">
+                     <div class="item" style="background-image:url({{ url_for('static', path='/images/news/lifestyle/travel5.jpg') }}">
                         <div class="featured-post">
                            <div class="post-content">
                               <a class="post-cat" href="#">Travel</a>
@@ -621,7 +622,7 @@
                      <div class="col-sm-12">
                         <div class="post-overaly-style hot-post-top clearfix">
                            <div class="post-thumb">
-                              <a href="#"><img class="img-fluid" src="images/news/tech/gadget2.jpg" alt="" /></a>
+                              <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/gadget2.jpg') }}" alt="" /></a>
                            </div>
                            <div class="post-content">
                               <a class="post-cat" href="#">Gadget</a>
@@ -635,7 +636,7 @@
                      <div class="col-sm-6 pad-r-small">
                         <div class="post-overaly-style hot-post-bottom clearfix">
                            <div class="post-thumb">
-                              <a href="#"><img class="img-fluid" src="images/news/lifestyle/travel2.jpg" alt="" /></a>
+                              <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/travel2.jpg') }}" alt="" /></a>
                            </div>
                            <div class="post-content">
                               <a class="post-cat" href="#">Travel</a>
@@ -649,7 +650,7 @@
                      <div class="col-sm-6 pad-l-small">
                         <div class="post-overaly-style hot-post-bottom clearfix">
                            <div class="post-thumb">
-                              <a href="#"><img class="img-fluid" src="images/news/lifestyle/health1.jpg" alt="" /></a>
+                              <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/health1.jpg') }}" alt="" /></a>
                            </div>
                            <div class="post-content">
                               <a class="post-cat" href="#">Health</a>
@@ -678,7 +679,7 @@
                            <div class="post-block-style clearfix">
                               <div class="post-thumb">
                                  <a href="#">
-                                    <img class="img-fluid" src="images/news/tech/gadget1.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/gadget1.jpg') }}" alt="" />
                                  </a>
                               </div>
                               <a class="post-cat" href="#">Gadgets</a>
@@ -703,7 +704,7 @@
                                     <div class="post-block-style post-float clearfix">
                                        <div class="post-thumb">
                                           <a href="#">
-                                             <img class="img-fluid" src="images/news/tech/game4.jpg" alt="" />
+                                             <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/game4.jpg') }}" alt="" />
                                           </a>
                                           <a class="post-cat" href="#">Games</a>
                                        </div><!-- Post thumb end -->
@@ -724,7 +725,7 @@
                                     <div class="post-block-style post-float clearfix">
                                        <div class="post-thumb">
                                           <a href="#">
-                                             <img class="img-fluid" src="images/news/tech/robot1.jpg" alt="" />
+                                             <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/robot1.jpg') }}" alt="" />
                                           </a>
                                           <a class="post-cat" href="#">Robotics</a>
                                        </div><!-- Post thumb end -->
@@ -744,7 +745,7 @@
                                     <div class="post-block-style post-float clearfix">
                                        <div class="post-thumb">
                                           <a href="#">
-                                             <img class="img-fluid" src="images/news/tech/gadget3.jpg" alt="" />
+                                             <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/gadget3.jpg') }}" alt="" />
                                           </a>
                                           <a class="post-cat" href="#">Gadgets</a>
                                        </div><!-- Post thumb end -->
@@ -765,7 +766,7 @@
                                     <div class="post-block-style post-float clearfix">
                                        <div class="post-thumb">
                                           <a href="#">
-                                             <img class="img-fluid" src="images/news/tech/gadget5.jpg" alt="" />
+                                             <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/gadget5.jpg') }}" alt="" />
                                           </a>
                                           <a class="post-cat" href="#">Games</a>
                                        </div><!-- Post thumb end -->
@@ -796,7 +797,7 @@
                            <div class="post-block-style clearfix">
                               <div class="post-thumb">
                                  <a href="#">
-                                    <img class="img-fluid" src="images/news/lifestyle/food2.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/food2.jpg') }}" alt="" />
                                  </a>
                               </div>
                               <a class="post-cat" href="#">Food</a>
@@ -821,7 +822,7 @@
                                     <div class="post-block-style post-float clearfix">
                                        <div class="post-thumb">
                                           <a href="#">
-                                             <img class="img-fluid" src="images/news/lifestyle/travel2.jpg" alt="" />
+                                             <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/travel2.jpg') }}" alt="" />
                                           </a>
                                           <a class="post-cat" href="#">Travel</a>
                                        </div><!-- Post thumb end -->
@@ -842,7 +843,7 @@
                                     <div class="post-block-style post-float clearfix">
                                        <div class="post-thumb">
                                           <a href="#">
-                                             <img class="img-fluid" src="images/news/lifestyle/health2.jpg" alt="" />
+                                             <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/health2.jpg') }}" alt="" />
                                           </a>
                                           <a class="post-cat" href="#">Health</a>
                                        </div><!-- Post thumb end -->
@@ -862,7 +863,7 @@
                                     <div class="post-block-style post-float clearfix">
                                        <div class="post-thumb">
                                           <a href="#">
-                                             <img class="img-fluid" src="images/news/lifestyle/health4.jpg" alt="" />
+                                             <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/health4.jpg') }}" alt="" />
                                           </a>
                                           <a class="post-cat" href="#">Health</a>
                                        </div><!-- Post thumb end -->
@@ -882,7 +883,7 @@
                                     <div class="post-block-style post-float clearfix">
                                        <div class="post-thumb">
                                           <a href="#">
-                                             <img class="img-fluid" src="images/news/lifestyle/architecture4.jpg"
+                                             <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/architecture4.jpg') }}"
                                                 alt="" />
                                           </a>
                                           <a class="post-cat" href="#">Architecture</a>
@@ -947,7 +948,7 @@
                               <div class="post-overaly-style text-center clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/tech/gadget1.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/gadget1.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -965,7 +966,7 @@
                               <div class="post-overaly-style text-center clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/video/video1.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video1.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -987,7 +988,7 @@
                               <div class="post-overaly-style text-center clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/lifestyle/health5.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/health5.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1005,7 +1006,7 @@
                               <div class="post-overaly-style text-center clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/tech/robot1.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/robot1.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1043,7 +1044,7 @@
                      <div class="post-overaly-style clearfix">
                         <div class="post-thumb">
                            <a href="#">
-                              <img class="img-fluid" src="images/news/lifestyle/travel1.jpg" alt="" />
+                              <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/travel1.jpg') }}" alt="" />
                            </a>
                         </div>
 
@@ -1063,7 +1064,7 @@
                               <div class="post-block-style post-float clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/lifestyle/travel2.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/travel2.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1082,7 +1083,7 @@
                               <div class="post-block-style post-float clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/lifestyle/travel3.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/travel3.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1101,7 +1102,7 @@
                               <div class="post-block-style post-float clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/lifestyle/travel4.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/travel4.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1126,7 +1127,7 @@
                      <div class="post-overaly-style clearfix">
                         <div class="post-thumb">
                            <a href="#">
-                              <img class="img-fluid" src="images/news/tech/gadget1.jpg" alt="" />
+                              <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/gadget1.jpg') }}" alt="" />
                            </a>
                         </div>
 
@@ -1146,7 +1147,7 @@
                               <div class="post-block-style post-float clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/tech/gadget2.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/gadget2.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1165,7 +1166,7 @@
                               <div class="post-block-style post-float clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/tech/gadget3.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/gadget3.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1184,7 +1185,7 @@
                               <div class="post-block-style post-float clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/tech/gadget4.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/gadget4.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1209,7 +1210,7 @@
                      <div class="post-overaly-style clearfix">
                         <div class="post-thumb">
                            <a href="#">
-                              <img class="img-fluid" src="images/news/lifestyle/health1.jpg" alt="" />
+                              <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/health1.jpg') }}" alt="" />
                            </a>
                         </div>
 
@@ -1229,7 +1230,7 @@
                               <div class="post-block-style post-float clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/lifestyle/health2.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/health2.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1248,7 +1249,7 @@
                               <div class="post-block-style post-float clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/lifestyle/health3.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/health3.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1267,7 +1268,7 @@
                               <div class="post-block-style post-float clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/lifestyle/health4.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/health4.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1301,7 +1302,7 @@
                            <div class="tab-pane active animated fadeIn" id="video1">
                               <div class="post-overaly-style clearfix">
                                  <div class="post-thumb">
-                                    <img class="img-fluid" src="images/news/video/video4.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video4.jpg') }}" alt="" />
                                     <a class="popup"
                                        href="https://www.youtube.com/embed/XhveHKJWnOQ?autoplay=1&amp;loop=1">
                                        <div class="video-icon">
@@ -1321,7 +1322,7 @@
                            <div class="tab-pane animated fadeIn" id="video2">
                               <div class="post-overaly-style clearfix">
                                  <div class="post-thumb">
-                                    <img class="img-fluid" src="images/news/video/video3.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video3.jpg') }}" alt="" />
                                     <a class="popup"
                                        href="https://www.youtube.com/embed/wJF5NXygL4k?autoplay=1&amp;loop=1">
                                        <div class="video-icon">
@@ -1341,7 +1342,7 @@
                            <div class="tab-pane animated fadeIn" id="video3">
                               <div class="post-overaly-style clearfix">
                                  <div class="post-thumb">
-                                    <img class="img-fluid" src="images/news/video/video2.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video2.jpg') }}" alt="" />
                                     <a class="popup"
                                        href="https://www.youtube.com/embed/DQNDcxRo-2M?autoplay=1&amp;loop=1">
                                        <div class="video-icon">
@@ -1367,7 +1368,7 @@
                            <li class="nav-item active">
                               <a class="nav-link animated fadeIn" href="#video1" data-toggle="tab">
                                  <div class="post-thumb">
-                                    <img class="img-fluid" src="images/news/video/video4.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video4.jpg') }}" alt="" />
                                  </div><!-- Post thumb end -->
                                  <h3>Is Running Good for You, Health Benefits of Morning Running</h3>
                               </a>
@@ -1375,7 +1376,7 @@
                            <li class="nav-item">
                               <a class="nav-link animated fadeIn" href="#video2" data-toggle="tab">
                                  <div class="post-thumb">
-                                    <img class="img-fluid" src="images/news/video/video3.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video3.jpg') }}" alt="" />
                                  </div><!-- Post thumb end -->
                                  <h3>Breeze through 17 locations in Europe in this breathtaking video</h3>
                               </a>
@@ -1383,7 +1384,7 @@
                            <li class="nav-item">
                               <a class="nav-link animated fadeIn" href="#video3" data-toggle="tab">
                                  <div class="post-thumb">
-                                    <img class="img-fluid" src="images/news/video/video2.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video2.jpg') }}" alt="" />
                                  </div><!-- Post thumb end -->
                                  <h3>TG G6 will have dual 13-megapixel cameras on the back</h3>
                               </a>
@@ -1411,7 +1412,7 @@
                            <div class="post-block-style post-float-half clearfix">
                               <div class="post-thumb">
                                  <a href="#">
-                                    <img class="img-fluid" src="images/news/video/video1.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video1.jpg') }}" alt="" />
                                  </a>
                               </div>
                               <a class="post-cat" href="#">Video</a>
@@ -1433,7 +1434,7 @@
                            <div class="post-block-style post-float-half clearfix">
                               <div class="post-thumb">
                                  <a href="#">
-                                    <img class="img-fluid" src="images/news/tech/game5.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/game5.jpg') }}" alt="" />
                                  </a>
                               </div>
                               <a class="post-cat" href="#">Games</a>
@@ -1455,7 +1456,7 @@
                            <div class="post-block-style post-float-half clearfix">
                               <div class="post-thumb">
                                  <a href="#">
-                                    <img class="img-fluid" src="images/news/tech/game4.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/game4.jpg') }}" alt="" />
                                  </a>
                               </div>
                               <a class="post-cat" href="#">Games</a>
@@ -1477,7 +1478,7 @@
                            <div class="post-block-style post-float-half clearfix">
                               <div class="post-thumb">
                                  <a href="#">
-                                    <img class="img-fluid" src="images/news/tech/robot5.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/robot5.jpg') }}" alt="" />
                                  </a>
                               </div>
                               <a class="post-cat" href="#">Robotics</a>
@@ -1499,7 +1500,7 @@
                            <div class="post-block-style post-float-half clearfix">
                               <div class="post-thumb">
                                  <a href="#">
-                                    <img class="img-fluid" src="images/news/video/video2.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video2.jpg') }}" alt="" />
                                  </a>
                               </div>
                               <a class="post-cat" href="#">Video</a>
@@ -1521,7 +1522,7 @@
                            <div class="post-block-style post-float-half clearfix">
                               <div class="post-thumb">
                                  <a href="#">
-                                    <img class="img-fluid" src="images/news/video/video3.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/video/video3.jpg') }}" alt="" />
                                  </a>
                               </div>
                               <a class="post-cat" href="#">Video</a>
@@ -1543,7 +1544,7 @@
                            <div class="post-block-style post-float-half clearfix">
                               <div class="post-thumb">
                                  <a href="#">
-                                    <img class="img-fluid" src="images/news/lifestyle/architecture1.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/architecture1.jpg') }}" alt="" />
                                  </a>
                               </div>
                               <a class="post-cat" href="#">Architecture</a>
@@ -1565,7 +1566,7 @@
                            <div class="post-block-style post-float-half clearfix">
                               <div class="post-thumb">
                                  <a href="#">
-                                    <img class="img-fluid" src="images/news/tech/game1.jpg" alt="" />
+                                    <img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/game1.jpg') }}" alt="" />
                                  </a>
                               </div>
                               <a class="post-cat" href="#">Robotics</a>
@@ -1598,7 +1599,7 @@
                                  <div class="post-block-style post-float clearfix">
                                     <div class="post-thumb">
                                        <a href="#">
-                                          <img class="img-fluid" src="images/news/review/review1.jpg" alt="" />
+                                          <img class="img-fluid" src="{{ url_for('static', path='/images/news/review/review1.jpg') }}" alt="" />
                                        </a>
                                     </div><!-- Post thumb end -->
 
@@ -1623,7 +1624,7 @@
                                  <div class="post-block-style post-float clearfix">
                                     <div class="post-thumb">
                                        <a href="#">
-                                          <img class="img-fluid" src="images/news/review/review2.jpg" alt="" />
+                                          <img class="img-fluid" src="{{ url_for('static', path='/images/news/review/review2.jpg') }}" alt="" />
                                        </a>
                                     </div><!-- Post thumb end -->
 
@@ -1648,7 +1649,7 @@
                                  <div class="post-block-style post-float clearfix">
                                     <div class="post-thumb">
                                        <a href="#">
-                                          <img class="img-fluid" src="images/news/review/review3.jpg" alt="" />
+                                          <img class="img-fluid" src="{{ url_for('static', path='/images/news/review/review3.jpg') }}" alt="" />
                                        </a>
                                     </div><!-- Post thumb end -->
 
@@ -1673,7 +1674,7 @@
                                  <div class="post-block-style post-float clearfix">
                                     <div class="post-thumb">
                                        <a href="#">
-                                          <img class="img-fluid" src="images/news/review/review4.jpg" alt="" />
+                                          <img class="img-fluid" src="{{ url_for('static', path='/images/news/review/review4.jpg') }}" alt="" />
                                        </a>
                                     </div><!-- Post thumb end -->
 
@@ -1727,7 +1728,7 @@
          <div class="container">
             <div class="row">
                <div class="col-sm-12">
-                  <img class="img-fluid" src="images/banner-ads/ad-content-two.png" alt="" />
+                  <img class="img-fluid" src="{{ url_for('static', path='/images/banner-ads/ad-content-two.png') }}" alt="" />
                </div><!-- Col end -->
             </div><!-- Row end -->
          </div><!-- Container end -->
@@ -1738,7 +1739,7 @@
                <div class="col-md-4 pad-r">
                   <div class="post-overaly-style text-center first clearfix">
                      <div class="post-thumb">
-                        <a href="#"><img class="img-fluid" src="images/news/tech/gadget2.jpg" alt="" /></a>
+                        <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/gadget2.jpg') }}" alt="" /></a>
                      </div>
                      <div class="post-content">
                         <a class="post-cat" href="#">Gadgets</a>
@@ -1755,7 +1756,7 @@
                <div class="col-md-4 pad-0">
                   <div class="post-overaly-style text-center clearfix">
                      <div class="post-thumb">
-                        <a href="#"><img class="img-fluid" src="images/news/lifestyle/health5.jpg" alt="" /></a>
+                        <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/health5.jpg') }}" alt="" /></a>
                      </div>
                      <div class="post-content">
                         <a class="post-cat" href="#">Health</a>
@@ -1772,7 +1773,7 @@
                <div class="col-md-4 pad-l">
                   <div class="post-overaly-style text-center clearfix">
                      <div class="post-thumb">
-                        <a href="#"><img class="img-fluid" src="images/news/tech/game1.jpg" alt="" /></a>
+                        <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/game1.jpg') }}" alt="" /></a>
                      </div>
                      <div class="post-content">
                         <a class="post-cat" href="#">Games</a>
@@ -1802,7 +1803,7 @@
                               <div class="post-block-style post-float clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/lifestyle/health2.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/health2.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1821,7 +1822,7 @@
                               <div class="post-block-style post-float clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/lifestyle/health3.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/health3.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1840,7 +1841,7 @@
                               <div class="post-block-style post-float clearfix">
                                  <div class="post-thumb">
                                     <a href="#">
-                                       <img class="img-fluid" src="images/news/lifestyle/health4.jpg" alt="" />
+                                       <img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/health4.jpg') }}" alt="" />
                                     </a>
                                  </div><!-- Post thumb end -->
 
@@ -1918,15 +1919,15 @@
                   <div class="col-lg-3 col-sm-12 footer-widget">
                      <h3 class="widget-title">Post Gallery</h3>
                      <div class="gallery-widget">
-                        <a href="#"><img class="img-fluid" src="images/news/lifestyle/health1.jpg" alt="" /></a>
-                        <a href="#"><img class="img-fluid" src="images/news/lifestyle/food3.jpg" alt="" /></a>
-                        <a href="#"><img class="img-fluid" src="images/news/lifestyle/travel4.jpg" alt="" /></a>
-                        <a href="#"><img class="img-fluid" src="images/news/lifestyle/architecture1.jpg" alt="" /></a>
-                        <a href="#"><img class="img-fluid" src="images/news/tech/gadget1.jpg" alt="" /></a>
-                        <a href="#"><img class="img-fluid" src="images/news/tech/gadget2.jpg" alt="" /></a>
-                        <a href="#"><img class="img-fluid" src="images/news/tech/game2.jpg" alt="" /></a>
-                        <a href="#"><img class="img-fluid" src="images/news/tech/robot5.jpg" alt="" /></a>
-                        <a href="#"><img class="img-fluid" src="images/news/lifestyle/travel5.jpg" alt="" /></a>
+                        <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/health1.jpg') }}" alt="" /></a>
+                        <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/food3.jpg') }}" alt="" /></a>
+                        <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/travel4.jpg') }}" alt="" /></a>
+                        <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/architecture1.jpg') }}" alt="" /></a>
+                        <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/gadget1.jpg') }}" alt="" /></a>
+                        <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/gadget2.jpg') }}" alt="" /></a>
+                        <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/game2.jpg') }}" alt="" /></a>
+                        <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/tech/robot5.jpg') }}" alt="" /></a>
+                        <a href="#"><img class="img-fluid" src="{{ url_for('static', path='/images/news/lifestyle/travel5.jpg') }}" alt="" /></a>
                      </div>
                   </div><!-- Col end -->
 
@@ -1940,7 +1941,7 @@
                   <div class="col-md-12">
                      <div class="footer-info-content">
                         <div class="footer-logo">
-                           <img class="img-fluid" src="images/logos/footer-logo.png" alt="" />
+                           <img class="img-fluid" src="{{ url_for('static', path='/images/logos/footer-logo.png') }}" alt="" />
                         </div>
                         <p>News247 Worldwide is a popular online newsportal and going source for technical and digital
                            content for its influential audience around the globe. You can reach us via email or phone.
@@ -2023,7 +2024,6 @@
       <!-- Javascript Files
 	================================================== -->
       <!-- initialize jQuery Library -->
-      <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
       <script type="text/javascript" src="{{ url_for('static', path='/js/jquery.js') }}"></script>
       <!-- Popper JS -->
       <script type="text/javascript" src="{{ url_for('static', path='/js/popper.min.js') }}"></script>
