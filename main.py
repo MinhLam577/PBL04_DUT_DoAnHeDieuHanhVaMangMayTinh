@@ -1,7 +1,8 @@
 from FacebookCrawl.scraperCrawl import *
 from FacebookCrawl.seleniumCrawl import *
 from datetime import datetime
-from App.Controllers.index import *
+from router.indexRouter import *
+import uvicorn
 import traceback
 import threading
 class Threading(threading.Thread):
@@ -97,6 +98,6 @@ def getContentPostByScraper(*,type = 'fanpage', nameOrID, numberPost = 100):
                     break
 if __name__ == "__main__":
     try:
-        test = index()
+        uvicorn.run("main:app", host="localhost", port=8000, reload=True)
     except Exception:
         traceback.print_exc()

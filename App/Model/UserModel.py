@@ -5,8 +5,6 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
 from fastapi import Request, Depends, Form
-from fastapi_mail import FastMail, MessageSchema,ConnectionConfig
-from cryptography.fernet import Fernet
 from email.message import EmailMessage
 import ssl
 import smtplib
@@ -79,9 +77,7 @@ class UserModel:
                 if(us[2] != Password):
                     raise UvicornExeception('Mật khẩu không chính xác')
                 else:
-                    return JSONResponse(
-                        content={"message": "Đăng nhập thành công"},
-                    )
+                    return us[3]
     def ForgotPassword(self, Gmail):
         with SessionLocal() as db:
             us = db.execute(text("SELECT * FROM User WHERE Gmail = :Gmail"), {'Gmail': Gmail}).first()
