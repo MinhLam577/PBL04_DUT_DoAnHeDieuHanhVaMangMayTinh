@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
 </head>
 
 <body>
@@ -23,13 +24,13 @@
                 <div class="col-md-6 rounded d-flex justify-content-center flex-column left-box"
                     style="border-radius: 4px;">
                     <div class="featured-image">
-                        <img src="images/wfo-wfh.webp" class="img-fluid" style="max-width: 100%;" alt="logo">
+                        <img src="{{ url_for('static', path='images/wfo-wfh.webp') }}" class="img-fluid" style="max-width: 100%;" alt="logo">
                     </div>
                 </div>
 
                 <!-- Right Box -->
                 <div class="col-md-6 right-box">
-                    <form action="#" method="post" target="_blank" id="LoginForm">
+                    <form id="LoginForm">
                         <h3 class="text-center text-primary mt-2 mb-4">Login here !</h3>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Email</label>
@@ -69,7 +70,7 @@
                 <div class="col-md-6 rounded d-flex justify-content-center flex-column left-box"
                     style="border-radius: 4px;">
                     <div class="featured-image">
-                        <img src="images/wfo-wfh.webp" class="img-fluid" style="max-width: 100%;" alt="logo">
+                        <img src="{{ url_for('static', path='images/wfo-wfh.webp') }}" class="img-fluid" style="max-width: 100%;" alt="logo">
                     </div>
                 </div>
 
@@ -96,7 +97,7 @@
                         <button type="submit" class="btn btn-primary col-12 mt-2 mb-3">Tạo tài khoản</button>
                         <div class="mt-3 mb-3">
                             <label>Đã có tài khoản?</label>
-                            <a href="#" onclick="ShowLoginForm()">Đăng nhập</a>
+                            <a href="" onclick="ShowLoginForm()">Đăng nhập</a>
                         </div>
                     </form>
                 </div>
@@ -118,16 +119,16 @@
                 <div class="col-md-6 rounded d-flex justify-content-center flex-column left-box"
                     style="border-radius: 4px;">
                     <div class="featured-image">
-                        <img src="images/wfo-wfh.webp" class="img-fluid" style="max-width: 100%;" alt="logo">
+                        <img src="{{ url_for('static', path='images/wfo-wfh.webp') }}" class="img-fluid" style="max-width: 100%;" alt="logo">
                     </div>
                 </div>
 
                 <!-- Right Box -->
 
                 <div class="col-md-6 right-box">
-                    <form action="http://localhost:8000/ForgotPassword/" method="post" id="ForgotPassword">
+                    <form id="ForgotPassword">
                         <h3 class="text-center text-primary mt-2 mb-4">Lấy lại mật khẩu</h3>
-                        <div class="mb-3">
+                        <div class="mb-3" id="SendGmailDiv">
                             <label for="exampleInputEmail1" class="form-label">Nhập email của bạn để lấy lại mật
                                 khẩu</label>
                             <input type="email" class="form-control" id="exampleInputEmail1"
@@ -136,18 +137,16 @@
                         <button type="submit" class="btn btn-primary col-12 mt-2 mb-3">Lấy lại mật khẩu</button>
                         <div class="mt-3 mb-3">
                             <label>Trở lại?</label>
-                            <a href="#" onclick="ShowLoginForm()">Đăng nhập</a>
+                            <a href="" onclick="ShowLoginForm()">Đăng nhập</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="main.js"></script>
-    <script src="Login.js"></script>
-    <script src="SignUp.js"></script>
-    <script src="ForgotPassword.js"></script>
+    <script src="{{ url_for('static', path='/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/main.js') }}"></script>
+    <script src="{{ url_for('static', path='/Login.js') }}"></script>
 </body>
 
 </html>
