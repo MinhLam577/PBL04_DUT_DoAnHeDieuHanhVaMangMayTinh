@@ -2,6 +2,12 @@ from scraperCrawl import *
 from seleniumCrawl import *
 import traceback
 import threading
+import os
+import re
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from App.Controllers.PostController import *
+postController = PostControllers()
 class Threading(threading.Thread):
     def __init__(self, driver, cookie, type="fanpage", nameOrID = 103274306376166, numberPost = 100, txt = None, timeout = 60):
         threading.Thread.__init__(self)
@@ -30,26 +36,54 @@ class Threading(threading.Thread):
                     writeFileTxtID(fileGroupID, ID)
     def startGetContentPostBySelenium(self):
         listTuKhoaViecLam = ["tuyển", "tuyển dụng", "vị trí", "chiêu mộ", "cần", "gấp", "lương", "năm kinh nghiệm", "năm kn", "phúc lợi", "cần tìm", "benefit", "job", "tìm kiếm", "offer", "offer up to", "đãi ngộ", "chế độ đãi ngộ", "ứng viên", "cơ hội", "YÊU CẦU", "quyền lợi", "CV", "mô tả công việc", "nhân sự", "up to"]
+        listAllContentPost = postController.GetAllContentPost()
+        listAllIDPOST = postController.GetAllIDPost()
         if(self.type == "fanpage"):
             listPostFanpageID = readDataFileITxtID(filePostFanpageID)
-            for ID in listPostFanpageID:
+            for i, ID in enumerate(listPostFanpageID):
                 self.driver.get("https://mbasic.facebook.com/"+ID)
                 postContent = getContentFromPostID(self.driver, ID)
                 Text = postContent['ContentPost']
-                if(Text != ""):
+                if(Text not in listAllContentPost and ID not in listAllIDPOST):
                     for tuKhoa in listTuKhoaViecLam:
                         if(tuKhoa in Text):
-                            print(postContent)
+                            IDPost = postContent["post_id"]
+                            ContentPost = postContent["text"] # Toàn bộ chữ có trong bài viết
+                            TimePost = postContent["time"]  # Thời gian đăng bài
+                            IDUserSend = postContent["user_id"]  # ID người đăng bài
+                            NameUserSend = postContent["username"]  # Tên người đăng bài
+                            LinkPost = "https://www.facebook.com/"+IDPost
+                            LinkImg = postContent["images"]  # Ảnh đại diện bài viết
+                            print("Bai viet", i + 1, "\n\n","postID", IDPost, "Text",ContentPost, "\nTime", TimePost,
+                                    "\nuserID",IDUserSend,"\nuserName",NameUserSend, "\npostLink",LinkPost, 
+                                    "\npostImages",LinkImg, "\n\n")
+                            post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=ContentPost, IDUserSend=IDUserSend,
+                                        NameUserSend=NameUserSend, LinkPost=LinkPost, LinkImg=LinkImg)
+                            postController.AddPost(post)
+                            break
         elif(self.type == "group"):
             listPostGroupID = readDataFileITxtID(filePostGroupID)
-            for ID in listPostGroupID:
+            for i, ID in enumerate(listPostGroupID):
                 self.driver.get("https://mbasic.facebook.com/"+ID)
                 postContent = getContentFromPostID(self.driver, ID)
                 Text = postContent['ContentPost']
-                if(Text != ""):
+                if(Text not in listAllContentPost and ID not in listAllIDPOST):
                     for tuKhoa in listTuKhoaViecLam:
                         if(tuKhoa in Text):
-                            print(postContent)
+                            IDPost = postContent["post_id"]
+                            ContentPost = postContent["text"] # Toàn bộ chữ có trong bài viết
+                            TimePost = postContent["time"]  # Thời gian đăng bài
+                            IDUserSend = postContent["user_id"]  # ID người đăng bài
+                            NameUserSend = postContent["username"]  # Tên người đăng bài
+                            LinkPost = "https://www.facebook.com/"+IDPost
+                            LinkImg = postContent["images"]  # Ảnh đại diện bài viết
+                            print("Bai viet",i + 1, "\n\n","postID", IDPost, "Text",ContentPost, "\nTime", TimePost,
+                                    "\nuserID",IDUserSend,"\nuserName",NameUserSend, "\npostLink",LinkPost, 
+                                    "\npostImages",LinkImg, "\n\n")
+                            post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=ContentPost, IDUserSend=IDUserSend,
+                                        NameUserSend=NameUserSend, LinkPost=LinkPost, LinkImg=LinkImg)
+                            postController.AddPost(post)
+                            break
     def closeDriverProfile(self):
         self.driver.close()
     def run(self):
@@ -82,14 +116,7 @@ def getContentPostFanpageOrGroupBySelenium(*,driver1, driver2, cookie1, cookie2,
     finally:
         thread1.closeDriverProfile()
         thread2.closeDriverProfile()
-        
+postController = PostControllers()
 def getContentPostByScraper(*,type = 'fanpage', nameOrID, numberPost = 100):
-    listTuKhoaViecLam = ["tuyển", "tuyển dụng", "vị trí", "chiêu mộ", "cần", "gấp", "lương", "năm kinh nghiệm", "năm kn", "phúc lợi", "cần tìm", "benefit", "job", "tìm kiếm", "offer", "offer up to", "đãi ngộ", "chế độ đãi ngộ", "ứng viên", "cơ hội", "YÊU CẦU", "quyền lợi", "CV", "mô tả công việc", "nhân sự", "up to"]
-    listPost = GetContentPost(type, nameOrID, numberPost)
-    for post in listPost:
-        text = post['ContentPost']
-        if(text != ""):
-            for tuKhoa in listTuKhoaViecLam:
-                if tuKhoa in text:
-                    print(post)
-                    break
+    GetContentPost(type=type, nameOrID=nameOrID, numberPost=numberPost)
+getContentPostByScraper(type='fanpage', nameOrID=1261520704501124, numberPost=5)
