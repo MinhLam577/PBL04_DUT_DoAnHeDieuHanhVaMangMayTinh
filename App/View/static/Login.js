@@ -9,29 +9,14 @@ LoginForm.addEventListener("submit", function(event){
             "Content-Type": "application/json"
         },
         body: JSON.stringify(data),
-    }).then(Response => Response.json())
+    })
+    .then(Response => Response.json())
     .then(data =>{
-        if(String(data) == "admin"){
-            fetch('/Admin/', {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }).then(()=>{
-                window.location.href = "/Admin/";
-            })  
-        }
-        else{
-            fetch('/User/', {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }).then(()=>{
-                window.location.href = "/User/";
-            })
-        }
-            
+        fetch('/Login/' + String(data), {
+            method: "GET",
+        }).then(    
+            window.location.href = "/Login/" + String(data)
+        )
     })
     .catch(error => console.log(error));
 });

@@ -14,8 +14,6 @@ class UvicornExeception(Exception):
     def __init__(self, message: str):
         self.message = message
 
-Base.metadata.create_all(bind=engine)
-
 def SendMail(message, receiveMail):
     Email_sender = "lambachu352@gmail.com"
     Email_Password = "bewh hhfx mxqd qqfy"

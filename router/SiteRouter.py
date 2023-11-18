@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse
+from fastapi import APIRouter, Request, status
+from fastapi.responses import HTMLResponse, RedirectResponse
+from starlette.datastructures import URL
 from App.Controllers.SiteController import *
 
 siteRouter = APIRouter()
@@ -12,11 +13,6 @@ async def index(request: Request):
 @siteRouter.get("/Login/", response_class=HTMLResponse)
 async def Login(request: Request):
     return siteController.Login(request)
-
-@siteRouter.get("/Admin/", response_class=HTMLResponse)
-async def Admin(request: Request):
-    return siteController.Admin(request)
-
-@siteRouter.get("/User/", response_class=HTMLResponse)
-async def User(request: Request):
-    return siteController.User(request)
+@siteRouter.get("/Login/{userType}", response_class=HTMLResponse)
+async def LoginSuccess(request: Request, userType: str | None = None):
+    return siteController.LoginSuccess(request, userType)
