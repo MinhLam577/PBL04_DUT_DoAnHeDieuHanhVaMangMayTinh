@@ -11,12 +11,24 @@ LoginForm.addEventListener("submit", function(event){
         body: JSON.stringify(data),
     })
     .then(Response => Response.json())
-    .then(data =>{
-        fetch('/Login/' + String(data), {
-            method: "GET",
-        }).then(    
+    .then(data => {
+        Message = document.getElementById("Message");
+        if(Message != null){
+            Message.remove();
+        }
+        Message = document.createElement("label");
+        Message.setAttribute("id", "Message");
+        Message.setAttribute("style", "color: red;");
+        if(!data["message"])
             window.location.href = "/Login/" + String(data)
-        )
+        else{
+            Message.innerHTML = data["message"];
+        }
+        NhapPassword = document.getElementById("NhapPassword");
+        NhapPassword.appendChild(Message);
+        SetTimeout(function() {
+            Message.remove();
+        }, 7000);
     })
     .catch(error => console.log(error));
 });
@@ -32,8 +44,27 @@ SignUpForm.addEventListener("submit", function(event){
             "Content-Type": "application/json"
         },
         body: JSON.stringify(data),
-    }).then(Response => Response.json())
-    .then(alert("Đăng kí thành công"))
+    })
+    .then(Response => Response.json())
+    .then(data => {
+        Message = document.getElementById("Message");
+        if(Message != null){
+            Message.remove();
+        }
+        Message = document.createElement("label");
+        Message.setAttribute("id", "Message");
+        Message.setAttribute("style", "color: red;");
+        if(!data["message"])
+            Message.innerHTML = "Đăng ký thành công";
+        else{
+            Message.innerHTML = data["message"];
+        }
+        NhapLaiPassword = document.getElementById("NhapLaiPassword");
+        NhapLaiPassword.appendChild(Message);
+        setTimeout(function() {
+            Message.remove();
+        }, 7000);
+    })
     .catch(error => console.log(error));
 });
 

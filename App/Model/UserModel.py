@@ -10,10 +10,11 @@ import ssl
 import smtplib
 import numpy as np
 import re
-class UvicornExeception(Exception):
+
+class UserExeception(Exception):
     def __init__(self, message: str):
         self.message = message
-
+    
 def SendMail(message, receiveMail):
     Email_sender = "lambachu352@gmail.com"
     Email_Password = "bewh hhfx mxqd qqfy"
@@ -27,21 +28,22 @@ def SendMail(message, receiveMail):
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         server.login(Email_sender, Email_Password)
         server.sendmail(Email_sender, receiveMail, msg.as_string())
+
 class UserLogin(BaseModel):
-    Gmail: str 
+    Gmail: str
     Password: str
+    
+class UserRegister(UserLogin):
     @validator('Gmail')
     def gmail_validator(cls, Gmail):
         if not re.match("^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$", Gmail, re.IGNORECASE):
-            raise UvicornExeception('Định dạng email không hợp lệ')
+            raise UserExeception('Gmail phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
         return Gmail
     @validator('Password')
     def password_validator(cls, Password):
         if not re.match("^(?=.*[a-z])(?=.*\d)[a-z\d]{5,}$", Password, re.IGNORECASE):
-            raise UvicornExeception('Mật khẩu phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
+            raise UserExeception('Mật khẩu phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
         return Password
-    
-class UserRegister(UserLogin):
     IDUser: str = "user" + str(np.random.randint(10000, 999999))
     QuyenUser: str = "user"
     NhapLai: str
@@ -70,17 +72,17 @@ class UserModel:
         with SessionLocal() as db:
             us = db.execute(text("SELECT * FROM User WHERE Gmail = :Gmail"), {'Gmail': Gmail}).first()
             if(us == None):
-                raise UvicornExeception('Gmail không tồn tại')
+                raise UserExeception('Gmail không tồn tại')
             else:
                 if(us[2] != Password):
-                    raise UvicornExeception('Mật khẩu không chính xác')
+                    raise UserExeception('Mật khẩu không chính xác')
                 else:
                     return us[3]
     def ForgotPassword(self, Gmail):
         with SessionLocal() as db:
             us = db.execute(text("SELECT * FROM User WHERE Gmail = :Gmail"), {'Gmail': Gmail}).first()
             if(us == None):
-                raise UvicornExeception('Gmail không tồn tại')
+                raise UserExeception('Gmail không tồn tại')
             else:
                 Password = us.Password
                 message = "Mật khẩu của bạn là: " + Password
@@ -100,10 +102,10 @@ class UserModel:
             NhapLai = user.NhapLai
             Password = user.Password
             if(Password != NhapLai):
-                raise UvicornExeception('Nhập lại mật khẩu không khớp')
+                raise UserExeception('Nhập lại mật khẩu không khớp')
             us = db.query(User).filter(User.Gmail == Gmail).first()
             if(us != None):
-                raise UvicornExeception('Gmail đã tồn tại')
+                raise UserExeception('Gmail đã tồn tại')
             db.add(User(IDUser = IDUser, Gmail = Gmail, Password = Password, QuyenUser = user.QuyenUser))
             db.commit()
             return user

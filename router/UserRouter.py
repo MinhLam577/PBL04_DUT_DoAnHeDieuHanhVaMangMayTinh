@@ -16,6 +16,7 @@ async def CheckLogin(user: UserLogin, request: Request):
 @userRoute.post("/Register/")
 async def Register(user: UserRegister):
     return userController.AddUser(user)
+        
 
 @userRoute.post("/ForgotPassword/")
 async def ForgotPassword(Gmail: str = Body(...)):
