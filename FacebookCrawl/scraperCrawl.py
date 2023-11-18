@@ -1,4 +1,5 @@
 from facebook_scraper import get_posts, set_cookies, exceptions
+from seleniumCrawl import *
 import os
 import traceback
 #Lưu ý phương pháp này trước khi sử dụng phải reset lại cookies
@@ -13,7 +14,7 @@ def GetContentPost(type="fanpage", nameOrID = 103274306376166, numberPost = 100)
     numberPost: Số lượng bài viết muốn lấy mặc định là 100 đối với type = post thì numberPost sẽ tự chuyển về 1
     """
     try:
-        #setCookie("cookies.txt")
+        setCookie("cookies.txt")
         options={
                 "allow_extra_requests": False, #Allow extra requests để lấy ảnh có chất lượng tốt ko nên vì dễ gây ban
                 "posts_per_page": 200, #bài viết trên 1 trang

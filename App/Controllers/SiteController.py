@@ -5,7 +5,12 @@ class SiteController:
         return template.TemplateResponse("index.html", {"request": request})
     def Login(self, request):
         return template.TemplateResponse("login.html", {"request": request})
-    def Admin(self, request):
-        return template.TemplateResponse("admin.html", {"request": request})
-    def User(self, request):
-        return template.TemplateResponse("user.html", {"request": request})
+    def LoginSuccess(self, request, userType: str | None = None):
+        if(userType == 'admin'):
+            return template.TemplateResponse("admin.html", {"request": request})
+        else:
+            return template.TemplateResponse("user.html", {"request": request})
+    # def Admin(self, request, userType: str | None = None):
+    #     return template.TemplateResponse("admin.html", {"request": request, "userType": userType})
+    # def User(self, request, userType: str | None = None):
+    #     return template.TemplateResponse("user.html", {"request": request, "userType": userType})

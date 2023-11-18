@@ -7,4 +7,4 @@ class User(Base):
     Password = Column(String, nullable=False)
     QuyenUser = Column(String, nullable=False)
     IDTD = Column(String, nullable=True, default=None)
-
+Base.metadata.create_all(bind=engine)

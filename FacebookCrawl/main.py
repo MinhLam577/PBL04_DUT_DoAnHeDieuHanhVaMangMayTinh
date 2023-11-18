@@ -1,8 +1,5 @@
-from FacebookCrawl.scraperCrawl import *
-from FacebookCrawl.seleniumCrawl import *
-from datetime import datetime
-from router.indexRouter import *
-import uvicorn
+from scraperCrawl import *
+from seleniumCrawl import *
 import traceback
 import threading
 class Threading(threading.Thread):
@@ -96,4 +93,3 @@ def getContentPostByScraper(*,type = 'fanpage', nameOrID, numberPost = 100):
                 if tuKhoa in text:
                     print(post)
                     break
-
