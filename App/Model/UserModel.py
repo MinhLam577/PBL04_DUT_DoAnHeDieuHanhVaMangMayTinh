@@ -1,10 +1,8 @@
-from App.Model.UserEntity import User, Base
-from config.db import SessionLocal, engine
+from App.Model.UserEntity import User
+from config.db import SessionLocal
 from pydantic import BaseModel, validator
 from sqlalchemy import text
-from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
-from fastapi import Request, Depends, Form
 from email.message import EmailMessage
 import ssl
 import smtplib
@@ -90,7 +88,7 @@ class UserModel:
                 return JSONResponse(
                     content={"message": "Mật khẩu đã được gửi đến Gmail của bạn"},
                 )
-    def AddUser(self, user):
+    def AddUserRegister(self, user):
         with SessionLocal() as db:
             IDUser = user.IDUser
             us = db.query(User).filter(User.IDUser == IDUser).first()

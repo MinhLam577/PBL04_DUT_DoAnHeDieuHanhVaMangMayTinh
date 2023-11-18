@@ -11,4 +11,4 @@ class UserController:
     def ForgotPassword(self, Gmail):
         return self.UserModel.ForgotPassword(Gmail)
     def AddUser(self, user):
-        return self.UserModel.AddUser(user)
+        return self.UserModel.AddUserRegister(user)

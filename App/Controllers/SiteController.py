@@ -10,7 +10,3 @@ class SiteController:
             return template.TemplateResponse("admin.html", {"request": request})
         else:
             return template.TemplateResponse("user.html", {"request": request})
-    # def Admin(self, request, userType: str | None = None):
-    #     return template.TemplateResponse("admin.html", {"request": request, "userType": userType})
-    # def User(self, request, userType: str | None = None):
-    #     return template.TemplateResponse("user.html", {"request": request, "userType": userType})
