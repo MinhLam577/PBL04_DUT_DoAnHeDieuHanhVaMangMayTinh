@@ -4,7 +4,6 @@ from router.PostRouter import *
 from config.app import app
 from fastapi.staticfiles import StaticFiles
 app.mount("/static", StaticFiles(directory="App/View/static", html=True), name="static")
-
 @app.exception_handler(UserExeception)
 async def unicorn_exception_handler(request: Request, exc: UserExeception):
     return JSONResponse(
@@ -17,6 +16,7 @@ async def unicorn_exception_handler(request: Request, exc: PostException):
     )
 app.include_router(siteRouter)
 app.include_router(userRoute)
+app.include_router(PostRouter)
 
 
     

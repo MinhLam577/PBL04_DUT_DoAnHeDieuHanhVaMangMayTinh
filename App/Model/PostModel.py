@@ -5,10 +5,10 @@ from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
 from fastapi import Request, Depends, Form
 from App.Model.PostEntity import *
-
 class PostException(Exception):
     def __init__(self, message: str):
         self.message = message
+        
 def get_db():
     try:
         db = SessionLocal()
@@ -49,3 +49,11 @@ class PostModel:
             listPost = db.query(Post.IDPost).all()
             listPost = [post.IDPost for post in listPost]
             return listPost
+    def DeleteDuplicatePost(self):
+        with SessionLocal() as db:
+            try:
+                db.execute(text("CALL `DeleteDuplicatePosts`()"))
+                db.commit()
+                return True
+            except Exception:
+                raise PostException("Xóa bài viết trùng lặp thất bại")

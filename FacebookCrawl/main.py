@@ -119,4 +119,12 @@ def getContentPostFanpageOrGroupBySelenium(*,driver1, driver2, cookie1, cookie2,
 postController = PostControllers()
 def getContentPostByScraper(*,type = 'fanpage', nameOrID, numberPost = 100):
     GetContentPost(type=type, nameOrID=nameOrID, numberPost=numberPost)
-getContentPostByScraper(type='fanpage', nameOrID=1261520704501124, numberPost=5)
+def startGetContentPostByScraper():
+    try:
+        listIDGroup = readDataFileITxtID(fileGroupID)
+        for i, ID in enumerate(listIDGroup):
+            getContentPostByScraper(type="group", nameOrID=ID, numberPost=10)
+            print("Đã lấy xong bài viết của group", i + 1, "ID", ID)
+            postController.DeleteDuplicatePost()
+    except Exception:
+        traceback.print_exc()
