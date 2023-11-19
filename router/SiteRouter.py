@@ -25,8 +25,7 @@ async def check_login_success(*,authorization: str = Header(None), request: Requ
             jwt_bearer = jwtBearer()
             payload = jwt_bearer.verify_jwt(token)
             if payload:
-                userType = payload["userType"]
-                return userType
+                return json.dumps(payload)
             else:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid token or token expired")
         else:
