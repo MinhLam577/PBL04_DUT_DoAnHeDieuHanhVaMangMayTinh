@@ -1,13 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Body
 from fastapi.responses import RedirectResponse
 from App.Controllers.PostController import *
+from App.auth.jwt_bearer import jwtBearer
 PostRouter = APIRouter()
 PostController = PostControllers()
 
-@PostRouter.post("/AddPost/")
-async def AddPost(post: Post):
-    return PostController.AddPost(post)
-
-@PostRouter.get("/GetAllPost/")
+@PostRouter.get("/GetAllPost/", dependencies=[Depends(jwtBearer())])
 async def GetAllPost():
     return PostController.GetAllPost()

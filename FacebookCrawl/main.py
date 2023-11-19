@@ -128,4 +128,3 @@ def startGetContentPostByScraper():
             postController.DeleteDuplicatePost()
     except Exception:
         traceback.print_exc()
-startGetContentPostByScraper()
