@@ -16,7 +16,7 @@ class jwtBearer(HTTPBearer):
     def verify_jwt(self, jwtToken: str):
         isTokenValid: bool = False
         payload = decodeJWT(jwtToken)
-        if payload:
+        if payload != None:
             return payload
         return isTokenValid
         
