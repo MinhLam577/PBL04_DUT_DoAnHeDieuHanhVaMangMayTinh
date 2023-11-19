@@ -9,32 +9,18 @@ userController = UserController()
 async def GetAllUser():
     return userController.GetAllUser()
 
-def CheckLoginJWT(user: UserLogin):
-    if(userController.CheckLogin(user.Gmail, user.Password) != None):
-        return True
-    else:
-        return False
+def CheckLogin(user: UserLogin):
+    return userController.CheckLogin(user.Gmail, user.Password)
 
 @userRoute.post("/CheckLoginJWT/")
 async def LoginJWT(user: UserLogin):
-    if(CheckLoginJWT(user) == True):
-        return signJWT(user.Gmail)
-    
-@userRoute.post("/SingUpJWT/")
-async def SingUpJWT(user: UserRegister):
-    return signJWT(user.Gmail)
-
-
-@userRoute.post("/CheckLogin/")
-async def CheckLogin(user: UserLogin):
-    userType = userController.CheckLogin(user.Gmail, user.Password)
-    if(userType != None):   
-        return userType
+    userType = CheckLogin(user)
+    if(userType != None):
+        return signJWT(user.Gmail, userType)
 
 @userRoute.post("/Register/")
 async def Register(user: UserRegister):
     return userController.AddUser(user)
-        
 
 @userRoute.post("/ForgotPassword/")
 async def ForgotPassword(Gmail: str = Body(...)):

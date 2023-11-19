@@ -17,6 +17,6 @@ class jwtBearer(HTTPBearer):
         isTokenValid: bool = False
         payload = decodeJWT(jwtToken)
         if payload:
-            isTokenValid = True
+            return payload
         return isTokenValid
         
