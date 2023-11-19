@@ -1,9 +1,10 @@
+        
 const LoginForm = document.getElementById("LoginForm");
 LoginForm.addEventListener("submit", function(event){
     event.preventDefault();
     const formdata = new FormData(LoginForm);
     const data = Object.fromEntries(formdata);
-    fetch('/CheckLogin/', {
+    fetch('/CheckLoginJWT/', {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -19,14 +20,28 @@ LoginForm.addEventListener("submit", function(event){
         Message = document.createElement("label");
         Message.setAttribute("id", "Message");
         Message.setAttribute("style", "color: red;");
-        if(!data["message"])
-            window.location.href = "/Login/" + String(data)
-        else{
+        Token = JSON.stringify(data);
+        if(!data["message"]){
+            fetch("/CheckLoginSuccess/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + JSON.stringify(data),
+                },
+                body: JSON.stringify(data),
+            }).then(Response =>{
+                if(Response.status == 200) {
+                    window.localStorage.setItem("Token", Token);
+                    window.location.href = "/Login/"+String(data);
+                }
+            })
+        }
+        else {
             Message.innerHTML = data["message"];
         }
         NhapPassword = document.getElementById("NhapPassword");
         NhapPassword.appendChild(Message);
-        SetTimeout(function() {
+        setTimeout(function() {
             Message.remove();
         }, 7000);
     })
@@ -69,7 +84,7 @@ SignUpForm.addEventListener("submit", function(event){
 });
 
 const ForgotPassword = document.getElementById("ForgotPassword");
-ForgotPassword.addEventListener("submit", function(event){
+ForgotPassword.addEventListener("submit", function(event) {
     event.preventDefault();
     const formdata = new FormData(ForgotPassword);
     const data = Object.fromEntries(formdata);
