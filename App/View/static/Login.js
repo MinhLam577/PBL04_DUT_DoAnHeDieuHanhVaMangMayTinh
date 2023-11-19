@@ -29,12 +29,15 @@ LoginForm.addEventListener("submit", function(event){
                     "Authorization": "Bearer " + JSON.stringify(data),
                 },
                 body: JSON.stringify(data),
-            }).then(Response =>{
-                if(Response.status == 200) {
-                    window.localStorage.setItem("Token", Token);
-                    window.location.href = "/Login/"+String(data);
-                }
-            })
+            }).then(Response => Response.json())
+            .then(data => {
+                const userType = data["userType"];
+                const Gmail = data["userID"];
+                const existingToken = window.localStorage.getItem(Gmail);
+                if(!existingToken)
+                    window.localStorage.setItem(Gmail, Token);
+                window.location.href = "/Login/" + String(userType);
+            });
         }
         else {
             Message.innerHTML = data["message"];
