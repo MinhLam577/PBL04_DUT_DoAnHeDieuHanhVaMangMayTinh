@@ -9,11 +9,15 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException, NoSuchElementException, TimeoutException
 import re
 import traceback
+import sys
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from App.Controllers.PostController import *
 fileGroupID = 'ID_Group.txt'
 fileFanpageID = 'ID_Fanpage.txt'
 filePostFanpageID = 'post_ID_Fanpage.txt'
 filePostGroupID = 'post_ID_Group.txt'
+postController = PostControllers()
 # khởi tạo 1 chrome profile với tham số headless(ẩn chrome) tùy chọn
 def initDriverProfile(headlessOption='--disable-headless'):
     # Đường dẫn đến thư mục chứa file python hiện tại
@@ -209,7 +213,8 @@ def getPostsIDGroup(driver, idGroup, numberPost=100):
     try:
         driver.get('https://mbasic.facebook.com/groups/' + str(idGroup))
         sleep(2)
-        sumLinks = readDataFileITxtID(fileGroupID)
+        listAllIDPOST = postController.GetAllIDPost()
+        sumLinks = readDataFileITxtID(filePostGroupID)
         while (len(sumLinks) < numberPost):
             try:
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -217,9 +222,9 @@ def getPostsIDGroup(driver, idGroup, numberPost=100):
                 if len(likeBtn):
                     for id in likeBtn:
                         idPost = id.get_attribute('id').replace("like_", "")
-                        if (idPost not in sumLinks and len(sumLinks) < numberPost):
+                        if (idPost not in sumLinks and len(sumLinks) < numberPost and idPost not in listAllIDPOST):
                             sumLinks.append(idPost)
-                            writeFileTxtID(fileGroupID, idPost)
+                            writeFileTxtID(filePostGroupID, idPost)
                 nextBtn = driver.find_elements(By.XPATH, '//a[contains(@href, "?bacr")]')
                 if (len(nextBtn)):
                     nextBtn[0].click()
@@ -237,6 +242,7 @@ def getPostIDFanpage(driver, idGroup, numberpost=100):
     try:
         driver.get("https://mbasic.facebook.com/" + str(idGroup));
         sleep(2)
+        listAllIDPOST = postController.GetAllIDPost()
         # địa chỉ URL hiện tại
         current_url = driver.current_url
         # lấy tên người dùng
@@ -244,7 +250,7 @@ def getPostIDFanpage(driver, idGroup, numberpost=100):
         timeline = driver.find_element(By.XPATH, "//a[starts-with(@href, '/" + nameUser + "?v=timeline')]")
         timeline.click()
         sleep(2)
-        sumLinks = readDataFileITxtID(fileFanpageID)
+        sumLinks = readDataFileITxtID(filePostFanpageID)
         while (len(sumLinks) < numberpost):
             try:
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -252,9 +258,9 @@ def getPostIDFanpage(driver, idGroup, numberpost=100):
                 if len(likeBtn):
                     for id in likeBtn:
                         idPost = id.get_attribute('id').replace("like_", "")
-                        if (idPost not in sumLinks and len(sumLinks) <= numberpost):
+                        if (idPost not in sumLinks and len(sumLinks) <= numberpost and idPost not in listAllIDPOST):
                             sumLinks.append(idPost)
-                            writeFileTxtID(fileFanpageID, idPost)
+                            writeFileTxtID(filePostFanpageID, idPost)
                 nextBtn = driver.find_elements(By.XPATH, '//a[contains(@href, "?cursor=")]')
                 if (len(nextBtn)):
                     nextBtn[0].click()
@@ -269,34 +275,14 @@ def getContentFromPostID(driver, postID):
     try:
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         contentBox = soup.find('div', id='m_story_permalink_view')
-        userLink = contentBox.find('header').find(
-            lambda tag: tag.name == 'a' and tag.get('href', '').startswith('/profile.php'))
-        if (userLink != None):
-            userLink = userLink['href']
         content = contentBox.find('div', attrs={'data-ft': '{\"tn\":\"*s\"}'})
-        imgGroup = contentBox.find('div', attrs={'data-ft': '{\"tn\":\"H\"}'})
         footer = contentBox.find('footer', attrs={'data-ft': '{\"tn\":\"*W\"}'})
         obj = {'IDPost': postID}
-        if (userLink != None):
-            obj['IDUserSend'] = userLink.split("?id=")[1].split("&")[0]
-            obj['NameUserSend'] = userLink.get_text()
         if (content != None):
             obj['ContentPost'] = content.get_text()
         if (footer != None):
             obj['TimePost'] = footer.find('abbr').get_text()
-        if(imgGroup != None):
-            listHref = imgGroup.find_all('a', attrs={'href': lambda x: x and 'photo' in x})
-            listimg = []
-            if(listHref != None):
-                listHref = ["https://www.facebook.com" + i['href'] for i in listHref]
-                for href in listHref:
-                    driver.get(href)
-                    soup = BeautifulSoup(driver.page_source, 'html.parser')
-                    img = soup.find('img', attrs={'data-visualcompletion': 'media-vc-image'})
-                    if(img!= None):
-                        listimg.append(img['src'])
-            obj['LinkImg'] = ';'.join(listimg)
-            obj['LinkPost'] = driver.current_url
+        obj['LinkPost'] = driver.current_url
         obj = {k : v for k, v in obj.items() if v != None and v != "" and v != []}
         return obj
     except Exception:

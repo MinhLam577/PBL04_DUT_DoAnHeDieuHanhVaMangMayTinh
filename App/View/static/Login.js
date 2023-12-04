@@ -18,6 +18,7 @@ LoginForm.addEventListener("submit", function(event){
             Message.remove();
         }
         Message = document.createElement("label");
+        Message.innerHTML = "";
         Message.setAttribute("id", "Message");
         Message.setAttribute("style", "color: red;");
         Token = JSON.stringify(data);
@@ -43,10 +44,11 @@ LoginForm.addEventListener("submit", function(event){
             Message.innerHTML = data["message"];
         }
         NhapPassword = document.getElementById("NhapPassword");
-        NhapPassword.appendChild(Message);
-        setTimeout(function() {
-            Message.remove();
-        }, 7000);
+        if(Message.innerHTML !== "")
+            NhapPassword.appendChild(Message);
+            setTimeout(function() { 
+                Message.remove();
+            }, 7000);
     })
     .catch(error => console.log(error));
 });
