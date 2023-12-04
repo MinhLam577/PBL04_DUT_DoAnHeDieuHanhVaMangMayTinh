@@ -1,8 +1,9 @@
-from facebook_scraper import get_posts, set_cookies, exceptions
+from facebook_scraper import get_posts, set_cookies, exceptions, enable_logging
 from seleniumCrawl import *
 import os
 import traceback
 import re
+import datetime as dt
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from App.Controllers.PostController import *
@@ -19,7 +20,6 @@ def GetContentPost(*,type="fanpage", nameOrID = 103274306376166, numberPost = 10
     try:
         setCookie("cookies.txt")
         options={
-                "allow_extra_requests": True, #Allow extra requests để lấy ảnh có chất lượng tốt ko nên vì dễ gây ban
                 "posts_per_page": 200, #bài viết trên 1 trang
         }
         if(type == "fanpage"):
@@ -53,7 +53,7 @@ def GetContentPost(*,type="fanpage", nameOrID = 103274306376166, numberPost = 10
                         TimePost = post["time"]  # Thời gian đăng bài
                         IDUserSend = post["user_id"]  # ID người đăng bài
                         NameUserSend = post["username"]  # Tên người đăng bài
-                        LinkPost = "https://www.facebook.com/"+IDPost
+                        LinkPost = "https://www.facebook.com/" + str(IDPost)
                         LinkImg = post["images"]  # Ảnh đại diện bài viết
                         if(LinkImg == [] or LinkImg == None):
                             LinkImg = post["image"]
@@ -61,8 +61,12 @@ def GetContentPost(*,type="fanpage", nameOrID = 103274306376166, numberPost = 10
                                 LinkImg = ""
                         else:
                             LinkImg = ",".join(LinkImg)
+                        # Lấy thời gian hiện tại
+                        now = dt.datetime.now().replace(microsecond=0)
+                        # Lấy thời gian cách hiện tại 1 tuần
+                        one_week_ago = now - dt.timedelta(weeks=1)
                         for tuKhoa in listTuKhoaViecLam:
-                            if(tuKhoa in ContentPost):
+                            if(tuKhoa in ContentPost and one_week_ago <= TimePost <= now):
                                 print("Bai viet",i + 1, "\n\n","postID", IDPost, "Text",ContentPost, "\nTime", TimePost,
                                     "\nuserID",IDUserSend,"\nuserName",NameUserSend, "\npostLink",LinkPost, 
                                     "\npostImages",LinkImg, "\n\n")
@@ -76,6 +80,6 @@ def GetContentPost(*,type="fanpage", nameOrID = 103274306376166, numberPost = 10
                 print("Temporarily banned")
                 break
             except Exception as e:
-                print("Lỗi", e)
+                traceback.print_exc()
     except Exception:
         traceback.print_exc()
