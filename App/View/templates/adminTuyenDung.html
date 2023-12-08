@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/adminTuyenDung.css')}}">
+</head>
+<body>
+    <section class="admin-content">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="card-title">Thêm bài tuyển dụng</h1>
+                    </div>
+                    <div class="card-body">
+                        <form class="needs-validation" novalidate>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Vị trí công việc" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Nơi tuyển dụng" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Mức lương" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Khu vực tuyển" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ngay-dang">Ngày đăng</label>
+                                <input type="datetime-local" class="form-control" id="ngay-dang" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="han-nop-ho-so">Hạn nộp hồ sơ</label>
+                                <input type="datetime-local" class="form-control" id="han-nop-ho-so" required>
+                            </div>                        
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Số lượng tuyển" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Hình thức làm việc" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Yêu cầu kinh nghiệm" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="5" placeholder="Mô tả công việc" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="5" placeholder="Yêu cầu công việc" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="5" placeholder="Quyền lợi" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Địa điểm làm việc" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Thêm</button>
+                        </form>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
