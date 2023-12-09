@@ -1,4 +1,3 @@
-        
 const LoginForm = document.getElementById("LoginForm");
 LoginForm.addEventListener("submit", function(event){
     event.preventDefault();
