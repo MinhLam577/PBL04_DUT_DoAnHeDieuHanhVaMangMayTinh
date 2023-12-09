@@ -18,7 +18,7 @@ async def Login(request: Request):
     return siteController.Login(request)
 
 @siteRouter.post("/CheckLoginSuccess/", response_class=HTMLResponse, dependencies=[Depends(jwtBearer())])
-async def check_login_success(*,authorization: str = Header(None), request: Request):
+async def check_login_success(*, authorization: str = Header(None), request: Request):
     try:
         if "Bearer " in authorization:
             token =  json.loads(authorization.split("Bearer ")[1])["access token"]

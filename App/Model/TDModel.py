@@ -27,6 +27,14 @@ class TDModel:
                 return td
             except Exception:
                 raise TDException("Thêm tuyển dụng thất bại")
+    def DeleteTD(self, IDTD: str):
+        with SessionLocal() as db:
+            try:
+                db.query(TuyenDung).filter(TuyenDung.IDTD == IDTD).delete()
+                db.commit()
+                return True
+            except Exception:
+                raise TDException("Xóa tuyển dụng thất bại")
     def GetAllTD(self):
         with SessionLocal() as db:
             listTD = db.query(TuyenDung).all()
