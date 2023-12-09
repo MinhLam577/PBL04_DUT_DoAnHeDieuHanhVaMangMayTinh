@@ -55,17 +55,8 @@
         <!-- menu button -->
         <div class="wp-content">
             <div class="side-content">
-                <!-- <div class="menu-btn">
-                    <i class="fas fa-bars"></i>
-                </div> -->
                 <div class="side-bar">
-                    <!-- header section -->
                     <header>
-                        <!-- close button
-                        <div class="close-btn">
-                            <i class="fas fa-times"></i>
-                        </div> -->
-                        <!-- image -->
                         <img src="images/sidebar/anh-chan-dung-nam.jpeg" alt="">
                         <img src="{{ url_for('static', path='/images/anh-chan-dung-nam') }}" alt="">
                         <h1>ADMIN</h1>
@@ -76,23 +67,11 @@
                         <nav class="nav-item2">
                             <aside>
                                 <ul>
-                                    <li id="home">
-                                        <a href="#">
+                                    <li>
+                                        <a href="#" onclick="SelectItemMenu('index')">
                                             <i class="fa fa-home"></i>
                                             <span>Trang chủ</span>
-                                            <!-- <i class="fa fa-angle-right"></i> -->
                                         </a>
-                                        <!-- <ul>
-                                            <li>
-                                                <p>Normal Home</p>
-                                            </li>
-                                            <li>
-                                                <p>Comercial Home</p>
-                                            </li>
-                                            <li>
-                                                <p>Comercial home</p>
-                                            </li>
-                                        </ul> -->
                                     </li>
                                 </ul>
                                 <ul>
@@ -122,13 +101,13 @@
                                         </a>
                                         <ul>
                                             <li>
-                                                <a onclick="SelectItemMenu(1,'test.html')">Danh sách</a>
+                                                <a onclick="SelectItemMenu('index')">Danh sách tuyển dụng</a>
                                             </li>
                                             <li>
-                                                <a onclick="SelectItemMenu(2,'adminTuyenDung.html')">Thêm bài mới</a>
+                                                <a onclick="SelectItemMenu('adminTuyenDung')">Thêm bài mới</a>
                                             </li>
                                             <li>
-                                                <a>Sửa bài tuyển dụng</a>
+                                                <a onclick="SelectItemMenu('admin-Edit-TD')">Cật nhật tuyển dụng</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -158,10 +137,9 @@
             </div>
             <div class="main-content">
                 <article>
-                    <iframe id="frame" name="loadpage" src="index-5.html" frameborder="0" width="100%" height="700px">
+                    <iframe id="frame" name="loadpage" src="index" frameborder="0" width="100%" height="700px">
                     </iframe>
-                </article>
-                                     
+                </article>          
             </div>
         </div>
     </div>

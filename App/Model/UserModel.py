@@ -76,6 +76,18 @@ class UserModel:
                     raise UserExeception('Mật khẩu không chính xác')
                 else:
                     return us[3]
+    def GetUserByGmail(self, Gmail):
+        with SessionLocal() as db:
+            us = db.execute(text("SELECT * FROM User WHERE Gmail = :Gmail"), {'Gmail': Gmail}).first()
+            if(us == None):
+                raise UserExeception('Gmail không tồn tại')
+            else:
+                IDUser = us[0]
+                Gmail = us[1]
+                Password = us[2]
+                QuyenUser = us[3]
+                IDTD = us[4]
+                return User(IDUser = IDUser, Gmail = Gmail, Password = Password, QuyenUser = QuyenUser, IDTD = IDTD)
     def ForgotPassword(self, Gmail):
         with SessionLocal() as db:
             us = db.execute(text("SELECT * FROM User WHERE Gmail = :Gmail"), {'Gmail': Gmail}).first()

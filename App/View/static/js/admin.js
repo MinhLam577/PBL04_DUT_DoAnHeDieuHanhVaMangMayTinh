@@ -1,6 +1,5 @@
         // Lấy tất cả các thẻ li
         var liElements = document.querySelectorAll('aside ul li');
-
         // Lặp qua từng thẻ li
         liElements.forEach(function (liElement) {
             // Thêm sự kiện click
@@ -19,14 +18,14 @@
                 }
             });
         });
-        function SelectItemMenu(giatri, duongdan) {
-            if(giatri == 1) {
-                document.getElementById('frame').src = duongdan;
+        function getAllSessionStorageValues() {
+            let values = [];
+            for (let i = 0; i < sessionStorage.length; i++) {
+              let key = sessionStorage.key(i);
+              values.push({[key]:sessionStorage.getItem(key)});
             }
-            else if(giatri == 2) {
-                document.getElementById('frame').src = duongdan;
-            }else if(giatri == 3) {
-                document.getElementById('frame').src = duongdan;
-            }
-
+            return values;
+          }
+        function SelectItemMenu(duongdan) {
+            document.getElementById('frame').src = duongdan;
         }
