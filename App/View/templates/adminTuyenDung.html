@@ -18,45 +18,52 @@
                     <div class="card-body">
                         <form class="needs-validation" novalidate>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Vị trí công việc" required>
+                                <label for="NoiTD">Nơi tuyển dụng</label>
+                                <input type="text" class="form-control" placeholder="Nơi tuyển dụng" id="NoiTD" name="NoiTD" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Nơi tuyển dụng" required>
+                                <label for="NgayTD">Ngày tuyển dụng</label>
+                                <input type="datetime-local" class="form-control" id="NgayTD" name="NgayTD" required>
+                            </div>     
+                            <div class="form-group">
+                                <label for="SoLuongTD">Số lượng tuyển dụng</label>
+                                <input type="text" class="form-control" id="SoLuongTD" Name="SoLuongTD" placeholder="Số lượng tuyển" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Mức lương" required>
+                                <label for="LinhVucTD">Lĩnh vực tuyển dụng</label>
+                                <input type="text" class="form-control" id="LinhVucTD" name="LinhVucTD" placeholder="Lĩnh vực tuyển" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Khu vực tuyển" required>
+                                <label for="ViTriTD">Vị trí tuyển dụng</label>
+                                <input type="text" class="form-control" name="ViTriTD" id="ViTriTD" placeholder="Vị trí tuyển dụng" required>
                             </div>
                             <div class="form-group">
-                                <label for="ngay-dang">Ngày đăng</label>
-                                <input type="datetime-local" class="form-control" id="ngay-dang" required>
+                                <label for="LuongTD">Mức lương tuyển dụng</label>
+                                <input type="text" class="form-control" id="LuongTD" name="LuongTD" placeholder="Mức lương" required>
                             </div>
                             <div class="form-group">
-                                <label for="han-nop-ho-so">Hạn nộp hồ sơ</label>
-                                <input type="datetime-local" class="form-control" id="han-nop-ho-so" required>
-                            </div>                        
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Số lượng tuyển" required>
+                                <label for="YeuCauCongViec">Yêu cầu công việc</label>
+                                <textarea class="form-control" rows="5" id="YeuCauCongViec" name="YeuCauCongViec" placeholder="Yêu cầu công việc" required></textarea>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Hình thức làm việc" required>
+                                <label for="QuyenLoi">Quyền lợi</label>
+                                <textarea class="form-control" rows="5" id="QuyenLoi" name="QuyenLoi" placeholder="Quyền lợi" required></textarea>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Yêu cầu kinh nghiệm" required>
+                                <label for="DiaDiem">Địa điểm</label>
+                                <textarea class="form-control" rows="5" id="DiaDiem" name="DiaDiem" placeholder="Địa điểm" required></textarea>
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" rows="5" placeholder="Mô tả công việc" required></textarea>
+                                <label for="SDT">Số điện thoại</label>
+                                <input type="phone" class="form-control" name="SDT" id="SDT" placeholder="Số điện thoại" required>
+                            </div>
+                            <div class="form-group">    
+                                <label for="Gmail">Gmail</label>
+                                <input type="email" class="form-control" name="Gmail" id="Gmail" placeholder="Gmail" required>
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" rows="5" placeholder="Yêu cầu công việc" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <textarea class="form-control" rows="5" placeholder="Quyền lợi" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Địa điểm làm việc" required>
+                                <label for="IDPost">IDpost</label>
+                                <input type="text" class="form-control" placeholder="IDPost" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Thêm</button>
                         </form>                        
