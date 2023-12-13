@@ -10,6 +10,26 @@
 <body>
     <h1>Admin tuyen dung</h1>
     <span></span>
+    <script>
+        const AddTDForm = document.getElementById('AddTD');
+        AddTDForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(AddTDForm);
+            const data = Object.fromEntries(formData);
+            fetch('/TDs/AddTD/', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data == true) {
+                        alert('Thêm thành công');
+                    } else {
+                        alert('Thêm thất bại');
+                    }
+                })
+        })
+    </script>
 </body>
 
 </html>

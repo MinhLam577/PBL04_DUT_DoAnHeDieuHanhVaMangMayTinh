@@ -12,5 +12,7 @@ class UserController:
         return self.UserModel.ForgotPassword(Gmail)
     def AddUser(self, user):
         return self.UserModel.AddUserRegister(user)
-    def GetUserByGmail(self, Gmail):
-        return self.UserModel.GetUserByGmail(Gmail)
+    def DeleteUserByGmail(self, Gmail: str):
+        return self.UserModel.DeleteUserByGmail(Gmail)
+    def UpdateUser(self, IDUser: str, user: UserUpdate):
+        return self.UserModel.UpdateUser(IDUser, user)
