@@ -126,7 +126,7 @@ class UserModel:
                         "Gmail": user.Gmail,
                         "Password": user.Password,
                         "QuyenUser": user.QuyenUser,
-                        "IDTD": user.IDTD
+                        "IDTD": user.IDTD if (user.IDTD != None and user.IDTD != "") else None
                     })
                     db.commit()
                     return True

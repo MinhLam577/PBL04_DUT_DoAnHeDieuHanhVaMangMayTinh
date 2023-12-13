@@ -34,7 +34,6 @@ async def ForgotPassword(Gmail: str = Body(...)):
 #Cật nhật user theo gmail
 @userRoute.put("/Users/UpdateUser/")
 async def UpdateUser(IDUser: str = Body(...), user: UserUpdate = Body(...)):
-    user = dict(exclude_unset=True, **user)
     return userController.UpdateUser(IDUser, user)
 
 #Xóa user theo gmail
