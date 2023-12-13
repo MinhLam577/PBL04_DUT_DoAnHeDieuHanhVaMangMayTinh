@@ -42,10 +42,34 @@ class UserRegister(UserLogin):
         if not re.match("^(?=.*[a-z])(?=.*\d)[a-z\d]{5,}$", Password, re.IGNORECASE):
             raise UserExeception('Mật khẩu phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
         return Password
-    IDUser: str = "user" + str(np.random.randint(10000, 999999))
+    IDUser: str = "user" + str(np.random.randint(1, 999999))
+    @validator('IDUser')
+    def iduser_validator(cls, IDUser):
+        with SessionLocal() as db:
+            us = db.query(User).filter(User.IDUser == IDUser).first()
+            if(us != None):
+                while(us != None):
+                    IDUser = "user" + str(np.random.randint(1, 999999))
+                    us = db.query(User).filter(User.IDUser == IDUser).first()
+        return IDUser
     QuyenUser: str = "user"
     NhapLai: str
 
+class UserUpdate(BaseModel):
+    Gmail: str
+    @validator('Gmail')
+    def gmail_validator(cls, Gmail):
+        if not re.match("^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$", Gmail, re.IGNORECASE):
+            raise UserExeception('Gmail phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
+        return Gmail
+    Password: str
+    @validator('Password')
+    def password_validator(cls, Password):
+        if not re.match("^(?=.*[a-z])(?=.*\d)[a-z\d]{5,}$", Password, re.IGNORECASE):
+            raise UserExeception('Mật khẩu phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
+        return Password
+    QuyenUser: str
+    IDTD: str = None
 def get_db():
     try:
         db = SessionLocal()
@@ -76,18 +100,6 @@ class UserModel:
                     raise UserExeception('Mật khẩu không chính xác')
                 else:
                     return us[3]
-    def GetUserByGmail(self, Gmail):
-        with SessionLocal() as db:
-            us = db.execute(text("SELECT * FROM User WHERE Gmail = :Gmail"), {'Gmail': Gmail}).first()
-            if(us == None):
-                raise UserExeception('Gmail không tồn tại')
-            else:
-                IDUser = us[0]
-                Gmail = us[1]
-                Password = us[2]
-                QuyenUser = us[3]
-                IDTD = us[4]
-                return User(IDUser = IDUser, Gmail = Gmail, Password = Password, QuyenUser = QuyenUser, IDTD = IDTD)
     def ForgotPassword(self, Gmail):
         with SessionLocal() as db:
             us = db.execute(text("SELECT * FROM User WHERE Gmail = :Gmail"), {'Gmail': Gmail}).first()
@@ -100,6 +112,41 @@ class UserModel:
                 return JSONResponse(
                     content={"message": "Mật khẩu đã được gửi đến Gmail của bạn"},
                 )
+    def UpdateUser(self, IDUSer: str, user: UserUpdate):
+        with SessionLocal() as db:
+            try:
+                us = db.query(User).filter(User.IDUser == IDUSer).first()
+                if(us == None):
+                    raise UserExeception("IDUser không tồn tại")
+                else:
+                    us = db.query(User).filter(User.Gmail == user.Gmail).first()
+                    if(us != None):
+                        raise UserExeception("Gmail đã tồn tại")
+                    us = db.query(User).filter(User.IDUser == IDUSer).update({
+                        "Gmail": user.Gmail,
+                        "Password": user.Password,
+                        "QuyenUser": user.QuyenUser,
+                        "IDTD": user.IDTD if (user.IDTD != None and user.IDTD != "") else None
+                    })
+                    db.commit()
+                    return True
+            except Exception as e:
+                raise UserExeception('lỗi: ' + getattr(e, 'message', repr(e)))
+    def DeleteUserByGmail(self, Gmail: str):
+        with SessionLocal() as db:
+            try:
+                us = db.query(User).filter(User.Gmail == Gmail).first()
+                if(us == None):
+                    raise UserExeception("Gmail không tồn tại")
+                else:
+                    db.query(User).filter(User.Gmail == Gmail).delete()
+                    db.commit()
+                    return True
+            except UserExeception:
+                raise UserExeception('Gmail không tồn tại')
+            except Exception as e:
+                raise UserExeception('Lỗi hệ thống, lỗi: ' + e)
+            
     def AddUserRegister(self, user):
         with SessionLocal() as db:
             IDUser = user.IDUser

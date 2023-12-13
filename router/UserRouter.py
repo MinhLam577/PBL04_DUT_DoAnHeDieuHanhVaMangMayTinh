@@ -31,12 +31,13 @@ async def Register(user: UserRegister):
 async def ForgotPassword(Gmail: str = Body(...)):
     return userController.ForgotPassword(Gmail)
 
-@userRoute.post("/Get-User-By-Gmail/")
-async def GetUserByGmail(userGmail: str):
-    us = userController.GetUserByGmail(userGmail)
-    if(us == None):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Gmail không tồn tại")
-    else:
-        return us
+#Cật nhật user theo gmail
+@userRoute.put("/Users/UpdateUser/")
+async def UpdateUser(IDUser: str = Body(...), user: UserUpdate = Body(...)):
+    return userController.UpdateUser(IDUser, user)
 
+#Xóa user theo gmail
+@userRoute.delete("/Users/DeleteUser/")
+async def DeleteUserByGmail(Gmail: str = Body(...)):
+    return userController.DeleteUserByGmail(Gmail)
 

@@ -45,8 +45,6 @@ async def check_login_success(*, authorization: str = Form(), request: Request):
             payload = jwt_bearer.verify_jwt(token)
             if payload:
                 return json.dumps(payload)
-                redirectUrl = request.url_for("LoginSuccess", token=token)
-                return RedirectResponse(url=redirectUrl, status_code=status.HTTP_303_SEE_OTHER)
             else:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid token or token expired")
         else:
@@ -58,7 +56,7 @@ async def check_login_success(*, authorization: str = Form(), request: Request):
 @siteRouter.get("/LoginSuccess/{token}", response_class=HTMLResponse, name="LoginSuccess")
 async def LoginSuccess(request: Request, token: str | None = None):
     jwt_bearer = jwtBearer()
-    token= json.loads(token)["access token"]
+    token = json.loads(token)["access token"]
     payload = jwt_bearer.verify_jwt(token)
     if payload:
         return siteController.LoginSuccess(request, payload["userType"])

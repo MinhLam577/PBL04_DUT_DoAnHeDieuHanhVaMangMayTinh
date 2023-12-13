@@ -5,11 +5,11 @@ from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
 from fastapi import Request, Depends, Form
 from App.Model.TDEntity import *
-
+from sqlalchemy import String, DateTime, UnicodeText    
 class TDException(Exception):
     def __init__(self, message: str):
         self.message = message
-        
+
 def get_db():
     try:
         db = SessionLocal()
@@ -23,8 +23,7 @@ class TDModel:
             try:
                 db.add(td)
                 db.commit()
-                db.refresh(td)
-                return td
+                return True
             except Exception:
                 raise TDException("Thêm tuyển dụng thất bại")
     def DeleteTD(self, IDTD: str):
@@ -34,7 +33,29 @@ class TDModel:
                 db.commit()
                 return True
             except Exception:
+                print("Xóa thất bại")
                 raise TDException("Xóa tuyển dụng thất bại")
+    def UpdateTD(self, td: TuyenDung):
+        with SessionLocal() as db:
+            try:
+                db.query(TuyenDung).filter(TuyenDung.IDTD == td.IDTD).update({
+                    "NoiTD": td.NoiTD, 
+                    "NgayTD": td.NgayTD, 
+                    "SoLuongTD": td.SoLuongTD, 
+                    "LinhVucTD": td.LinhVucTD, 
+                    "ViTriTD": td.ViTriTD, 
+                    "MoTaCongViec": td.MoTaCongViec, 
+                    "YeuCauCongViec": td.YeuCauCongViec, 
+                    "QuyenLoi": td.QuyenLoi, 
+                    "DiaDiem": td.DiaDiem, 
+                    "SDT": td.SDT, 
+                    "Gmail": td.Gmail, 
+                    "LuongTD": td.LuongTD
+                })
+                db.commit()
+                return True
+            except Exception:
+                raise TDException("Cập nhật tuyển dụng thất bại")
     def GetAllTD(self):
         with SessionLocal() as db:
             listTD = db.query(TuyenDung).all()
@@ -69,3 +90,9 @@ class TDModel:
                     "LuongTD": LuongTD
                 })
             return listTDConvert
+    def GetTDByIDTD(self, IDTD: str):
+        with SessionLocal() as db:
+            try:
+                return db.query(TuyenDung).filter(TuyenDung.IDTD == IDTD).first()
+            except Exception:
+                raise TDException("Lấy tuyển dụng theo IDTD thất bại")        

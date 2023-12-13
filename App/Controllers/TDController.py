@@ -8,3 +8,7 @@ class TDController:
         return self.TDModel.AddTD(td)
     def DeleteTD(self, IDTD: str):
         return self.TDModel.DeleteTD(IDTD)
+    def UpdateTD(self, td: TuyenDung):
+        return self.TDModel.UpdateTD(td)
+    def GetTDByIDTD(self, IDTD: str):
+        return self.TDModel.GetTDByIDTD(IDTD)
