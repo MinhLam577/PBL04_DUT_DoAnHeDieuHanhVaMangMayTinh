@@ -10,28 +10,25 @@ import json
 siteRouter = APIRouter()
 siteController = SiteController()
 
-#Trang chủ
 @siteRouter.get("/", response_class=HTMLResponse)
-async def index(request: Request):
+async def login(request: Request):
     return siteController.index(request)
-@siteRouter.get("/LoginSuccess/index", response_class=HTMLResponse)
-
-#Trang chủ admin
+#Trang chủ
+@siteRouter.get("/{userID}/index", response_class=HTMLResponse)
 async def index(request: Request):
     return siteController.adminIndex(request)
 
-#Thêm tuyển dụng của admin
-@siteRouter.get("/admin/Add-New-TD", response_class=HTMLResponse)
-async def index_admin(request: Request):
-    return siteController.index_admin(request)
+@siteRouter.get("/{userID}/TongQuan", response_class=HTMLResponse)
+async def tongQuan(request: Request):
+    return siteController.TongQuan(request)
 
 #Trang admin tuyển dụng
-@siteRouter.get("/LoginSuccess/adminTuyenDung", response_class=HTMLResponse)
+@siteRouter.get("/{userID}/adminTuyenDung", response_class=HTMLResponse)
 async def adminTuyenDung(request: Request):
     return siteController.adminTuyenDung(request)
 
 #Trang chỉnh sửa tuyển dụng của admin
-@siteRouter.get("/LoginSuccess/admin-Edit-TD", response_class=HTMLResponse)
+@siteRouter.get("/{userID}/admin-Edit-TD", response_class=HTMLResponse)
 async def adminEditTD(request: Request):
     return siteController.adminEditTD(request)
 
@@ -53,12 +50,15 @@ async def check_login_success(*, authorization: str = Form(), request: Request):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
 #Giao diện trang chủ tùy theo loại người dùng
-@siteRouter.get("/LoginSuccess/{token}", response_class=HTMLResponse, name="LoginSuccess")
-async def LoginSuccess(request: Request, token: str | None = None):
-    jwt_bearer = jwtBearer()
-    token = json.loads(token)["access token"]
-    payload = jwt_bearer.verify_jwt(token)
-    if payload:
-        return siteController.LoginSuccess(request, payload["userType"])
-    else:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid token or token expired")
+@siteRouter.post("/{userID}", response_class=HTMLResponse)
+async def LoginSuccess(request: Request, token: str = Form()):
+    try:
+        token = json.loads(token)["access token"]
+        jwt_bearer = jwtBearer()
+        payload = jwt_bearer.verify_jwt(token)
+        if payload:
+            return siteController.LoginSuccess(request, payload["userType"], payload["userID"])
+        else:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid token or token expired")
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))

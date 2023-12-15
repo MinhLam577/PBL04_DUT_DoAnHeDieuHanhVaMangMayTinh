@@ -22,6 +22,6 @@ def signJWT(userID: str, userType: str):
 def decodeJWT(token: str):
     try:
         decode_token = jwt.decode(token, JWT_SECRET, algorithms=JWT_ALORITHM)
-        return decode_token if decode_token["expires"] >= time.time() else None
+        return decode_token
     except Exception:
         return None
