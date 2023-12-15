@@ -46,6 +46,10 @@
                                 <textarea class="form-control" rows="5" id="YeuCauCongViec" name="YeuCauCongViec" placeholder="Yêu cầu công việc" required></textarea>
                             </div>
                             <div class="form-group">
+                                <label for="MoTaCongViec">Mô tả công việc</label>
+                                <textarea class="form-control" rows="5" id="MoTaCongViec" name="MoTaCongViec" placeholder="Mô tả công việc" required></textarea>
+                            </div>
+                            <div class="form-group">
                                 <label for="QuyenLoi">Quyền lợi</label>
                                 <textarea class="form-control" rows="5" id="QuyenLoi" name="QuyenLoi" placeholder="Quyền lợi" required></textarea>
                             </div>
@@ -63,9 +67,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="IDPost">IDpost</label>
-                                <input type="text" class="form-control" placeholder="IDPost" required>
+                                <input type="text" class="form-control" name="IDPost" id="IDPost" placeholder="IDPost" required>
                             </div>
-                            <button type="submit" class="btn btn-primary">Thêm</button>
+                            <div class="form-group d-flex justify-content-around align-items-center">
+                                <button type="submit" class="btn btn-primary">Thêm</button>
+                                <button type="button" class="btn btn-primary" onclick="reset()">Reset</button>
+                            </div>
                         </form>                        
                     </div>
                 </div>
@@ -73,6 +80,34 @@
         </div>
     </section>
     <script>
+        function reset() {
+            const NoiTD = document.getElementById('NoiTD');
+            const NgayTD = document.getElementById('NgayTD');
+            const SoLuongTD = document.getElementById('SoLuongTD');
+            const LinhVucTD = document.getElementById('LinhVucTD');
+            const ViTriTD = document.getElementById('ViTriTD');
+            const LuongTD = document.getElementById('LuongTD');
+            const YeuCauCongViec = document.getElementById('YeuCauCongViec');
+            const MoTaCongViec = document.getElementById('MoTaCongViec');
+            const QuyenLoi = document.getElementById('QuyenLoi');
+            const DiaDiem = document.getElementById('DiaDiem');
+            const SDT = document.getElementById('SDT');
+            const Gmail = document.getElementById('Gmail');
+            const IDPost = document.getElementById('IDPost');
+            NoiTD.value = '';
+            NgayTD.value = '';
+            SoLuongTD.value = '';
+            LinhVucTD.value = '';
+            ViTriTD.value = '';
+            LuongTD.value = '';
+            MoTaCongViec.value = '';
+            YeuCauCongViec.value = '';
+            QuyenLoi.value = '';
+            DiaDiem.value = '';
+            SDT.value = '';
+            Gmail.value = '';
+            IDPost.value = '';
+        }
         const AddTDForm = document.getElementById('AddTD');
         AddTDForm.addEventListener('submit', (e) => {
             e.preventDefault();

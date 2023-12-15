@@ -29,15 +29,22 @@ LoginForm.addEventListener("submit", function(event){
                 body: form_data
             }).then(Response => Response.json())
             .then(data => {
-                const userType = data["userType"];
                 const Gmail = data["userID"];
+                const data_form = new FormData();
+                data_form.append("token", Token);
                 const existingToken = window.sessionStorage.getItem(Gmail);
                 if(!existingToken)
                      window.sessionStorage.setItem(Gmail, Token);
-                const formdata = new FormData();
-                formdata.append("userType", userType);
-                formdata.append("token", Token);
-                window.location.href = "/LoginSuccess/" + Token;
+                const form_submit = document.createElement("form");
+                form_submit.setAttribute("method", "POST");
+                form_submit.setAttribute("action", "/"+Gmail);
+                const input_token = document.createElement("input");
+                input_token.setAttribute("type", "hidden");
+                input_token.setAttribute("name", "token");
+                input_token.setAttribute("value", Token);
+                form_submit.appendChild(input_token);
+                document.body.appendChild(form_submit);
+                form_submit.submit();
             });
         }
         else {
