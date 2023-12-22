@@ -8,6 +8,7 @@ import ssl
 import smtplib
 import numpy as np
 import re
+from datetime import date
 
 class UserExeception(Exception):
     def __init__(self, message: str):
@@ -158,12 +159,13 @@ class UserModel:
             Gmail = user.Gmail
             NhapLai = user.NhapLai
             Password = user.Password
+            ThoiGianDangKi = date.today().strftime("%Y-%m-%d")
             if(Password != NhapLai):
                 raise UserExeception('Nhập lại mật khẩu không khớp')
             us = db.query(User).filter(User.Gmail == Gmail).first()
             if(us != None):
                 raise UserExeception('Gmail đã tồn tại')
-            db.add(User(IDUser = IDUser, Gmail = Gmail, Password = Password, QuyenUser = user.QuyenUser))
+            db.add(User(IDUser = IDUser, Gmail = Gmail, Password = Password, QuyenUser = user.QuyenUser, ThoiGianDangKi = ThoiGianDangKi))
             db.commit()
             return user
 

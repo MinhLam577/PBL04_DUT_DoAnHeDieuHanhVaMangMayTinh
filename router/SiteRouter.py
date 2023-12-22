@@ -13,14 +13,33 @@ siteController = SiteController()
 @siteRouter.get("/", response_class=HTMLResponse)
 async def login(request: Request):
     return siteController.index(request)
+
 #Trang chủ
-@siteRouter.get("/{userID}/index", response_class=HTMLResponse)
-async def index(request: Request):
-    return siteController.adminIndex(request)
+@siteRouter.get("/{userID}", response_class=HTMLResponse)
+async def index(request: Request, userID: str):
+    return siteController.adminIndex(request, userID)
+
+#chi tiết tuyển dụng
+@siteRouter.get("/Chi-tiet-td/{IDTD}", response_class=HTMLResponse)
+async def formChiTiet(request: Request, IDTD: str):
+    return siteController.formChiTiet(request, IDTD)
+
+#chi tiết tuyển dụng
+@siteRouter.get("/{userID}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse)
+async def formChiTiet(request: Request, IDTD: str):
+    return siteController.formChiTiet(request, IDTD)
+
+@siteRouter.get("/{userID}/danh-sach-tk", response_class=HTMLResponse)
+async def danhsachtk(request: Request):
+    return siteController.danhsachtk(request)
 
 @siteRouter.get("/{userID}/TongQuan", response_class=HTMLResponse)
 async def tongQuan(request: Request):
     return siteController.TongQuan(request)
+
+@siteRouter.get("/{userID}/tim-kiem", response_class=HTMLResponse)
+async def formTimKiem(request: Request):
+    return siteController.formTimKiem(request)
 
 #Trang admin tuyển dụng
 @siteRouter.get("/{userID}/adminTuyenDung", response_class=HTMLResponse)

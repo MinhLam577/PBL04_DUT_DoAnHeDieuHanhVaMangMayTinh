@@ -19,7 +19,8 @@ async def GetAllTDs():
 #Lấy tuyển dụng theo IDTD
 @tdRouter.get("/TDs/{IDTD}")
 async def GetTD(IDTD: str):
-    return tdController.GetTDByIDTD(IDTD)
+    td = tdController.GetTDByIDTD(IDTD)
+    return td
 
 #Thêm mới tuyển dụng
 @tdRouter.post("/TDs/AddTD/")

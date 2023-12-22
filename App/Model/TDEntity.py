@@ -8,7 +8,7 @@ class TuyenDung(Base):
     SoLuongTD = Column(DateTime, nullable=True)
     LinhVucTD = Column(UnicodeText, nullable=True)
     ViTriTD = Column(UnicodeText, nullable=True)
-    MoTaCongViec = Column(UnicodeText, nullable=True)
+    MotaCongViec = Column(UnicodeText, nullable=True)
     YeuCauCongViec = Column(UnicodeText, nullable=True)
     QuyenLoi = Column(UnicodeText, nullable=True)
     DiaDiem = Column(UnicodeText, nullable=True)

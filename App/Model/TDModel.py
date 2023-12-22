@@ -44,7 +44,7 @@ class TDModel:
                     "SoLuongTD": td.SoLuongTD, 
                     "LinhVucTD": td.LinhVucTD, 
                     "ViTriTD": td.ViTriTD, 
-                    "MoTaCongViec": td.MoTaCongViec, 
+                    "MotaCongViec": td.MotaCongViec, 
                     "YeuCauCongViec": td.YeuCauCongViec, 
                     "QuyenLoi": td.QuyenLoi, 
                     "DiaDiem": td.DiaDiem, 
@@ -67,7 +67,7 @@ class TDModel:
                 SoLuongTD = TD.SoLuongTD
                 LinhVucTD = TD.LinhVucTD
                 ViTriTD = TD.ViTriTD
-                MoTaCongViec = TD.MoTaCongViec
+                MotaCongViec = TD.MotaCongViec
                 YeuCauCongViec = TD.YeuCauCongViec
                 QuyenLoi = TD.QuyenLoi
                 DiaDiem = TD.DiaDiem
@@ -81,7 +81,7 @@ class TDModel:
                     "SoLuongTD": SoLuongTD, 
                     "LinhVucTD": LinhVucTD, 
                     "ViTriTD": ViTriTD, 
-                    "MoTaCongViec": MoTaCongViec, 
+                    "MotaCongViec": MotaCongViec, 
                     "YeuCauCongViec": YeuCauCongViec, 
                     "QuyenLoi": QuyenLoi, 
                     "DiaDiem": DiaDiem, 

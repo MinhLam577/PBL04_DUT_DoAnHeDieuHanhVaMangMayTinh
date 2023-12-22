@@ -537,27 +537,25 @@
                <form action="" class="d-flex">
                   <div class="row advanced-search">
                      <div class="col form-group">
-                        <input type="search" class="form-control me 2" name="keyword" id="keyword"
-                           placeholder="Chức danh, Kỹ năng, Tên công ty">
+                        <input class="form-control me 2" type="search" name="keyword" id="keyword" placeholder="Chức danh, kĩ năng, nơi tuyển" autocomplete="off">
+                        <div class="autocomplete"></div>
                      </div>
                      <div class="col form-group">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                           <option disabled selected hidden>Tất cả ngành nghề</option>
-                           <option>1</option>
-                           <option>2</option>
-                           <option>3</option>
-                           <option>4</option>
-                           <option>5</option>
+                        <select class="form-control" id="LinhVuc_Select">
+                           <option disabled selected hidden>Tất cả lĩnh vực</option>
+                              <option value="All">Tất cả lĩnh vực</option>
+                              {%for lv in LinhVucTD%}
+                                 <option value={{lv}}>{{lv}}</option>
+                              {%endfor%}
                         </select>
                      </div>
                      <div class="col form-group">
-                        <select class="form-control" id="exampleFormControlSelect1">
+                        <select class="form-control" id="DiaDiem_Select">
                            <option disabled selected hidden>Tất cả địa điểm</option>
-                           <option>1</option>
-                           <option>2</option>
-                           <option>3</option>
-                           <option>4</option>
-                           <option>5</option>
+                              <option value="All">Tất cả địa điểm</option>
+                              {%for dd in DiaDiem%}
+                                 <option value={{dd}}>{{dd}}</option>
+                              {%endfor%}
                         </select>
                      </div>
                      <button class="btn btn-outline-info" type="send">Tìm kiếm</button>
@@ -575,288 +573,6 @@
                      <h3 class="block-title"><span>More News</span></h3>
 
                      <div id="more-news-slide" class="owl-carousel owl-theme more-news-slide">
-                        <div class="item">
-                           <div class="post-block-style post-float-half clearfix">
-                              <div class="post-thumb">
-                                 <a href="#">
-                                    <img class="img-fluid" src="images/sidebar/images.jpg" alt="" />
-                                 </a>
-                              </div>
-                              <a class="post-cat" href="#">Video</a>
-                              <div class="post-content">
-                                 <h2 class="post-title">
-                                    <a href="#">Cán bộ kĩ thuật giám sát hiện trường dự án</a>
-                                 </h2>
-                                 <div class="post-meta">
-                                    <span class="post-author"><a href="#">Công ty Trường Hải</a></span>
-                                    <span class="post-date">18-20 Triệu</span>
-                                 </div>
-                                 <p>Hà Nội</p>
-                              </div><!-- Post content end -->
-                           </div><!-- Post Block style 1 end -->
-
-                           <div class="gap-30"></div>
-
-                           <div class="post-block-style post-float-half clearfix">
-                              <div class="post-thumb">
-                                 <a href="#">
-                                    <img class="img-fluid" src="images/news/tech/game5.jpg" alt="" />
-                                 </a>
-                              </div>
-                              <a class="post-cat" href="#">Games</a>
-                              <div class="post-content">
-                                 <h2 class="post-title">
-                                    <a href="#">Nhân viên bán hàng tại Lotte-Mart Đà Nẵng</a>
-                                 </h2>
-                                 <div class="post-meta">
-                                    <span class="post-author"><a href="#">Công ty cổ phần VND</a></span>
-                                    <span class="post-date">6-7 triệu</span>
-                                 </div>
-                                 <p>Đà Nẵng</p>
-                              </div><!-- Post content end -->
-                           </div><!-- Post Block style 2 end -->
-
-                           <div class="gap-30"></div>
-
-                           <div class="post-block-style post-float-half clearfix">
-                              <div class="post-thumb">
-                                 <a href="#">
-                                    <img class="img-fluid" src="images/news/tech/game4.jpg" alt="" />
-                                 </a>
-                              </div>
-                              <a class="post-cat" href="#">Games</a>
-                              <div class="post-content">
-                                 <h2 class="post-title">
-                                    <a href="#">Nhân viên tiếp thị Sâm Ngọc Linh K5</a>
-                                 </h2>
-                                 <div class="post-meta">
-                                    <span class="post-author"><a href="#">Công ty Sâm Ngọc Linh K5</a></span>
-                                    <span class="post-date">4-6 triệu</span>
-                                 </div>
-                                 <p>Kom Tum</p>
-                              </div><!-- Post content end -->
-                           </div><!-- Post Block style 3 end -->
-
-                           <div class="gap-30"></div>
-
-                           <div class="post-block-style post-float-half clearfix">
-                              <div class="post-thumb">
-                                 <a href="#">
-                                    <img class="img-fluid" src="images/news/tech/robot5.jpg" alt="" />
-                                 </a>
-                              </div>
-                              <a class="post-cat" href="#">Robotics</a>
-                              <div class="post-content">
-                                 <h2 class="post-title">
-                                    <a href="#">Robots in hospitals can be quite handy to navigate around the ho…</a>
-                                 </h2>
-                                 <div class="post-meta">
-                                    <span class="post-author"><a href="#">John Doe</a></span>
-                                    <span class="post-date">Feb 24, 2017</span>
-                                 </div>
-                                 <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large
-                                    language ocean. A small river named Duden flows by their place and ...</p>
-                              </div><!-- Post content end -->
-                           </div><!-- Post Block style 4 end -->
-
-                           <div class="gap-30"></div>
-
-                           <div class="post-block-style post-float-half clearfix">
-                              <div class="post-thumb">
-                                 <a href="#">
-                                    <img class="img-fluid" src="images/news/tech/robot5.jpg" alt="" />
-                                 </a>
-                              </div>
-                              <a class="post-cat" href="#">Robotics</a>
-                              <div class="post-content">
-                                 <h2 class="post-title">
-                                    <a href="#">Robots in hospitals can be quite handy to navigate around the ho…</a>
-                                 </h2>
-                                 <div class="post-meta">
-                                    <span class="post-author"><a href="#">John Doe</a></span>
-                                    <span class="post-date">Feb 24, 2017</span>
-                                 </div>
-                                 <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large
-                                    language ocean. A small river named Duden flows by their place and ...</p>
-                              </div><!-- Post content end -->
-                           </div><!-- Post Block style 4 end -->
-                           
-                        </div><!-- Item 1 end -->
-
-                        <div class="item">
-                           <div class="post-block-style post-float-half clearfix">
-                              <div class="post-thumb">
-                                 <a href="#">
-                                    <img class="img-fluid" src="images/news/video/video2.jpg" alt="" />
-                                 </a>
-                              </div>
-                              <a class="post-cat" href="#">Video</a>
-                              <div class="post-content">
-                                 <h2 class="post-title">
-                                    <a href="#">TG G6 will have dual 13-megapixel cameras on the back</a>
-                                 </h2>
-                                 <div class="post-meta">
-                                    <span class="post-author"><a href="#">John Doe</a></span>
-                                    <span class="post-date">Mar 29, 2017</span>
-                                 </div>
-                                 <p>Lumbersexual meh sustainable Thundercats meditation kogi. Tilde Pitchfork vegan,
-                                    gentrify minim elit semiotics non messenger bag Austin which roasted ...</p>
-                              </div><!-- Post content end -->
-                           </div><!-- Post Block style 5 end -->
-
-                           <div class="gap-30"></div>
-
-                           <div class="post-block-style post-float-half clearfix">
-                              <div class="post-thumb">
-                                 <a href="#">
-                                    <img class="img-fluid" src="images/news/video/video3.jpg" alt="" />
-                                 </a>
-                              </div>
-                              <a class="post-cat" href="#">Video</a>
-                              <div class="post-content">
-                                 <h2 class="post-title">
-                                    <a href="#">Breeze through 17 locations in Europe in this breathtaking v…</a>
-                                 </h2>
-                                 <div class="post-meta">
-                                    <span class="post-author"><a href="#">John Doe</a></span>
-                                    <span class="post-date">Mar 31, 2017</span>
-                                 </div>
-                                 <p>Pityful a rethoric question ran over her cheek When she reached the first hills of
-                                    the Italic Mountains, she had a last view back on the skyline of he...</p>
-                              </div><!-- Post content end -->
-                           </div><!-- Post Block style 6 end -->
-
-                           <div class="gap-30"></div>
-
-                           <div class="post-block-style post-float-half clearfix">
-                              <div class="post-thumb">
-                                 <a href="#">
-                                    <img class="img-fluid" src="images/news/lifestyle/architecture1.jpg" alt="" />
-                                 </a>
-                              </div>
-                              <a class="post-cat" href="#">Architecture</a>
-                              <div class="post-content">
-                                 <h2 class="post-title">
-                                    <a href="#">Science meets architecture in robotically woven, solar...</a>
-                                 </h2>
-                                 <div class="post-meta">
-                                    <span class="post-author"><a href="#">John Doe</a></span>
-                                    <span class="post-date">Mar 23, 2017</span>
-                                 </div>
-                                 <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large
-                                    language ocean. A small river named Duden flows by their place and ...</p>
-                              </div><!-- Post content end -->
-                           </div><!-- Post Block style 7 end -->
-
-                           <div class="gap-30"></div>
-
-                           <div class="post-block-style post-float-half clearfix">
-                              <div class="post-thumb">
-                                 <a href="#">
-                                    <img class="img-fluid" src="images/news/tech/game1.jpg" alt="" />
-                                 </a>
-                              </div>
-                              <a class="post-cat" href="#">Robotics</a>
-                              <div class="post-content">
-                                 <h2 class="post-title">
-                                    <a href="#">Historical heroes and robot dinosaurs: New games on our…</a>
-                                 </h2>
-                                 <div class="post-meta">
-                                    <span class="post-author"><a href="#">John Doe</a></span>
-                                    <span class="post-date">Feb 24, 2017</span>
-                                 </div>
-                                 <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large
-                                    language ocean. A small river named Duden flows by their place and ...</p>
-                              </div><!-- Post content end -->
-                           </div><!-- Post Block style 8 end -->
-                        </div><!-- Item 2 end -->
-                        <div class="item">
-                           <div class="post-block-style post-float-half clearfix">
-                              <div class="post-thumb">
-                                 <a href="#">
-                                    <img class="img-fluid" src="images/news/video/video2.jpg" alt="" />
-                                 </a>
-                              </div>
-                              <a class="post-cat" href="#">Video</a>
-                              <div class="post-content">
-                                 <h2 class="post-title">
-                                    <a href="#">TG G6 will have dual 13-megapixel cameras on the back</a>
-                                 </h2>
-                                 <div class="post-meta">
-                                    <span class="post-author"><a href="#">John Doe</a></span>
-                                    <span class="post-date">Mar 29, 2017</span>
-                                 </div>
-                                 <p>Lumbersexual meh sustainable Thundercats meditation kogi. Tilde Pitchfork vegan,
-                                    gentrify minim elit semiotics non messenger bag Austin which roasted ...</p>
-                              </div><!-- Post content end -->
-                           </div><!-- Post Block style 5 end -->
-
-                           <div class="gap-30"></div>
-
-                           <div class="post-block-style post-float-half clearfix">
-                              <div class="post-thumb">
-                                 <a href="#">
-                                    <img class="img-fluid" src="images/news/video/video3.jpg" alt="" />
-                                 </a>
-                              </div>
-                              <a class="post-cat" href="#">Video</a>
-                              <div class="post-content">
-                                 <h2 class="post-title">
-                                    <a href="#">Breeze through 17 locations in Europe in this breathtaking v…</a>
-                                 </h2>
-                                 <div class="post-meta">
-                                    <span class="post-author"><a href="#">John Doe</a></span>
-                                    <span class="post-date">Mar 31, 2017</span>
-                                 </div>
-                                 <p>Pityful a rethoric question ran over her cheek When she reached the first hills of
-                                    the Italic Mountains, she had a last view back on the skyline of he...</p>
-                              </div><!-- Post content end -->
-                           </div><!-- Post Block style 6 end -->
-
-                           <div class="gap-30"></div>
-
-                           <div class="post-block-style post-float-half clearfix">
-                              <div class="post-thumb">
-                                 <a href="#">
-                                    <img class="img-fluid" src="images/news/lifestyle/architecture1.jpg" alt="" />
-                                 </a>
-                              </div>
-                              <a class="post-cat" href="#">Architecture</a>
-                              <div class="post-content">
-                                 <h2 class="post-title">
-                                    <a href="#">Science meets architecture in robotically woven, solar...</a>
-                                 </h2>
-                                 <div class="post-meta">
-                                    <span class="post-author"><a href="#">John Doe</a></span>
-                                    <span class="post-date">Mar 23, 2017</span>
-                                 </div>
-                                 <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large
-                                    language ocean. A small river named Duden flows by their place and ...</p>
-                              </div><!-- Post content end -->
-                           </div><!-- Post Block style 7 end -->
-
-                           <div class="gap-30"></div>
-
-                           <div class="post-block-style post-float-half clearfix">
-                              <div class="post-thumb">
-                                 <a href="#">
-                                    <img class="img-fluid" src="images/news/tech/game1.jpg" alt="" />
-                                 </a>
-                              </div>
-                              <a class="post-cat" href="#">Robotics</a>
-                              <div class="post-content">
-                                 <h2 class="post-title">
-                                    <a href="#">Historical heroes and robot dinosaurs: New games on our…</a>
-                                 </h2>
-                                 <div class="post-meta">
-                                    <span class="post-author"><a href="#">John Doe</a></span>
-                                    <span class="post-date">Feb 24, 2017</span>
-                                 </div>
-                                 <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large
-                                    language ocean. A small river named Duden flows by their place and ...</p>
-                              </div><!-- Post content end -->
-                           </div><!-- Post Block style 8 end -->
-                        </div><!-- Item 2 end -->
                      </div><!-- More news carousel end -->
                   </div><!--More news block end -->
                </div><!-- Content Col end -->
@@ -955,6 +671,124 @@
 
       <!-- Javascript Files
 	================================================== -->
+   
+      <script>
+         function autocomplete(inp, arr) {
+            const autocomplete = document.querySelector(".autocomplete");
+            /*the autocomplete function takes two arguments,
+            the text field element and an array of possible autocompleted values:*/
+            var currentFocus;
+            /*execute a function when someone writes in the text field:*/
+            inp.addEventListener("input", function (e) {
+               var a, b, i, val = this.value;
+               /*close any already open lists of autocompleted values*/
+               closeAllLists();
+               if (!val) { return false; }
+               currentFocus = -1;
+               /*create a DIV element that will contain the items (values):*/
+               a = document.createElement("div");
+               a.setAttribute("id", this.id + "autocomplete-list");
+               a.setAttribute("class", "autocomplete-items");
+               /*append the DIV element as a child of the autocomplete container:*/
+               /*this.parentNode.appendChild(a);*/
+               autocomplete.appendChild(a);
+               /*for each item in the array...*/
+               for (i = 0; i < arr.length; i++) {
+                  /*check if the item contains the text field value:*/
+                  var regex = new RegExp(val, 'i');
+                  if(String(arr[i]).match(regex)) {
+                        /*create a DIV element for each matching element:*/
+                        b = document.createElement("div");
+                        /*make the matching letters bold:*/
+                        var Text = arr[i].substring(String(arr[i]).search(regex), String(arr[i]).search(regex) + val.length);
+                        var firstText = arr[i].substr(0, String(arr[i]).search(regex));
+                        var secondText = arr[i].substr(String(arr[i]).search(regex) + val.length);
+                        b.innerHTML += firstText + "<strong style='color:#000'>" + Text + "</strong>" + secondText;
+                        /*insert a input field that will hold the current array item's value:*/
+                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                        /*execute a function when someone clicks on the item value (DIV element):*/
+                        b.addEventListener("click", function (e) {
+                           /*insert the value for the autocomplete text field:*/
+                           inp.value = this.getElementsByTagName("input")[0].value;
+                           /*close the list of autocompleted values,
+                           (or any other open lists of autocompleted values:*/
+                           closeAllLists();
+                        });
+                        a.appendChild(b);
+                  }
+               }
+            });
+            /*execute a function presses a key on the keyboard:*/
+            inp.addEventListener("keydown", function (e) {
+               var x = document.getElementById(this.id + "autocomplete-list");
+               if (x) x = x.getElementsByTagName("div");
+               if (e.keyCode == 40) {
+                  /*If the arrow DOWN key is pressed,
+                  increase the currentFocus variable:*/
+                  currentFocus++;
+                  /*and and make the current item more visible:*/
+                  addActive(x);
+               } else if (e.keyCode == 38) { //up
+                  /*If the arrow UP key is pressed,
+                  decrease the currentFocus variable:*/
+                  currentFocus--;
+                  /*and and make the current item more visible:*/
+                  addActive(x);
+               } else if (e.keyCode == 13) {
+                  /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                  e.preventDefault();
+                  if (currentFocus > -1) {
+                        /*and simulate a click on the "active" item:*/
+                        if (x) x[currentFocus].click();
+                  }
+               }
+            });
+            function addActive(x) {
+               /*a function to classify an item as "active":*/
+               if (!x) return false;
+               /*start by removing the "active" class on all items:*/
+               removeActive(x);
+               if (currentFocus >= x.length) currentFocus = 0;
+               if (currentFocus < 0) currentFocus = (x.length - 1);
+               /*add class "autocomplete-active":*/
+               x[currentFocus].classList.add("autocomplete-active");
+            }
+            function removeActive(x) {
+               /*a function to remove the "active" class from all autocomplete items:*/
+               for (var i = 0; i < x.length; i++) {
+                  x[i].classList.remove("autocomplete-active");
+               }
+            }
+            function closeAllLists(elmnt) {
+               /*close all autocomplete lists in the document,
+               except the one passed as an argument:*/
+               var x = document.getElementsByClassName("autocomplete-items");
+               for (var i = 0; i < x.length; i++) {
+                  if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                  }
+               }
+            }
+            /*execute a function when someone clicks in the document:*/
+            document.addEventListener("click", function (e) {
+               closeAllLists(e.target);
+            });
+      }
+         var listVTTD = []
+         var listNT = []
+         {%for vt in ViTriTD%}
+            var ViTriTD = JSON.stringify(`{{vt}}`)
+            var ViTriTD = JSON.parse(ViTriTD)
+            listVTTD.push(ViTriTD)
+         {%endfor%}
+         {%for nt in NoiTD%}
+            var NoiTD = JSON.stringify(`{{nt}}`)
+            var NoiTD = JSON.parse(NoiTD)
+            listNT.push(NoiTD)
+         {%endfor%}
+         var data = [...listVTTD,...listNT]
+         autocomplete(document.getElementById("keyword"), data);
+      </script>
          <!-- initialize jQuery Library -->
          <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
          <script type="text/javascript" src="{{ url_for('static', path='/js/jquery.js') }}"></script>

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Body
+from fastapi import APIRouter, Depends, HTTPException, status, Body, Form
 from App.Controllers.UserController import *
 from fastapi.responses import RedirectResponse, HTMLResponse
 from App.auth.jwt_handler import signJWT
@@ -38,6 +38,6 @@ async def UpdateUser(IDUser: str = Body(...), user: UserUpdate = Body(...)):
 
 #Xóa user theo gmail
 @userRoute.delete("/Users/DeleteUser/")
-async def DeleteUserByGmail(Gmail: str = Body(...)):
+async def DeleteUserByGmail(Gmail: str = Form(...)):
     return userController.DeleteUserByGmail(Gmail)
 
