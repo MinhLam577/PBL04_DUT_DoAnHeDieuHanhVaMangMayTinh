@@ -1,6 +1,5 @@
 myvenv\
 myvenv
-__pycache__\
 __pycache__
 App\__pycache__
 App\auth\__pycache__
