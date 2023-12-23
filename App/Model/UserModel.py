@@ -70,7 +70,6 @@ class UserUpdate(BaseModel):
             raise UserExeception('Mật khẩu phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
         return Password
     QuyenUser: str
-    IDTD: str = None
 def get_db():
     try:
         db = SessionLocal()
@@ -88,8 +87,7 @@ class UserModel:
                 Gmail = row[1]
                 Password = row[2]
                 QuyenUser = row[3]
-                IDTD = row[4]
-                listObject.append({'IDUser': IDUser, 'Gmail': Gmail, 'Password': Password, 'QuyenUser': QuyenUser, 'IDTD': IDTD})
+                listObject.append({'IDUser': IDUser, 'Gmail': Gmail, 'Password': Password, 'QuyenUser': QuyenUser})
             return listObject
     def CheckLogin(self, Gmail, Password):
         with SessionLocal() as db:
@@ -127,7 +125,6 @@ class UserModel:
                         "Gmail": user.Gmail,
                         "Password": user.Password,
                         "QuyenUser": user.QuyenUser,
-                        "IDTD": user.IDTD if (user.IDTD != None and user.IDTD != "") else None
                     })
                     db.commit()
                     return True

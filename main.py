@@ -1,6 +1,7 @@
 import traceback
 from router.indexRouter import *
 from App.auth.jwt_handler import *
+from App.Controllers.TDController import *
 import uvicorn
 if __name__ == "__main__":
     try:

@@ -95,4 +95,26 @@ class TDModel:
             try:
                 return db.query(TuyenDung).filter(TuyenDung.IDTD == IDTD).first()
             except Exception:
-                raise TDException("Lấy tuyển dụng theo IDTD thất bại")        
+                raise TDException("Lấy tuyển dụng theo IDTD thất bại")
+    def DeleteOldTD(self):  
+        with SessionLocal() as db:
+            try:
+                db.execute(text("CALL DeleteOldTD"))
+                db.commit()
+                return True
+            except Exception:
+                raise TDException("Xóa tuyển dụng cũ thất bại")
+    def TimKiemTD(self, Text: str, LinhVucTD: str, DiaDiem: str):
+        with SessionLocal() as db:
+            res = None
+            try:
+                if(LinhVucTD == 'All' and DiaDiem == "All"):
+                    res = db.execute(text(f"CALL SearchTuyenDung('{Text}', '{Text}', '{Text}', '', '')")).fetchall()
+                elif(LinhVucTD == "All" and DiaDiem != "All"):
+                    res = db.execute(text(f"CALL SearchTuyenDung('{Text}', '{Text}', '{Text}', '', '{DiaDiem}')")).fetchall()
+                elif(LinhVucTD != "All" and DiaDiem == "All"):
+                    res = db.execute(text(f"CALL SearchTuyenDung('{Text}', '{Text}', '{Text}', '{LinhVucTD}', '')")).fetchall()
+                if(res != None):
+                    return res
+            except Exception as e:
+                raise TDException("Tìm kiếm tuyển dụng thất bại, lỗi: ", e)

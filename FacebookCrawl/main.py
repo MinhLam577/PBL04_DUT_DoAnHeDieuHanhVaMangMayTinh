@@ -1,4 +1,3 @@
-from scraperCrawl import *
 from seleniumCrawl import *
 import traceback
 import threading
@@ -9,17 +8,16 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from App.Controllers.PostController import *
 postController = PostControllers()
 class Threading(threading.Thread):
-    def __init__(self, driver, cookie, type="fanpage", nameOrID = 103274306376166, numberPost = 100, txt = None, timeout = 60):
+    def __init__(self, driver, type="fanpage", nameOrID = 103274306376166, numberPost = 100, txt = None, timeout = 60):
         threading.Thread.__init__(self)
         self.driver = driver
-        self.cookie = cookie
-        self.type = type
-        self.nameOrId = nameOrID
-        self.numberPost = numberPost
-        self.txt = txt
-        self.timeout = timeout
-    def startLocIDBaiViet(self):
-        loginFacebookByCookie(self.driver, getCookieByRawCookie(self.cookie))
+        self.type = type #Lọc theo fanpage hoặc group
+        self.nameOrId = nameOrID #ID hoặc tên của fanpage hoặc group
+        self.numberPost = numberPost #Số lượng bài viết cần lấy trên mỗi fanpage hoặc group
+        self.txt = txt #Từ khóa để tìm kiếm bài viết
+        self.timeout = timeout #Thời gian kết thức tìm kiếm
+    #Bắt đầu tìm kiếm ID của group hoặc fanpage
+    def startLocIDGroupOrFanpage(self):
         if(self.type == "fanpage"):
             dataFileID1 = readDataFileITxtID(fileFanpageID)
             dataID1 = get_FangpageID_By_Search(self.driver, self.txt, self.timeout)
@@ -34,8 +32,8 @@ class Threading(threading.Thread):
                 if(ID not in dataFileID2):
                     dataFileID2.append(ID)
                     writeFileTxtID(fileGroupID, ID)
+    #Bắt đầu lấy nội dung bài viết 
     def startGetContentPostBySelenium(self):
-        loginFacebookByCookie(self.driver, getCookieByRawCookie(self.cookie))
         listTuKhoaViecLam = ["tuyển", "tuyển dụng", "vị trí", "chiêu mộ", "lương", "năm kinh nghiệm", "năm kn", "phúc lợi", "benefit", "job", "offer", "offer up to", "đãi ngộ", "chế độ đãi ngộ", "ứng viên", "cơ hội", "YÊU CẦU", "quyền lợi", "CV", "mô tả công việc", "nhân sự", "up to"]
         listAllContentPost = postController.GetAllContentPost()
         listAllIDPOST = postController.GetAllIDPost()
@@ -48,64 +46,70 @@ class Threading(threading.Thread):
             getPostIDFanpage(self.driver, FanpageOrGroupID, self.numberPost)
             listPostFanpageID = readDataFileITxtID(filePostFanpageID)
             for i, ID in enumerate(listPostFanpageID):
-                self.driver.get("https://mbasic.facebook.com/"+ID)
-                postContent = getContentFromPostID(self.driver, ID)
-                if(postContent != None):
-                    Text = postContent['ContentPost']
-                    if(Text not in listAllContentPost and ID not in listAllIDPOST):
-                        for tuKhoa in listTuKhoaViecLam:
-                            if(tuKhoa in Text and one_week_ago <= TimePost <= now):
-                                IDPost = postContent["post_id"]
-                                ContentPost = postContent["text"] # Toàn bộ chữ có trong bài viết
-                                TimePost = postContent["time"]  # Thời gian đăng bài
-                                IDUserSend = postContent["user_id"]  # ID người đăng bài
-                                NameUserSend = postContent["username"]  # Tên người đăng bài
-                                LinkPost = "https://www.facebook.com/"+IDPost
-                                LinkImg = postContent["images"]  # Ảnh đại diện bài viết
-                                print("Bai viet", i + 1, "\n\n","postID", IDPost, "Text",ContentPost, "\nTime", TimePost,
-                                        "\nuserID",IDUserSend,"\nuserName",NameUserSend, "\npostLink",LinkPost, 
-                                        "\npostImages",LinkImg, "\n\n")
-                                post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=ContentPost, IDUserSend=IDUserSend,
-                                            NameUserSend=NameUserSend, LinkPost=LinkPost, LinkImg=LinkImg)
-                                postController.AddPost(post)
-                                break
+                try:
+                    print("ID bài viết đã crawl:", ID)
+                    self.driver.get("http://mbasic.facebook.com/"+ID)
+                    postContent = getContentFromPostID(self.driver, ID)
+                    if(postContent != None):
+                        Text = postContent['ContentPost']
+                        TimePost = postContent["TimePost"]
+                        IDPost = postContent["IDPost"]
+                        LinkPost = "https://www.facebook.com/"+IDPost
+                        LinkImg = postContent["LinkImg"]
+                        if(Text not in listAllContentPost and ID not in listAllIDPOST):
+                            for tuKhoa in listTuKhoaViecLam:
+                                if(tuKhoa in Text and one_week_ago <= TimePost <= now):
+                                    print("Bai viet", i + 1, "\n\n","postID", IDPost, "Text",Text, "\nTime", TimePost, "\npostLink",LinkPost, "\npostImages",LinkImg, "\n\n")
+                                    post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
+                                    if(LinkImg != None):
+                                        download_image(self.driver, LinkImg, IDPost)
+                                    postController.AddPost(post)
+                                    break
+                except Exception as e:
+                    print(f"Crawl bài viết có ID = {ID} của {self.type} thất bại, lỗi: " + getattr(e, 'message', repr(e)))
         elif(self.type == "group"):
             getPostsIDGroup(self.driver, FanpageOrGroupID, self.numberPost)
             listPostGroupID = readDataFileITxtID(filePostGroupID)
             for i, ID in enumerate(listPostGroupID):
-                self.driver.get("https://mbasic.facebook.com/"+ID)
-                postContent = getContentFromPostID(self.driver, ID)
-                if(postContent != None):
-                    Text = postContent['ContentPost']
-                    TimePost = postContent["TimePost"]
-                    if(Text not in listAllContentPost and ID not in listAllIDPOST):
-                        for tuKhoa in listTuKhoaViecLam:
-                            if(tuKhoa in Text and one_week_ago <= TimePost <= now):
-                                IDPost = postContent["post_id"]
-                                ContentPost = postContent["text"] # Toàn bộ chữ có trong bài viết
-                                TimePost = postContent["time"]  # Thời gian đăng bài
-                                IDUserSend = postContent["user_id"]  # ID người đăng bài
-                                NameUserSend = postContent["username"]  # Tên người đăng bài
-                                LinkPost = "https://www.facebook.com/"+IDPost
-                                LinkImg = postContent["images"]  # Ảnh đại diện bài viết
-                                print("Bai viet",i + 1, "\n\n","postID", IDPost, "Text",ContentPost, "\nTime", TimePost,
-                                        "\nuserID",IDUserSend,"\nuserName",NameUserSend, "\npostLink",LinkPost, 
-                                        "\npostImages",LinkImg, "\n\n")
-                                post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=ContentPost, IDUserSend=IDUserSend,
-                                            NameUserSend=NameUserSend, LinkPost=LinkPost, LinkImg=LinkImg)
-                                postController.AddPost(post)
-                                break
+                try:
+                    self.driver.get("https://mbasic.facebook.com/"+ID)
+                    postContent = getContentFromPostID(self.driver, ID)
+                    if(postContent != None):
+                        Text = postContent['ContentPost']
+                        TimePost = postContent["TimePost"]
+                        IDPost = postContent["IDPost"]
+                        LinkPost = "https://www.facebook.com/"+IDPost
+                        if postContent["LinkImg"] != None:
+                            LinkImg = postContent["LinkImg"]
+                        else:
+                            LinkImg = None
+                        if(Text not in listAllContentPost and ID not in listAllIDPOST):
+                            for tuKhoa in listTuKhoaViecLam:
+                                if(tuKhoa in Text and one_week_ago <= TimePost <= now):
+                                    print("Bai viet",i + 1, "\n\n","postID", IDPost, "Text",Text, "\nTime", TimePost,
+                                            "\npostLink",LinkPost, "\npostImages",LinkImg, "\n\n")
+                                    post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
+                                    if(LinkImg != None):
+                                        download_image(self.driver, LinkImg, IDPost)
+                                    postController.AddPost(post)
+                                    break
+                except Exception as e:
+                    print(f"Crawl bài viết có ID = {ID} của {self.type} thất bại, lỗi: " + getattr(e, 'message', repr(e)))
     def closeDriverProfile(self):
         self.driver.close()
     def run(self):
         if(self.txt != None):
-            self.startLocIDBaiViet()
+            self.startLocIDGroupOrFanpage()
         elif(self.txt == None):
             self.startGetContentPostBySelenium()             
 def LocIDFanpageAndGroupPost(*,driver1, driver2, cookie1, cookie2, type1 = 'fanpage', type2 = 'group', txt, timeout = 60):
     try:
+        driver1 = initDriverProfile("--headless=new")
+        driver2 = initDriverProfile("--headless=new")
+        loginFacebookByCookie(driver1, cookie1)
+        loginFacebookByCookie(driver2, cookie2)
         thread1 = Threading(driver1, cookie=cookie1, type=type1, txt=txt, timeout=timeout)
-        thread2 = Threading(driver2, cookie=cookie2,type=type2, txt=txt, timeout=timeout)
+        thread2 = Threading(driver2, cookie=cookie2, type=type2, txt=txt, timeout=timeout)
         thread1.start()
         thread2.start()
         thread1.join()
@@ -115,47 +119,58 @@ def LocIDFanpageAndGroupPost(*,driver1, driver2, cookie1, cookie2, type1 = 'fanp
     finally:
         thread1.closeDriverProfile()
         thread2.closeDriverProfile()
-
-def getContentPostFanpageOrGroupBySelenium(*,driver, cookie, type = 'fanpage', NameOrID, numberPost = 100):
+def getContentPostFanpageOrGroupBySelenium(*,driver, type = 'fanpage', NameOrID, numberPost = 100):
     try:
-        thread = Threading(driver, cookie=cookie, type=type, numberPost=numberPost, nameOrID=NameOrID)
+        thread = Threading(driver, type=type, numberPost=numberPost, nameOrID=NameOrID)
         thread.start()
         thread.join()
     except Exception:
         traceback.print_exc()
-    finally:
-        thread.closeDriverProfile()
-postController = PostControllers()
-def getContentPostByScraper(*,type = 'fanpage', nameOrID, numberPost = 100):
-    GetContentPost(type=type, nameOrID=nameOrID, numberPost=numberPost)
-def startGetContentPostByScraper():
+def startGetContentPostBySelenium(driver, type: str = "fanpage", NameOrID: str = None, numberPost: int = 10):
     try:
-        listIDGroup = readDataFileITxtID(fileGroupID)
-        driver1 = initDriverProfile()
-        cookie = getCookieFromFile("cookies.txt")
-        loginFacebookByCookie(driver1, cookie)
-        for i, ID in enumerate(listIDGroup):
-            getPostsIDGroup(driver1, ID, 10)
-            lisPostIDGroup = readDataFileITxtID("post_ID_Group.txt")
-            for PostID in lisPostIDGroup:
-                getContentPostByScraper(type="post", nameOrID=PostID, numberPost=1)
-                sleep(2)
-            print("Đã lấy xong bài viết của group", i + 1, "ID", ID)
-            postController.DeleteDuplicatePost()
-            path = os.path.dirname(os.path.abspath(__file__)) + "/"
-            with open(path + 'post_ID_Group.txt', 'w') as file:
-                pass
-    except Exception: 
-        traceback.print_exc()
-def startGetContentPostBySelenium():
-    try:
-        driver1 = initDriverProfile()
-        cookie = getCookieFromFile("cookies.txt")
-        listIDGroup = readDataFileITxtID(fileGroupID)
-        for i, ID in enumerate(listIDGroup, 1):
-            getContentPostFanpageOrGroupBySelenium(driver=driver1, cookie=cookie, type="group", numberPost=10, NameOrID=ID)
-            print("Đã lấy xong bài viết của group", i, "ID", ID)
-            postController.DeleteDuplicatePost()
+        getContentPostFanpageOrGroupBySelenium(driver=driver, type=type, numberPost=numberPost, NameOrID=NameOrID)
+        print(f"Đã lấy xong bài viết của {type} có", "NameOrID", NameOrID)
+        path = os.path.dirname(os.path.abspath(__file__)) + "/"
+        with open(path + filePostFanpageID, 'w') as file:
+            pass
+        with open(path + filePostGroupID, 'w') as file:
+            pass
+        postController.DeleteDuplicatePost()
     except Exception:
         traceback.print_exc()
-startGetContentPostByScraper()
+driver = initDriverProfile()
+cookie = getCookieFromFile("cookies.txt")
+loginFacebookByCookie(driver, cookie)
+
+Check_type = False
+while not Check_type:
+    type = input("Nhập vào 0 nếu muốn crawl bài viết từ fanpage, 1 nếu muốn crawl bài viết từ group: ")
+    Check_type = bool(re.match('^[0-1]$', type))
+    if not Check_type:
+        print("Vui lòng nhập 0 hoặc 1")
+if(type == "0"):
+    NameOrID = input("Nhập vào ID hoặc tên của fanpage: ")
+    Check_type = False
+    Count = None
+    while not Check_type:
+        Count = input("Nhập vào số lượng bài viết cần crawl: ")
+        Check_type = bool(re.match('^\d+$', Count))
+        if not Check_type:
+            print("Số lượng bài viết phải là số nguyên")
+        else:
+            if(int(Count) <= 0):
+                print("Số lượng bài viết phải lớn hơn 0")
+    startGetContentPostBySelenium(driver, 'fanpage', NameOrID, int(Count))
+elif type == "1":
+    NameOrID = input("Nhập vào ID hoặc tên của group: ")
+    Check_cnt = False
+    Count = None
+    while not Check_cnt:
+        Count = input("Nhập vào số lượng bài viết cần crawl: ")
+        Check_cnt = bool(re.match('^\d+$', Count))
+        if not Check_cnt:
+            print("Số lượng bài viết phải là số nguyên")
+        else:
+            if(int(Count) <= 0):
+                print("Số lượng bài viết phải lớn hơn 0")
+    startGetContentPostBySelenium(driver, 'group', NameOrID, int(Count))

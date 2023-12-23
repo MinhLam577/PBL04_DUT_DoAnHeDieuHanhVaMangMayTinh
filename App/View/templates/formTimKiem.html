@@ -16,7 +16,7 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
- 
+
    <!--Favicon-->
    <link rel="shortcut icon" href="{{ url_for('static', path='/images/favicon.ico') }}" type=" image/x-icon">
    <link rel="icon" href="{{ url_for('static', path='/images/favicon.ico') }}" type=" image/x-icon">
@@ -537,25 +537,26 @@
                <form action="" class="d-flex">
                   <div class="row advanced-search">
                      <div class="col form-group">
-                        <input class="form-control me 2" type="search" name="keyword" id="keyword" placeholder="Chức danh, kĩ năng, nơi tuyển" autocomplete="off">
+                        <input class="form-control me 2" type="search" name="keyword" id="keyword"
+                           placeholder="Chức danh, kĩ năng, nơi tuyển" autocomplete="off">
                         <div class="autocomplete"></div>
                      </div>
                      <div class="col form-group">
                         <select class="form-control" id="LinhVuc_Select">
                            <option disabled selected hidden>Tất cả lĩnh vực</option>
-                              <option value="All">Tất cả lĩnh vực</option>
-                              {%for lv in LinhVucTD%}
-                                 <option value={{lv}}>{{lv}}</option>
-                              {%endfor%}
+                           <option value="All">Tất cả lĩnh vực</option>
+                           {%for lv in LinhVucTD%}
+                           <option value={{lv}}>{{lv}}</option>
+                           {%endfor%}
                         </select>
                      </div>
                      <div class="col form-group">
                         <select class="form-control" id="DiaDiem_Select">
                            <option disabled selected hidden>Tất cả địa điểm</option>
-                              <option value="All">Tất cả địa điểm</option>
-                              {%for dd in DiaDiem%}
-                                 <option value={{dd}}>{{dd}}</option>
-                              {%endfor%}
+                           <option value="All">Tất cả địa điểm</option>
+                           {%for dd in DiaDiem%}
+                           <option value={{dd}}>{{dd}}</option>
+                           {%endfor%}
                         </select>
                      </div>
                      <button class="btn btn-outline-info" type="send">Tìm kiếm</button>
@@ -671,7 +672,7 @@
 
       <!-- Javascript Files
 	================================================== -->
-   
+
       <script>
          function autocomplete(inp, arr) {
             const autocomplete = document.querySelector(".autocomplete");
@@ -689,6 +690,7 @@
                a = document.createElement("div");
                a.setAttribute("id", this.id + "autocomplete-list");
                a.setAttribute("class", "autocomplete-items");
+               a.setAttribute("style", "text-align:left")
                /*append the DIV element as a child of the autocomplete container:*/
                /*this.parentNode.appendChild(a);*/
                autocomplete.appendChild(a);
@@ -696,25 +698,30 @@
                for (i = 0; i < arr.length; i++) {
                   /*check if the item contains the text field value:*/
                   var regex = new RegExp(val, 'i');
-                  if(String(arr[i]).match(regex)) {
-                        /*create a DIV element for each matching element:*/
-                        b = document.createElement("div");
-                        /*make the matching letters bold:*/
-                        var Text = arr[i].substring(String(arr[i]).search(regex), String(arr[i]).search(regex) + val.length);
-                        var firstText = arr[i].substr(0, String(arr[i]).search(regex));
-                        var secondText = arr[i].substr(String(arr[i]).search(regex) + val.length);
-                        b.innerHTML += firstText + "<strong style='color:#000'>" + Text + "</strong>" + secondText;
-                        /*insert a input field that will hold the current array item's value:*/
-                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-                        /*execute a function when someone clicks on the item value (DIV element):*/
-                        b.addEventListener("click", function (e) {
-                           /*insert the value for the autocomplete text field:*/
-                           inp.value = this.getElementsByTagName("input")[0].value;
-                           /*close the list of autocompleted values,
-                           (or any other open lists of autocompleted values:*/
-                           closeAllLists();
-                        });
-                        a.appendChild(b);
+                  if (String(arr[i]).match(regex)) {
+                     /*create a DIV element for each matching element:*/
+                     b = document.createElement("div");
+                     b.setAttribute("style", "padding: 5px 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;height:50px;")
+                     /*make the matching letters bold:*/
+                     var Text = arr[i].substring(String(arr[i]).search(regex), String(arr[i]).search(regex) + val.length);
+                     var firstText = arr[i].substr(0, String(arr[i]).search(regex));
+                     var secondText = arr[i].substr(String(arr[i]).search(regex) + val.length);
+                     b.innerHTML += firstText + "<strong style='color:#000'>" + Text + "</strong>" + secondText;
+                     /*insert a input field that will hold the current array item's value:*/
+                     b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                     var value = b.getElementsByTagName("input")[0].value.replace(/<br>/g, '\n')
+                     b.title = value;
+                     /*execute a function when someone clicks on the item value (DIV element):*/
+                     b.addEventListener("click", function (e) {
+                        /*insert the value for the autocomplete text field:*/
+                        value = this.getElementsByTagName("input")[0].value.replace(/<br>/g, '\n')
+                        inp.value = value;
+                        inp.title = value;
+                        /*close the list of autocompleted values,
+                        (or any other open lists of autocompleted values:*/
+                        closeAllLists();
+                     });
+                     a.appendChild(b);
                   }
                }
             });
@@ -738,8 +745,8 @@
                   /*If the ENTER key is pressed, prevent the form from being submitted,*/
                   e.preventDefault();
                   if (currentFocus > -1) {
-                        /*and simulate a click on the "active" item:*/
-                        if (x) x[currentFocus].click();
+                     /*and simulate a click on the "active" item:*/
+                     if (x) x[currentFocus].click();
                   }
                }
             });
@@ -765,7 +772,7 @@
                var x = document.getElementsByClassName("autocomplete-items");
                for (var i = 0; i < x.length; i++) {
                   if (elmnt != x[i] && elmnt != inp) {
-                        x[i].parentNode.removeChild(x[i]);
+                     x[i].parentNode.removeChild(x[i]);
                   }
                }
             }
@@ -773,39 +780,48 @@
             document.addEventListener("click", function (e) {
                closeAllLists(e.target);
             });
-      }
+         }
          var listVTTD = []
          var listNT = []
-         {%for vt in ViTriTD%}
-            var ViTriTD = JSON.stringify(`{{vt}}`)
-            var ViTriTD = JSON.parse(ViTriTD)
-            listVTTD.push(ViTriTD)
-         {%endfor%}
-         {%for nt in NoiTD%}
-            var NoiTD = JSON.stringify(`{{nt}}`)
-            var NoiTD = JSON.parse(NoiTD)
-            listNT.push(NoiTD)
-         {%endfor%}
-         var data = [...listVTTD,...listNT]
+         var listyccv = []
+         {%for vt in ViTriTD %}
+         var ViTriTD = JSON.stringify(`{{vt}}`)
+         ViTriTD = ViTriTD.replace(/\\n/g, '<br>')
+         ViTriTD = JSON.parse(ViTriTD)
+         listVTTD.push(ViTriTD)
+         {% endfor %}
+         {%for nt in NoiTD %}
+         var NoiTD = JSON.stringify(`{{nt}}`)
+         NoiTD = NoiTD.replace(/\\n/g, "<br>");
+         NoiTD = JSON.parse(NoiTD)
+         listNT.push(NoiTD)
+         {% endfor %}
+         {% for yccv in YeuCauCongViec %}
+         var YeuCauCongViec = JSON.stringify(`{{yccv}}`)
+         YeuCauCongViec = YeuCauCongViec.replace(/\\n/g, "<br>")
+         YeuCauCongViec = JSON.parse(YeuCauCongViec)
+         listyccv.push(YeuCauCongViec)
+         {% endfor %}
+         var data = [...listVTTD, ...listNT, ...listyccv]
          autocomplete(document.getElementById("keyword"), data);
       </script>
-         <!-- initialize jQuery Library -->
-         <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-         <script type="text/javascript" src="{{ url_for('static', path='/js/jquery.js') }}"></script>
-         <!-- Popper JS -->
-         <script type="text/javascript" src="{{ url_for('static', path='/js/popper.min.js') }}"></script>
-         <!-- Bootstrap jQuery -->
-         <script type="text/javascript" src="{{ url_for('static', path='/js/bootstrap.min.js') }}"></script>
-         <!-- Owl Carousel -->
-         <script type="text/javascript" src=" {{ url_for('static', path='/js/owl.carousel.min.js') }}"></script>
-         <!-- Color box -->
-         <script type="text/javascript" src=" {{ url_for('static', path='/js/jquery.colorbox.js') }}"></script>
-         <!-- Smoothscroll -->
-         <script type="text/javascript" src=" {{ url_for('static', path='/js/smoothscroll.js') }}"></script>
-   
-   
-         <!-- Template custom -->
-         <script type="text/javascript" src=" {{ url_for('static', path='/js/custom.js') }}"></script>
+      <!-- initialize jQuery Library -->
+      <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+      <script type="text/javascript" src="{{ url_for('static', path='/js/jquery.js') }}"></script>
+      <!-- Popper JS -->
+      <script type="text/javascript" src="{{ url_for('static', path='/js/popper.min.js') }}"></script>
+      <!-- Bootstrap jQuery -->
+      <script type="text/javascript" src="{{ url_for('static', path='/js/bootstrap.min.js') }}"></script>
+      <!-- Owl Carousel -->
+      <script type="text/javascript" src=" {{ url_for('static', path='/js/owl.carousel.min.js') }}"></script>
+      <!-- Color box -->
+      <script type="text/javascript" src=" {{ url_for('static', path='/js/jquery.colorbox.js') }}"></script>
+      <!-- Smoothscroll -->
+      <script type="text/javascript" src=" {{ url_for('static', path='/js/smoothscroll.js') }}"></script>
+
+
+      <!-- Template custom -->
+      <script type="text/javascript" src=" {{ url_for('static', path='/js/custom.js') }}"></script>
 
       <script src=" {{ url_for('static', path='/js/main1.js') }}"></script>
    </div><!-- Body inner end -->

@@ -6,11 +6,14 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import WebDriverException, NoSuchElementException, TimeoutException
+from selenium.common.exceptions import WebDriverException
 import re
 import traceback
 import sys
-
+from datetime import datetime, timedelta
+import datetime as dt
+import dateutil.parser
+import requests
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from App.Controllers.PostController import *
 fileGroupID = 'ID_Group.txt'
@@ -19,7 +22,7 @@ filePostFanpageID = 'post_ID_Fanpage.txt'
 filePostGroupID = 'post_ID_Group.txt'
 postController = PostControllers()
 # khởi tạo 1 chrome profile với tham số headless(ẩn chrome) tùy chọn
-def initDriverProfile(headlessOption='--disable-headless'):
+def initDriverProfile(headlessOption='--disable-headless'): 
     # Đường dẫn đến thư mục chứa file python hiện tại
     current_directory = os.path.dirname(os.path.abspath(__file__))
     # Đường dẫn đến file chromedriver.exe
@@ -33,8 +36,8 @@ def initDriverProfile(headlessOption='--disable-headless'):
     Options.add_experimental_option("prefs", prefs)
     Options.add_argument("--disable-dev-shm-usage")
     Options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    # Ẩn chrome
-    Options.add_argument(headlessOption)
+    # Ẩn chrome --headless=new không ẩn --disable-headless
+    Options.add_argument(headlessOption) 
     # không hiển thị thông báo đăng nhập chrome
     Options.add_argument("--disable-infobars")
     # Hiển thị lớn nhất trình duyệt
@@ -56,7 +59,7 @@ def loginFacebookByCookie(driver, cookie):
     except Exception:
         traceback.print_exc()
 
-#Lấy cookie từ raw cookie trên facebook profile
+#Lấy cookie từ raw cookie trên facebook network
 def getCookieByRawCookie(cookie):
     try:
         new_cookie = ["c_user=", "xs="]
@@ -77,6 +80,7 @@ def getCookieByRawCookie(cookie):
             return conv
     except Exception:
         traceback.print_exc()
+        
 #Lấy cookie từ file
 def getCookieFromFile(filename):
     try:
@@ -100,6 +104,7 @@ def getCookieFromFile(filename):
         traceback.print_exc()
         return None
 
+#Đọc dữ liệu từ file txt
 def readDataFileITxtID(fileName):
     try:
         path = os.path.dirname(os.path.abspath(__file__)) + "/" + fileName
@@ -115,6 +120,7 @@ def readDataFileITxtID(fileName):
     except Exception:
          traceback.print_exc()
 
+#Ghi dữ liệu vào file txt
 def writeFileTxtID(fileName, content):
     try:
         path = os.path.dirname(os.path.abspath(__file__)) + "/" + fileName
@@ -123,6 +129,7 @@ def writeFileTxtID(fileName, content):
     except Exception:
         traceback.print_exc()
         
+#Kéo đến cuối trang trong selenium
 def scrollToEndOfPage(driver, timeout = 60):
     try:
         last_height = driver.execute_script("return document.body.scrollHeight")
@@ -137,6 +144,7 @@ def scrollToEndOfPage(driver, timeout = 60):
     except Exception:
         traceback.print_exc()
 
+#Tìm kiếm ID bài viết trên fanpage
 def get_FangpageID_By_Search(driver, txt, timeout = 60):
     driver.get("https://www.facebook.com/search/pages?q=" + txt)
     sleep(2)
@@ -154,6 +162,7 @@ def get_FangpageID_By_Search(driver, txt, timeout = 60):
     print(listFanpageName)
     return listFanpageName
 
+#Tìm kiếm ID bài viết của Group 
 def get_GroupPublicID_By_Search(driver, txt, timeout = 60):
     driver.get("https://www.facebook.com/groups/search/groups/?q=" + txt + "&filters=eyJwdWJsaWNfZ3JvdXBzOjAiOiJ7XCJuYW1lXCI6XCJwdWJsaWNfZ3JvdXBzXCIsXCJhcmdzXCI6XCJcIn0ifQ%3D%3D")
     sleep(2)
@@ -164,6 +173,7 @@ def get_GroupPublicID_By_Search(driver, txt, timeout = 60):
     listGroupIDOrName = [i['href'][:-1].split('/')[-1] for i in listGroupName if i != None]
     return listGroupIDOrName
 
+#Tìm kiếm ID bài viết của các đã join
 def get_JoinedGroupID_By_Search(driver, txt, timeout = 60):
     driver.get("https://www.facebook.com/groups/search/groups/?q=" + txt + "&filters=eyJteV9ncm91cHM6MCI6IntcIm5hbWVcIjpcIm15X2dyb3Vwc1wiLFwiYXJnc1wiOlwiXCJ9In0%3D")
     sleep(2)
@@ -173,51 +183,18 @@ def get_JoinedGroupID_By_Search(driver, txt, timeout = 60):
     listGroupName = [i.find('a', attrs={'aria-hidden':'true', 'role':'presentation', 'href' : lambda x: x and re.match("https:\/\/www\.facebook\.com\/groups\/(([a-zA-Z0-9\.]){5,}|\d+)", x)}) for i in listGroup]
     listGroupIDOrName = [i['href'][:-1].split('/')[-1] for i in listGroupName if i != None]
     return listGroupIDOrName
-#Lấy Posts From Fanpage
-def getPostsFromFanpage(driverCrawPostID, driverCrawPostContent, idFanpage, numberpost=100):
-    try:
-        driverCrawPostID.driver.get("https://mbasic.facebook.com/" + str(idFanpage));
-        sleep(2)
-        # địa chỉ URL hiện tại
-        current_url = driverCrawPostID.driver.current_url
-        # lấy tên người dùng
-        nameUser = current_url.split("/")[-1]
-        timeline = driverCrawPostID.driver.find_element(By.XPATH, f"//a[starts-with(@href,'/{nameUser}?v=timeline)']")
-        timeline.click()
-        sleep(2)
-        sumLinks = readDataFileITxtID(fileFanpageID)
-        while (len(sumLinks) < numberpost):
-            driverCrawPostID.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            likeBtn = driverCrawPostID.driver.find_elements(By.XPATH, '//*[contains(@id, "like_")]')
-            if len(likeBtn):
-                for id in likeBtn:
-                    idPost = id.get_attribute('id').replace("like_", "")
-                    if (idPost not in sumLinks and len(sumLinks) <= numberpost):
-                        driverCrawPostContent.driver.get("https://mbasic.facebook.com/" + str(idPost))
-                        print(idPost)
-                        sumLinks.append(idPost)
-                        print("Bài viêt:", len(sumLinks))
-                        Content = getContentFromPostID(driverCrawPostContent.driver)
-                        sleep(2)
-                        print(Content)
-                        writeFileTxtID(fileFanpageID, idPost)
-            nextBtn = driverCrawPostID.driver.find_elements(By.XPATH, '//a[contains(@href, "?cursor=")]')
-            if (len(nextBtn)):
-                nextBtn[0].click()
-                sleep(2)
-            else:
-                break
-    except Exception:
-        traceback.print_exc()
-def getPostsIDGroup(driver, idGroup, numberPost=100):
+
+#Lấy post ID của bài viết trong group
+def getPostsIDGroup(driver, idGroup, numberPost=10):
     try:
         driver.get('https://mbasic.facebook.com/groups/' + str(idGroup))
-        sleep(2)
+        sleep(3)
         listAllIDPOST = postController.GetAllIDPost()
         sumLinks = readDataFileITxtID(filePostGroupID)
         while (len(sumLinks) < numberPost):
             try:
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                sleep(3)
                 likeBtn = driver.find_elements(By.XPATH, '//*[contains(@id, "like_")]')
                 if len(likeBtn):
                     for id in likeBtn:
@@ -228,7 +205,7 @@ def getPostsIDGroup(driver, idGroup, numberPost=100):
                 nextBtn = driver.find_elements(By.XPATH, '//a[contains(@href, "?bacr")]')
                 if (len(nextBtn)):
                     nextBtn[0].click()
-                    sleep(2)
+                    sleep(3)
                 else:
                     break
             except WebDriverException:
@@ -238,10 +215,12 @@ def getPostsIDGroup(driver, idGroup, numberPost=100):
                 traceback.print_exc()
     except Exception:
         traceback.print_exc()
-def getPostIDFanpage(driver, idGroup, numberpost=100):
+
+#Lấy Post ID của bài viết trong Fanpage
+def getPostIDFanpage(driver, idFanpage, numberpost=10):
     try:
-        driver.get("https://mbasic.facebook.com/" + str(idGroup));
-        sleep(2)
+        driver.get("https://mbasic.facebook.com/" + str(idFanpage));
+        sleep(3)
         listAllIDPOST = postController.GetAllIDPost()
         # địa chỉ URL hiện tại
         current_url = driver.current_url
@@ -249,11 +228,12 @@ def getPostIDFanpage(driver, idGroup, numberpost=100):
         nameUser = current_url.split("/")[-1]
         timeline = driver.find_element(By.XPATH, "//a[starts-with(@href, '/" + nameUser + "?v=timeline')]")
         timeline.click()
-        sleep(2)
+        sleep(3)
         sumLinks = readDataFileITxtID(filePostFanpageID)
         while (len(sumLinks) < numberpost):
             try:
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                sleep(3)
                 likeBtn = driver.find_elements(By.XPATH, '//*[contains(@id, "like_")]')
                 if len(likeBtn):
                     for id in likeBtn:
@@ -264,26 +244,111 @@ def getPostIDFanpage(driver, idGroup, numberpost=100):
                 nextBtn = driver.find_elements(By.XPATH, '//a[contains(@href, "?cursor=")]')
                 if (len(nextBtn)):
                     nextBtn[0].click()
-                    sleep(2)
+                    sleep(3)
                 else:
                     break
             except WebDriverException:
                 traceback.print_exc()
     except Exception:
         traceback.print_exc()
+def parse_date(date_string):
+    try:
+        parsed_date = datetime.strptime(date_string, "%d tháng %m lúc %H:%M")
+        # Nếu không có năm, giả định năm hiện tại
+        if parsed_date.year == 1900:
+            parsed_date = parsed_date.replace(year=datetime.now().year)
+        return parsed_date
+    except ValueError:
+        try:
+            # Thử định dạng "ngày tháng năm, năm lúc giờ:phút"
+            return datetime.strptime(date_string, "%d tháng %m, %Y lúc %H:%M")
+        except ValueError:
+            try:
+                # Thử định dạng "Hôm qua lúc giờ:phút"
+                if "Hôm qua" in date_string:
+                    yesterday = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+                    time = datetime.strptime(date_string.split(" lúc ")[1], "%H:%M").time()
+                    return datetime.combine(yesterday, time)
+                else: 
+                    raise ValueError(date_string)
+            except ValueError:
+                try:
+                    # Thử định dạng "x giờ"
+                    if "giờ" in date_string:
+                        hours_ago = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(hours=int(date_string.split(" ")[0]))
+                        return hours_ago
+                    else:
+                        raise ValueError(date_string)
+                except ValueError:
+                    try:
+                        # Thử định dạng "x phút"
+                        if "phút" in date_string:
+                            minutes_ago = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(minutes=int(date_string.split(" ")[0]))
+                            return minutes_ago
+                        else:
+                            raise ValueError(date_string)
+                    except ValueError:
+                        try:
+                            # Thử định dạng "x giây"
+                            if "giây" in date_string:
+                                seconds_ago = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(seconds=int(date_string.split(" ")[0]))
+                                return seconds_ago
+                            else:
+                                raise ValueError(date_string)
+                        except ValueError:
+                            # Nếu tất cả các định dạng trên đều không khớp, sử dụng dateutil.parser
+                            return dateutil.parser.parse(date_string)
+#Lấy nội dung bài viết từ ID post
 def getContentFromPostID(driver, postID):
     try:
+        driver.get("http://mbasic.facebook.com/"+postID)
+        sleep(2)
+        scrollToEndOfPage(driver)
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         contentBox = soup.find('div', id='m_story_permalink_view')
         content = contentBox.find('div', attrs={'data-ft': '{\"tn\":\"*s\"}'})
+        imgGroup = contentBox.find('div', attrs={'data-ft': '{\"tn\":\"H\"}'})
         footer = contentBox.find('footer', attrs={'data-ft': '{\"tn\":\"*W\"}'})
         obj = {'IDPost': postID}
         if (content != None):
             obj['ContentPost'] = content.get_text()
         if (footer != None):
-            obj['TimePost'] = footer.find('abbr').get_text()
-        obj['LinkPost'] = driver.current_url
-        obj = {k : v for k, v in obj.items() if v != None and v != "" and v != []}
+            timepost = footer.find('abbr').get_text()
+            timepost = parse_date(timepost)
+            obj['TimePost'] = timepost
+        if(imgGroup != None):
+            list_a = imgGroup.find_all('a', attrs={'href': lambda x: x and ("photo" in x)})
+            list_href = ["http://www.facebook.com"+i['href'] for i in list_a]
+            LinkImg = list_href[0]
+            obj['LinkImg'] = LinkImg
+        else:
+            obj['LinkImg'] = None
+        obj['LinkPost'] = "http://www.facebook.com/" + postID
         return obj
     except Exception:
         traceback.print_exc()
+        
+#Tải ảnh
+def download_image(driver, url, IDpost):
+    try:
+        driver.get(url)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        image_src = soup.find('img', {'data-visualcompletion': 'media-vc-image'})
+        if image_src is None:
+            return
+        image_src = image_src['src']
+        # Đường dẫn đến thư mục chứa file python hiện tại
+        current_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        #Đường dẫn đến folder ảnh
+        folder_path = os.path.join(current_directory,"App\\View\\static\\images\\TDImages")
+        if not os.path.exists(folder_path):
+            os.mkdir(folder_path)
+        # Đường dẫn đến ảnh
+        filename = os.path.join(folder_path, f"{IDpost}.jpg")
+        response = requests.get(image_src, stream=True)
+        if response.status_code == 200:
+            with open(filename, 'wb') as f:
+                f.write(response.content)
+    except Exception as e:
+        print("download file err, error: ", getattr(e, 'message', repr(e)))
+

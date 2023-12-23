@@ -6,6 +6,5 @@ class User(Base):
     Gmail = Column(String, nullable=False, unique=True,default=None)
     Password = Column(String, nullable=False,default=None)
     QuyenUser = Column(String, nullable=False,default=None)
-    IDTD = Column(String, nullable=True, default=None)
     ThoiGianDangKi = Column(Date, nullable=False, default=None)
 Base.metadata.create_all(bind=engine)

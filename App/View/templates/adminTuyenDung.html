@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', path='/css/adminTuyenDung.css')}}">
 </head>
+
 <body>
     <section class="admin-content">
         <div class="row">
@@ -19,61 +21,73 @@
                         <form class="needs-validation" novalidate action="/TDs/AddTD/" method="post" id="AddTD">
                             <div class="form-group">
                                 <label for="NoiTD">Nơi tuyển dụng</label>
-                                <input type="text" class="form-control" placeholder="Nơi tuyển dụng" id="NoiTD" name="NoiTD" required>
+                                <input type="text" class="form-control" placeholder="Nơi tuyển dụng" id="NoiTD"
+                                    name="NoiTD" required>
                             </div>
                             <div class="form-group">
                                 <label for="NgayTD">Ngày tuyển dụng</label>
                                 <input type="datetime-local" class="form-control" id="NgayTD" name="NgayTD" required>
-                            </div>     
+                            </div>
                             <div class="form-group">
                                 <label for="SoLuongTD">Số lượng tuyển dụng</label>
-                                <input type="text" class="form-control" id="SoLuongTD" Name="SoLuongTD" placeholder="Số lượng tuyển" required>
+                                <input type="text" class="form-control" id="SoLuongTD" Name="SoLuongTD"
+                                    placeholder="Số lượng tuyển" required>
                             </div>
                             <div class="form-group">
                                 <label for="LinhVucTD">Lĩnh vực tuyển dụng</label>
-                                <input type="text" class="form-control" id="LinhVucTD" name="LinhVucTD" placeholder="Lĩnh vực tuyển" required>
+                                <input type="text" class="form-control" id="LinhVucTD" name="LinhVucTD"
+                                    placeholder="Lĩnh vực tuyển" required>
                             </div>
                             <div class="form-group">
                                 <label for="ViTriTD">Vị trí tuyển dụng</label>
-                                <input type="text" class="form-control" name="ViTriTD" id="ViTriTD" placeholder="Vị trí tuyển dụng" required>
+                                <input type="text" class="form-control" name="ViTriTD" id="ViTriTD"
+                                    placeholder="Vị trí tuyển dụng" required>
                             </div>
                             <div class="form-group">
                                 <label for="LuongTD">Mức lương tuyển dụng</label>
-                                <input type="text" class="form-control" id="LuongTD" name="LuongTD" placeholder="Mức lương" required>
+                                <input type="text" class="form-control" id="LuongTD" name="LuongTD"
+                                    placeholder="Mức lương" required>
                             </div>
                             <div class="form-group">
                                 <label for="YeuCauCongViec">Yêu cầu công việc</label>
-                                <textarea class="form-control" rows="5" id="YeuCauCongViec" name="YeuCauCongViec" placeholder="Yêu cầu công việc" required></textarea>
+                                <textarea class="form-control" rows="5" id="YeuCauCongViec" name="YeuCauCongViec"
+                                    placeholder="Yêu cầu công việc" required></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="MoTaCongViec">Mô tả công việc</label>
-                                <textarea class="form-control" rows="5" id="MoTaCongViec" name="MoTaCongViec" placeholder="Mô tả công việc" required></textarea>
+                                <textarea class="form-control" rows="5" id="MoTaCongViec" name="MoTaCongViec"
+                                    placeholder="Mô tả công việc" required></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="QuyenLoi">Quyền lợi</label>
-                                <textarea class="form-control" rows="5" id="QuyenLoi" name="QuyenLoi" placeholder="Quyền lợi" required></textarea>
+                                <textarea class="form-control" rows="5" id="QuyenLoi" name="QuyenLoi"
+                                    placeholder="Quyền lợi" required></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="DiaDiem">Địa điểm</label>
-                                <textarea class="form-control" rows="5" id="DiaDiem" name="DiaDiem" placeholder="Địa điểm" required></textarea>
+                                <textarea class="form-control" rows="5" id="DiaDiem" name="DiaDiem"
+                                    placeholder="Địa điểm" required></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="SDT">Số điện thoại</label>
-                                <input type="phone" class="form-control" name="SDT" id="SDT" placeholder="Số điện thoại" required>
+                                <input type="phone" class="form-control" name="SDT" id="SDT" placeholder="Số điện thoại"
+                                    required>
                             </div>
-                            <div class="form-group">    
+                            <div class="form-group">
                                 <label for="Gmail">Gmail</label>
-                                <input type="email" class="form-control" name="Gmail" id="Gmail" placeholder="Gmail" required>
+                                <input type="email" class="form-control" name="Gmail" id="Gmail" placeholder="Gmail"
+                                    required>
                             </div>
                             <div class="form-group">
                                 <label for="IDPost">IDpost</label>
-                                <input type="text" class="form-control" name="IDPost" id="IDPost" placeholder="IDPost" required>
+                                <input type="text" class="form-control" name="IDPost" id="IDPost" placeholder="IDPost"
+                                    required>
                             </div>
                             <div class="form-group d-flex justify-content-around align-items-center">
                                 <button type="submit" class="btn btn-primary">Thêm</button>
                                 <button type="button" class="btn btn-primary" onclick="reset()">Reset</button>
                             </div>
-                        </form>                        
+                        </form>
                     </div>
                 </div>
             </div>
@@ -130,4 +144,5 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
+
 </html>
