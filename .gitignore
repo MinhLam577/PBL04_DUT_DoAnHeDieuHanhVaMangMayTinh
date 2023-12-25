@@ -1,2 +1,10 @@
 myvenv\
 myvenv
+__pycache__
+App\__pycache__
+App\auth\__pycache__
+App\Controllers\__pycache__
+App\Model\__pycache__
+config\__pycache__
+FacebookCrawl\__pycache__
+router\__pycache__

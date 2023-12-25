@@ -8,6 +8,7 @@ import ssl
 import smtplib
 import numpy as np
 import re
+from datetime import date
 
 class UserExeception(Exception):
     def __init__(self, message: str):
@@ -69,7 +70,6 @@ class UserUpdate(BaseModel):
             raise UserExeception('Mật khẩu phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
         return Password
     QuyenUser: str
-    IDTD: str = None
 def get_db():
     try:
         db = SessionLocal()
@@ -87,8 +87,7 @@ class UserModel:
                 Gmail = row[1]
                 Password = row[2]
                 QuyenUser = row[3]
-                IDTD = row[4]
-                listObject.append({'IDUser': IDUser, 'Gmail': Gmail, 'Password': Password, 'QuyenUser': QuyenUser, 'IDTD': IDTD})
+                listObject.append({'IDUser': IDUser, 'Gmail': Gmail, 'Password': Password, 'QuyenUser': QuyenUser})
             return listObject
     def CheckLogin(self, Gmail, Password):
         with SessionLocal() as db:
@@ -126,7 +125,6 @@ class UserModel:
                         "Gmail": user.Gmail,
                         "Password": user.Password,
                         "QuyenUser": user.QuyenUser,
-                        "IDTD": user.IDTD if (user.IDTD != None and user.IDTD != "") else None
                     })
                     db.commit()
                     return True
@@ -158,12 +156,13 @@ class UserModel:
             Gmail = user.Gmail
             NhapLai = user.NhapLai
             Password = user.Password
+            ThoiGianDangKi = date.today().strftime("%Y-%m-%d")
             if(Password != NhapLai):
                 raise UserExeception('Nhập lại mật khẩu không khớp')
             us = db.query(User).filter(User.Gmail == Gmail).first()
             if(us != None):
                 raise UserExeception('Gmail đã tồn tại')
-            db.add(User(IDUser = IDUser, Gmail = Gmail, Password = Password, QuyenUser = user.QuyenUser))
+            db.add(User(IDUser = IDUser, Gmail = Gmail, Password = Password, QuyenUser = user.QuyenUser, ThoiGianDangKi = ThoiGianDangKi))
             db.commit()
             return user
 

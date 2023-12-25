@@ -5,10 +5,11 @@ from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
 from fastapi import Request, Depends, Form
 from App.Model.PostEntity import *
+from App.Model.TDModel import TDModel
 class PostException(Exception):
     def __init__(self, message: str):
         self.message = message
-        
+tdModel = TDModel()
 def get_db():
     try:
         db = SessionLocal()
@@ -21,8 +22,7 @@ class PostModel:
             try:
                 db.add(post)
                 db.commit()
-                db.refresh(post)
-                return post
+                return True
             except Exception:
                 raise PostException("Thêm bài viết thất bại")
     def GetAllPost(self):
@@ -33,11 +33,9 @@ class PostModel:
                 IDPost = post.IDPost
                 TimePost = post.TimePost
                 ContentPost = post.ContentPost
-                IDUserSend = post.IDUserSend
-                NameUserSend = post.NameUserSend
                 LinkPost = post.LinkPost
                 LinkImg = post.LinkImg
-                listPostConvert.append({"IDPost": IDPost, "TimePost": TimePost, "ContentPost": ContentPost, "IDUserSend": IDUserSend, "NameUserSend": NameUserSend, "LinkPost": LinkPost, "LinkImg": LinkImg})
+                listPostConvert.append({"IDPost": IDPost, "TimePost": TimePost, "ContentPost": ContentPost, "LinkPost": LinkPost, "LinkImg": LinkImg})
             return listPostConvert
     def GetAllContentPost(self):
         with SessionLocal() as db:

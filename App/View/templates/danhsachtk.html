@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/danhsach.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/danhsach.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
+
 <body>
     <div class="table">
         <div class="table_header">
@@ -27,113 +29,36 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for ds in dstk%}
                     <tr>
-                        <td>1</td>
-                        <td>nemo@gmail.com</td>
+                        <td>{{loop.index}}</td>
+                        <td>{{ds.Gmail}}</td>
                         <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
+                            <button type="button"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button type="button" onclick="del('{{ds.Gmail}}')"><i class="fa-solid fa-trash"
+                                    value='{{ds.Gmail}}'></i></button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>nguyen@gmail.com</td>
-                        <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>bebo@gmail.com</td>
-                        <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>nnn@gmail.com</td>
-                        <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>nnn@gmail.com</td>
-                        <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>nnn@gmail.com</td>
-                        <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>nnn@gmail.com</td>
-                        <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>nnn@gmail.com</td>
-                        <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>nnn@gmail.com</td>
-                        <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>nnn@gmail.com</td>
-                        <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>nnn@gmail.com</td>
-                        <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>nnn@gmail.com</td>
-                        <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>9</td>
-                        <td>nnn@gmail.com</td>
-                        <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
+                    {%endfor%}
                 </tbody>
             </table>
         </div>
     </div>
+    <script>
+        function del(Gmail) {
+            formdata = new FormData();
+            formdata.append('Gmail', Gmail);
+            fetch("/Users/DeleteUser/", {
+                "method": "DELETE",
+                "body": formdata
+            })
+                .then(respone => {
+                    if (respone.status == 200)
+                        window.location.reload()
+                })
+                .catch(err => console.log(err))
+        }
+    </script>
 </body>
+
 </html>

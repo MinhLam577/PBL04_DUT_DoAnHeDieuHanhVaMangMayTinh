@@ -12,3 +12,5 @@ class TDController:
         return self.TDModel.UpdateTD(td)
     def GetTDByIDTD(self, IDTD: str):
         return self.TDModel.GetTDByIDTD(IDTD)
+    def TimKiemTD(self, Text: str, LinhVucTD: str, DiaDiem: str):
+        return self.TDModel.TimKiemTD(Text, LinhVucTD, DiaDiem)

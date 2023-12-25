@@ -12,3 +12,5 @@ class PostControllers:
         return self.PostModel.GetAllIDPost()
     def DeleteDuplicatePost(self):
         return self.PostModel.DeleteDuplicatePost()
+    def DeleteOldPost(self):
+        return self.PostModel.DeleteOldPost()

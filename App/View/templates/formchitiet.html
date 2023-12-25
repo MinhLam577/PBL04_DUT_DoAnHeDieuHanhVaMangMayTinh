@@ -8,7 +8,7 @@
    <!-- Basic Page Needs
 	================================================== -->
    <meta charset="utf-8">
-   <title>News247 - Tìm kiếm việc làm</title>
+   <title>News247 - Chi tiết việc làm</title>
 
    <!-- Mobile Specific Metas
 	================================================== -->
@@ -17,7 +17,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
    <!--Favicon-->
-   <link rel="shortcut icon" href="{{ url_for('static', path='/images/favicon.ico') }}" type=" image/x-icon">
+   <link rel="shortcut icon" href="{{ url_for('static', path='/images/favicon.ico') }}" type="image/x-icon">
    <link rel="icon" href="{{ url_for('static', path='/images/favicon.ico') }}" type=" image/x-icon">
 
    <!-- CSS
@@ -44,9 +44,7 @@
 </head>
 
 <body class="boxed-layout">
-
    <div class="body-inner">
-
       <div id="top-bar" class="top-bar">
          <div class="container">
             <div class="row">
@@ -101,10 +99,11 @@
                      </a>
                   </div>
                </div><!-- logo col end -->
-   
+
                <div class="col-md-9 col-sm-12 header-right">
                   <div class="ad-banner float-right">
-                     <a href="#"><img src="{{ url_for('static', path='/images/banner-ads/ad-top-header.png') }}" class="img-fluid" alt=""></a>
+                     <a href="#"><img src="{{ url_for('static', path='/images/banner-ads/ad-top-header.png') }}"
+                           class="img-fluid" alt=""></a>
                   </div>
                </div><!-- header right end -->
             </div><!-- Row end -->
@@ -112,263 +111,326 @@
       </header><!--/ Header end -->
       <div class="main-nav clearfix">
          <div class="container">
-            <div class="row"> 
+            <div class="row">
             </div><!--/ Row end -->
          </div><!--/ Container end -->
-   
+
       </div><!-- Menu wrapper end -->
       <section class="block-wrapper">
          <div class="container">
             <div class="row">
                <div class="col-lg-8 col-md-12">
-                  
                   <div class="single-post">
-   
                      <div class="post-title-area">
                         <h2 class="post-title">
-                           Cán bộ kĩ thuật giám sát hiện trường dự án
-                         </h2>
-                         <div class="post-meta">
+                           Chi tiết tuyển dụng
+                        </h2>
+                        <div class="post-meta">
                            <span class="post-author">
-                            <a href="#">Đà Nẵng</a>
+                              <a href="#">Đà Nẵng</a>
                            </span>
-                           <span class="post-date"><i class="fa fa-clock-o"></i> 2023-11-18 </span>
+                           <span class="post-date"><i class="fa fa-clock-o"></i></span>
                         </div>
                      </div><!-- Post title end -->
-   
                      <div class="post-content-area">
-                        <div class="entry-content">                             
+                        <div class="entry-content">
                            <h3>Thông tin chi tiết</h3>
                            <div class="container text-center">
                               <div class="row align-items-start">
-                                <div class="col border rounded">
-                                 <span style="color: black; font-size: 15px; font-weight: 700;">
-                                    Ngày đăng:
-                                 </span>
-                                 <p>2023-11-18</p>
-                                </div>
-                                <div class="col border rounded">
-                                 <span style="color: black; font-size: 15px; font-weight: 700;">
-                                    Số lượng tuyển:
-                                 </span>
-                                 <p>3</p>
-                                </div>
-                                <div class="col border rounded">
-                                 <span style="color: black; font-size: 15px; font-weight: 700;">
-                                    Lĩnh vực:
-                                 </span>
-                                 <p>Kinh doanh bán buôn bán</p>
-                                </div>
+                                 <div class="col border rounded">
+                                    <span style="color: black; font-size: 15px; font-weight: 700;">
+                                       Ngày đăng:
+                                    </span>
+                                    <p id="NgayTD">2023-11-18</p>
+                                 </div>
+                                 <div class="col border rounded">
+                                    <span style="color: black; font-size: 15px; font-weight: 700;">
+                                       Số lượng tuyển:
+                                    </span>
+                                    <p id="SoLuongTD">3</p>
+                                 </div>
+                                 <div class="col border rounded">
+                                    <span style="color: black; font-size: 15px; font-weight: 700;">
+                                       Lĩnh vực:
+                                    </span>
+                                    <p id="LinhVucTD">Kinh doanh bán buôn bán</p>
+                                 </div>
 
-                                <div class="w-100"></div>
+                                 <div class="w-100"></div>
 
-                                <div class="col border rounded">
-                                 <span style="color: black; font-size: 15px; font-weight: 700;">
-                                    Vị trí tuyển dụng:
-                                 </span>
-                                 <p> Cán bộ kĩ thuật giám sát</p>
-                                </div>
+                                 <div class="col border rounded">
+                                    <span style="color: black; font-size: 15px; font-weight: 700;">
+                                       SDT:
+                                    </span>
+                                    <p id="SDT"> Cán bộ kĩ thuật giám sát</p>
+                                 </div>
 
-                                <div class="col border rounded">
-                                 <span style="color: black; font-size: 15px; font-weight: 700;">
-                                    Yêu cầu bằng cấp:
-                                 </span>
-                                 <p> Không có</p>
-                                </div>
-                                <div class="col border rounded">
-                                 <span style="color: black; font-size: 15px; font-weight: 700;">
-                                    Yêu cầu kinh nghiệm
-                                 </span>
-                                 <p> Không có</p>
-                                </div>
-
-                                <div class="w-100"></div>
-
-                                <div class="col border rounded">
-                                 <span style="color: black; font-size: 15px; font-weight: 700;">
-                                    SĐT liên hệ:
-                                </span>
-                                <p> Không có</p>
-                                </div>
-                                <div class="col border rounded">
-                                 <span style="color: black; font-size: 15px; font-weight: 700;">
-                                    SĐT liên hệ:
-                                </span>
-                                <p> Không có Cán bộ kĩ thuật giám sátCán bộ kĩ thuật giám sátCán bộ kĩ thuật giám sátCán bộ kĩ thuật giám sát Cán bộ kĩ thuật giám sátCán bộ kĩ thuật giám sát</p>
-                                </div>
-                                <div class="col border rounded">
-                                </div>
+                                 <div class="col border rounded">
+                                    <span style="color: black; font-size: 15px; font-weight: 700;">
+                                       Gmail:
+                                    </span>
+                                    <p id="Gmail">Không có</p>
+                                 </div>
+                                 <div class="col border rounded">
+                                    <span style="color: black; font-size: 15px; font-weight: 700;">
+                                       Lương:
+                                    </span>
+                                    <p id="LuongTD">Không có</p>
+                                 </div>
+                                 <div class="w-100"></div>
                               </div>
-                            </div>
-                           <h3>Mô tả chi tiết công việc</h3>
-                           <ul>
-                           <li>Thời gian làm việc:
-                              Ca sáng:  9h đến 13h</li>
-                           <li>- Bán hàng tại shop : 2 người</li>
-                           </ul>
-
-                           <h3>Yêu cầu công việc</h3>
-                           <ul>
-                           <li>Kinh nghiệm 3 năm trở lên ở vị trí tương đương</li>
-                           <li>Ưu tiên ứng viên có kinh nghiệm sửa chữa tại các nhà máy công nghiệp, đặc biệt công ty nhựa</li>
-                           </ul>
-
-                           <h3>Quyền lợi</h3>
-                           <ul>
-                           <li>Đóng bảo hiểm 100%, Lương thỏa thuận, Các chế độ phúc lợi, thưởng các dịp Lễ,thưởng KPI hàng tháng, thưởng tháng lương 13h</li>
-                           <li>- Bán hàng tại shop : 2 người</li>
-                           </ul>
-
-                           <h3>Địa điểm làm việc</h3>
-                           <ul>
-                           <li>Đà Nẵng</li>
-                           </ul>
-   
-                        </div><!-- Entery content end -->
-   
-                     </div><!-- post-content end -->
-                  </div><!-- Single post end -->
-   
-               </div><!-- Content Col end -->
-   
+                           </div>
+                        </div>
+                     </div>
+                     <h3>Vị trí tuyển dụng</h3>
+                     <div>
+                        <p id="ViTriTD" style="padding: 20px; font-size:17px;"></p>
+                     </div>
+                     <h3>Mô tả chi tiết công việc</h3>
+                     <div>
+                        <p id="MotaCongViec" style="padding: 20px; font-size:17px;"></p>
+                     </div>
+                     <h3>Yêu cầu công việc</h3>
+                     <div>
+                        <p id="YeuCauCongViec" style="padding: 20px; font-size:17px;"></p>
+                     </div>
+                     <h3>Quyền lợi</h3>
+                     <div>
+                        <p id="QuyenLoi" style="padding: 20px; font-size:17px;"></p>
+                     </div>
+                     <h3>Địa điểm làm việc</h3>
+                     <div>
+                        <p id="DiaDiem" style="padding: 20px; font-size:17px;"></p>
+                     </div>
+                  </div><!-- Entery content end -->
+               </div><!-- post-content end -->
                <div class="col-lg-4 col-md-12">
-                  <div class="sidebar sidebar-right"> 
-   
+                  <div class="sidebar sidebar-right">
                      <div class="widget m-bottom-0">
-                        <h3 class="block-title"><span>Newsletter</span></h3>
+                        <h3 class="block-title"><span>Hấp dẫn</span></h3>
                         <div class="ts-newsletter">
                            <div class="newsletter-introtext">
-                              <h4>Get Updates</h4>
-                              <p>Subscribe our newsletter to get the best stories into your inbox!</p>
+                              <h4>Thông tin cật nhật</h4>
+                              <p>Quan tâm để nhận được thông báo được cật nhật về bài tuyển dụng</p>
                            </div>
-   
                            <div class="newsletter-form">
                               <form action="#" method="post">
                                  <div class="form-group">
-                                    <input type="email" name="email" id="newsletter-form-email" class="form-control form-control-lg" placeholder="E-mail" autocomplete="off">
-                                    <button class="btn btn-primary">Subscribe</button>
+                                    <button class="btn btn-primary">Quan tâm</button>
                                  </div>
                               </form>
                            </div>
                         </div><!-- Newsletter end -->
                      </div><!-- Newsletter widget end -->
-   
+
                   </div><!-- Sidebar right end -->
                </div><!-- Sidebar Col end -->
-   
-            </div><!-- Row end -->
-         </div><!-- Container end -->
-      </section><!-- First block end -->
+            </div><!-- Single post end -->
+         </div><!-- Row end -->
+   </div><!-- Container end -->
+   </section><!-- First block end -->
 
-      <footer id="footer" class="footer">
-         <div class="footer-info text-center">
-            <div class="container">
-               <div class="row">
-                  <div class="col-md-12">
-                     <div class="footer-info-content">
-                        <div class="footer-logo">
-                           <img class="img-fluid" src="images/logos/footer-logo.png" alt="" />
-                        </div>
-                        <p>News247 Worldwide là một trang web việc làm trực tuyến phổ biến và nguồn thông tin quan trọng
-                           về nghề nghiệp và tuyển dụng dành cho độc giả có ảnh hưởng trên toàn cầu.
-                           Bạn có thể liên hệ với chúng tôi qua email hoặc điện thoại.
-                        </p>
-                        <p class="footer-info-phone"><i class="fa fa-phone"></i> +(89) 38259010</p>
-                        <p class="footer-info-email"><i class="fa fa-envelope-o"></i> <a
-                              href="https://demo.themewinter.com/cdn-cgi/l/email-protection" class="__cf_email__"
-                              data-cfemail="e287868b968d90a28c879591d0d6d5cc818d8f">[email&#160;protected]</a></p>
-                        <ul class="unstyled footer-social">
-                           <li>
-                              <a title="Rss" href="#">
-                                 <span class="social-icon"><i class="fa fa-rss"></i></span>
-                              </a>
-                              <a title="Facebook" href="#">
-                                 <span class="social-icon"><i class="fa fa-facebook"></i></span>
-                              </a>
-                              <a title="Twitter" href="#">
-                                 <span class="social-icon"><i class="fa fa-twitter"></i></span>
-                              </a>
-                              <a title="Google+" href="#">
-                                 <span class="social-icon"><i class="fa fa-google-plus"></i></span>
-                              </a>
-                              <a title="Linkdin" href="#">
-                                 <span class="social-icon"><i class="fa fa-linkedin"></i></span>
-                              </a>
-                              <a title="Skype" href="#">
-                                 <span class="social-icon"><i class="fa fa-skype"></i></span>
-                              </a>
-                              <a title="Skype" href="#">
-                                 <span class="social-icon"><i class="fa fa-dribbble"></i></span>
-                              </a>
-                              <a title="Skype" href="#">
-                                 <span class="social-icon"><i class="fa fa-pinterest"></i></span>
-                              </a>
-                              <a title="Skype" href="#">
-                                 <span class="social-icon"><i class="fa fa-instagram"></i></span>
-                              </a>
-                           </li>
-                        </ul>
-                     </div><!-- Footer info content end -->
-                  </div><!-- Col end -->
-               </div><!-- Row end -->
-            </div><!-- Container end -->
-         </div><!-- Footer info end -->
-
-      </footer><!-- Footer end -->
-
-      <div class="copyright">
+   <footer id="footer" class="footer">
+      <div class="footer-info text-center">
          <div class="container">
             <div class="row">
-               <div class="col-sm-12 col-md-6">
-                  <div class="copyright-info">
-                     <span>Copyright © 2024 - Bản quyền thuộc về BKDN-DUT</span>
-                  </div>
-               </div>
-
-               <div class="col-sm-12 col-md-6">
-                  <div class="footer-menu">
-                     <ul class="nav unstyled">
-                        <li><a href="#">Điều khoản sử dụng</a></li>
-                        <li><a href="#">Quyền riêng tư</a></li>
-                        <li><a href="#">Quảng cáo</a></li>
-                        <li><a href="#">Chính sách Cookie</a></li>
-                        <li><a href="#">Liên hệ</a></li>
+               <div class="col-md-12">
+                  <div class="footer-info-content">
+                     <div class="footer-logo">
+                        <img class="img-fluid" src="images/logos/footer-logo.png" alt="" />
+                     </div>
+                     <p>News247 Worldwide là một trang web việc làm trực tuyến phổ biến và nguồn thông tin quan trọng
+                        về nghề nghiệp và tuyển dụng dành cho độc giả có ảnh hưởng trên toàn cầu.
+                        Bạn có thể liên hệ với chúng tôi qua email hoặc điện thoại.
+                     </p>
+                     <p class="footer-info-phone"><i class="fa fa-phone"></i> +(89) 38259010</p>
+                     <p class="footer-info-email"><i class="fa fa-envelope-o"></i> <a
+                           href="https://demo.themewinter.com/cdn-cgi/l/email-protection" class="__cf_email__"
+                           data-cfemail="e287868b968d90a28c879591d0d6d5cc818d8f">[email&#160;protected]</a></p>
+                     <ul class="unstyled footer-social">
+                        <li>
+                           <a title="Rss" href="#">
+                              <span class="social-icon"><i class="fa fa-rss"></i></span>
+                           </a>
+                           <a title="Facebook" href="#">
+                              <span class="social-icon"><i class="fa fa-facebook"></i></span>
+                           </a>
+                           <a title="Twitter" href="#">
+                              <span class="social-icon"><i class="fa fa-twitter"></i></span>
+                           </a>
+                           <a title="Google+" href="#">
+                              <span class="social-icon"><i class="fa fa-google-plus"></i></span>
+                           </a>
+                           <a title="Linkdin" href="#">
+                              <span class="social-icon"><i class="fa fa-linkedin"></i></span>
+                           </a>
+                           <a title="Skype" href="#">
+                              <span class="social-icon"><i class="fa fa-skype"></i></span>
+                           </a>
+                           <a title="Skype" href="#">
+                              <span class="social-icon"><i class="fa fa-dribbble"></i></span>
+                           </a>
+                           <a title="Skype" href="#">
+                              <span class="social-icon"><i class="fa fa-pinterest"></i></span>
+                           </a>
+                           <a title="Skype" href="#">
+                              <span class="social-icon"><i class="fa fa-instagram"></i></span>
+                           </a>
+                        </li>
                      </ul>
-                  </div>
-               </div>
+                  </div><!-- Footer info content end -->
+               </div><!-- Col end -->
             </div><!-- Row end -->
-
-            <div id="back-to-top" class="back-to-top">
-               <button class="btn btn-primary" title="Back to Top">
-                  <i class="fa fa-angle-up"></i>
-               </button>
+         </div><!-- Container end -->
+      </div><!-- Footer info end -->
+   </footer><!-- Footer end -->
+   <div class="copyright">
+      <div class="container">
+         <div class="row">
+            <div class="col-sm-12 col-md-6">
+               <div class="copyright-info">
+                  <span>Copyright © 2024 - Bản quyền thuộc về BKDN-DUT</span>
+               </div>
             </div>
 
-         </div><!-- Container end -->
-      </div><!-- Copyright end -->
+            <div class="col-sm-12 col-md-6">
+               <div class="footer-menu">
+                  <ul class="nav unstyled">
+                     <li><a href="#">Điều khoản sử dụng</a></li>
+                     <li><a href="#">Quyền riêng tư</a></li>
+                     <li><a href="#">Quảng cáo</a></li>
+                     <li><a href="#">Chính sách Cookie</a></li>
+                     <li><a href="#">Liên hệ</a></li>
+                  </ul>
+               </div>
+            </div>
+         </div><!-- Row end -->
+
+         <div id="back-to-top" class="back-to-top">
+            <button class="btn btn-primary" title="Back to Top">
+               <i class="fa fa-angle-up"></i>
+            </button>
+         </div>
+
+      </div><!-- Container end -->
+   </div><!-- Copyright end -->
 
 
-      <!-- Javascript Files
+   <!-- Javascript Files
 	================================================== -->
+   <script>
+      var id = "{{IDTD}}";
+      var NgayTD = "...";
+      var SoLuongTD = "...";
+      var LinhVucTD = "...";
+      var SDT = "...";
+      var Gmail = "...";
+      var ViTriTD = "...";
+      var MotaCongViec = "...";
+      var YeuCauCongViec = "...";
+      var QuyenLoi = "...";
+      var DiaDiem = "...";
+      var LuongTD = "...";
+      fetch("/TDs/" + id, {
+         method: "GET"
+      })
+         .then(response => response.json())
+         .then(data => {
+            if (data.NgayTD != null) {
+               NgayTD = JSON.stringify(data.NgayTD);
+               NgayTD = JSON.parse(NgayTD);
+               let date = new Date('2023-12-04T00:00:00');
+               let day = String(date.getDate()).padStart(2, '0');
+               let month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng trong JavaScript bắt đầu từ 0
+               let year = date.getFullYear();
+               let formattedDate = `${day}/${month}/${year}`;
+               NgayTD = formattedDate;
+            }
+            if (data.SoLuongTD != null) {
+               SoLuongTD = JSON.stringify(data.SoLuongTD);
+               SoLuongTD = JSON.parse(SoLuongTD);
+            }
+            if (data.LinhVucTD != null) {
+               LinhVucTD = JSON.stringify(data.LinhVucTD);
+               LinhVucTD = JSON.parse(LinhVucTD);
+            }
+            if (data.SDT != null) {
+               SDT = JSON.stringify(data.SDT);
+               SDT = JSON.parse(SDT);
+            }
+            if (data.Gmail != null) {
+               Gmail = JSON.stringify(data.Gmail);
+               Gmail = JSON.parse(Gmail);
+            }
+            if (data.ViTriTD != null) {
+               ViTriTD = JSON.stringify(data.ViTriTD);
+               ViTriTD = ViTriTD.replace(/\\r/g, "\\\\r").replace(/\\n/g, "\\\\n").replace(/\\\\r\\\\n/g, "<br>");
+               ViTriTD = JSON.parse(ViTriTD);
+            }
+            if (data.MotaCongViec != null) {
+               MotaCongViec = JSON.stringify(data.MotaCongViec);
+               MotaCongViec = MotaCongViec
+                  .replace(/\\r/g, "\\\\r").replace(/\\n/g, "\\\\n").replace(/\\\\r\\\\n/g, "<br>");
+               MotaCongViec = JSON.parse(MotaCongViec);
+            }
+            if (data.YeuCauCongViec != null) {
+               YeuCauCongViec = JSON.stringify(data.YeuCauCongViec);
+               YeuCauCongViec = YeuCauCongViec
+                  .replace(/\\r/g, "\\\\r").replace(/\\n/g, "\\\\n").replace(/\\\\r\\\\n/g, "<br>");
+               YeuCauCongViec = JSON.parse(YeuCauCongViec);
+            }
+            if (data.QuyenLoi != null) {
+               QuyenLoi = JSON.stringify(data.QuyenLoi);
+               QuyenLoi = QuyenLoi.replace(/\\r/g, "\\\\r").replace(/\\n/g, "\\\\n").replace(/\\\\r\\\\n/g, "<br>");
+               QuyenLoi = JSON.parse(QuyenLoi);
+            }
+            if (data.DiaDiem != null) {
+               DiaDiem = JSON.stringify(data.DiaDiem);
+               DiaDiem = DiaDiem.replace(/\\r/g, "\\\\r").replace(/\\n/g, "\\\\n").replace(/\\\\r\\\\n/g, "<br>");
+               DiaDiem = JSON.parse(DiaDiem);
+            }
+            if (data.LuongTD != null) {
+               LuongTD = JSON.stringify(data.LuongTD);
+               LuongTD = JSON.parse(LuongTD);
+            }
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var yyyy = today.getFullYear();
+            today = dd + '/' + mm + '/' + yyyy;
+            document.getElementById("LuongTD").innerHTML = LuongTD;
+            document.querySelector(".post-date").innerHTML += today;
+            document.getElementById("NgayTD").innerHTML = NgayTD;
+            document.getElementById("SoLuongTD").innerHTML = SoLuongTD;
+            document.getElementById("LinhVucTD").innerHTML = LinhVucTD;
+            document.getElementById("SDT").innerHTML = SDT;
+            document.getElementById("Gmail").innerHTML = Gmail;
+            document.getElementById("ViTriTD").innerHTML = ViTriTD;
+            document.getElementById("MotaCongViec").innerHTML = MotaCongViec;
+            document.getElementById("YeuCauCongViec").innerHTML = YeuCauCongViec;
+            document.getElementById("QuyenLoi").innerHTML = QuyenLoi;
+            document.getElementById("DiaDiem").innerHTML = DiaDiem;
+         })
+         .catch(error => console.log(error));
+   </script>
+   <!-- initialize jQuery Library -->
+   <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+   <script type="text/javascript" src="{{ url_for('static', path='/js/jquery.js') }}"></script>
+   <!-- Popper JS -->
+   <script type="text/javascript" src="{{ url_for('static', path='/js/popper.min.js') }}"></script>
+   <!-- Bootstrap jQuery -->
+   <script type="text/javascript" src="{{ url_for('static', path='/js/bootstrap.min.js') }}"></script>
+   <!-- Owl Carousel -->
+   <script type="text/javascript" src=" {{ url_for('static', path='/js/owl.carousel.min.js') }}"></script>
+   <!-- Color box -->
+   <script type="text/javascript" src=" {{ url_for('static', path='/js/jquery.colorbox.js') }}"></script>
+   <!-- Smoothscroll -->
+   <script type="text/javascript" src=" {{ url_for('static', path='/js/smoothscroll.js') }}"></script>
 
-         <!-- initialize jQuery Library -->
-         <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-         <script type="text/javascript" src="{{ url_for('static', path='/js/jquery.js') }}"></script>
-         <!-- Popper JS -->
-         <script type="text/javascript" src="{{ url_for('static', path='/js/popper.min.js') }}"></script>
-         <!-- Bootstrap jQuery -->
-         <script type="text/javascript" src="{{ url_for('static', path='/js/bootstrap.min.js') }}"></script>
-         <!-- Owl Carousel -->
-         <script type="text/javascript" src=" {{ url_for('static', path='/js/owl.carousel.min.js') }}"></script>
-         <!-- Color box -->
-         <script type="text/javascript" src=" {{ url_for('static', path='/js/jquery.colorbox.js') }}"></script>
-         <!-- Smoothscroll -->
-         <script type="text/javascript" src=" {{ url_for('static', path='/js/smoothscroll.js') }}"></script>
-   
-   
-         <!-- Template custom -->
-         <script type="text/javascript" src=" {{ url_for('static', path='/js/custom.js') }}"></script>
-         
+
+   <!-- Template custom -->
+   <script type="text/javascript" src=" {{ url_for('static', path='/js/custom.js') }}"></script>
+
    </div><!-- Body inner end -->
 </body>
 

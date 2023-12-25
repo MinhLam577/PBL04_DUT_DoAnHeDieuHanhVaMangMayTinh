@@ -5,8 +5,6 @@ class Post(Base):
     IDPost = Column(String, primary_key=True, nullable=False)
     TimePost = Column(DateTime, default=None)
     ContentPost = Column(UnicodeText, nullable=False)
-    IDUserSend = Column(String)
-    NameUserSend = Column(String)
     LinkPost = Column(String, nullable=False)
     LinkImg = Column(String)
 Base.metadata.create_all(bind=engine)
