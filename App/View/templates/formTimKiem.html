@@ -583,11 +583,8 @@
                            <div
                               class="post-block-style post-float-half clearfix d-flex justify-content-stretch align-item-stretch">
                               <div class="post-thumb" style="width: 20%">
-                                 <a href="{{userID}}/Chi-tiet-td">
-                                    <img class="img-fluid"
-                                       src="{{ url_for('static', path='/images/TDImages/images.jpg') }}" alt=""
-                                       style="width:100%; height:100%" />
-                                 </a>
+                                 <img class="img-fluid" id="{{td.IDPost}}" alt="" src="{{ url_for('static', path='/images/TDImages/' ~ td.IDPost ~ '.jpg') }}" style="width:100%; height:100%" 
+                                 onerror='this.src = "{{ url_for('static', path='/images/TDImages/default.jpg') }}"'/>
                               </div>
                               <div class="post-content" style="width: 100%">
                                  <h2 class="post-title">
@@ -601,40 +598,18 @@
                                     {%if td.NoiTD != none%}
                                     <span class="post-author">
                                        {% if userType == "admin" %}
-                                       <a href="/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}
                                           Nơi tuyển dụng: {{td.NoiTD}}
-                                       </a>
-                                       {%else%}
-                                       <a href="{{userID}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}
-                                          Nơi tuyển dụng: {{td.NoiTD}}
-                                       </a>
                                        {%endif%}
                                     </span>
                                     {%else%}
                                     {%if td.SDT != none%}
                                     <span class="post-author">
-                                       {% if userType == "admin" %}
-                                       <a href="/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}
-                                          Liên hệ: {{td.SDT}}
-                                       </a>
-                                       {%else%}
-                                       <a href="{{userID}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}
-                                          Liên hệ: {{td.SDT}}
-                                       </a>
-                                       {%endif%}
+                                       Liên hệ: {{td.SDT}}
                                     </span>
                                     {%else%}
                                     {%if td.Gmail != none%}
                                     <span class="post-author">
-                                       {% if userType == "admin" %}
-                                       <a href="/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}
-                                          Liên hệ: {{td.Gmail}}
-                                       </a>
-                                       {%else%}
-                                       <a href="{{userID}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}
-                                          Liên hệ: {{td.Gmail}}
-                                       </a>
-                                       {%endif%}
+                                       Liên hệ: {{td.Gmail}}
                                     </span>
                                     {%else%}
                                     {%endif%}
