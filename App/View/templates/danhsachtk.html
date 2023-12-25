@@ -15,7 +15,7 @@
             <h3>DANH SÁCH TÀI KHOẢN</h3>
             <div>
                 <input placeholder="Tài khoản">
-                <button class="add_new"><i class="fa-solid fa-plus"></i> Add New</button>
+                <button id="add_new"><i class="fa-solid fa-plus"></i> Add New</button>
 
             </div>
         </div>
@@ -34,7 +34,7 @@
                         <td>{{loop.index}}</td>
                         <td>{{ds.Gmail}}</td>
                         <td>
-                            <button type="button"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button id="update"><i class="fa-solid fa-pen-to-square"></i></button>
                             <button type="button" onclick="del('{{ds.Gmail}}')"><i class="fa-solid fa-trash"
                                     value='{{ds.Gmail}}'></i></button>
                         </td>
@@ -43,6 +43,45 @@
                 </tbody>
             </table>
         </div>
+        <div class="modal">
+            <div class = "popup">
+                <div class="close-btn">&times;</div>
+                <div class="form">
+                    <h2>Thêm tài khoản</h2>
+                    <div class="form-element">
+                        <label for="email">Email</label>
+                        <input type="text" id="email" placeholder="Enter email">
+                    </div>
+                    <div class="form-element">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter password">
+                    </div>
+                    <div class="form-element">
+                        <button>Sign in</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal2">
+            <div class = "popup">
+                <div class="close-btn">&times;</div>
+                <div class="form">
+                    <h2>Sửa tài khoản</h2>
+                    <div class="form-element">
+                        <label for="email">Email</label>
+                        <input type="text" id="email1" placeholder="Enter email">
+                    </div>
+                    <div class="form-element">
+                        <label for="password">Password</label>
+                        <input type="password" id="password1" placeholder="Enter password">
+                    </div>
+                    <div class="form-element">
+                        <button>Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src=" {{ url_for('static', path='/js/themtk.js') }}"></script>
     </div>
     <script>
         function del(Gmail) {
