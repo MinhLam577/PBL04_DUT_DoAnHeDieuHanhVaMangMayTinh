@@ -4,9 +4,7 @@ from time import sleep
 import time
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import WebDriverException, NoSuchElementException
 import re
 import traceback
 import sys
@@ -20,6 +18,7 @@ fileGroupID = 'ID_Group.txt'
 fileFanpageID = 'ID_Fanpage.txt'
 filePostFanpageID = 'post_ID_Fanpage.txt'
 filePostGroupID = 'post_ID_Group.txt'
+fileGroupIDJoin = "ID_Group_Join.txt"
 postController = PostControllers()
 # khởi tạo 1 chrome profile với tham số headless(ẩn chrome) tùy chọn
 def initDriverProfile(headlessOption='--disable-headless'): 
@@ -138,74 +137,82 @@ def scrollToEndOfPage(driver, timeout = 60):
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             sleep(2)
             new_height = driver.execute_script("return document.body.scrollHeight")
-            if (new_height == last_height or time.time() - start_time > timeout):
+            if (new_height == last_height or time.time() - start_time > float(timeout)):
                 break
             last_height = new_height
     except Exception:
         traceback.print_exc()
 
 #Tìm kiếm ID bài viết trên fanpage
-def get_FangpageID_By_Search(driver, txt, timeout = 60):
-    driver.get("https://www.facebook.com/search/pages?q=" + txt)
-    sleep(2)
-    scrollToEndOfPage(driver, timeout)
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    listFanpage = soup.find_all('div', attrs={'data-visualcompletion': 'ignore-dynamic'})
-    listFanpageName = [i.find('a', attrs={'aria-hidden':'true', 'role':'presentation', 'href' : lambda x: x and re.match("https:\/\/www\.facebook\.com\/((profile\.php\?id=\d+)|([a-zA-Z0-9\.]){5,})", x)}) for i in listFanpage]
-    for i in range(len(listFanpageName)):
-        if(listFanpageName[i] != None):
-            if(listFanpageName[i]['href'].__contains__('profile.php')):
-                listFanpageName[i] = listFanpageName[i]['href'].split('/')[-1].split('?id=')[-1]
-            else:
-                listFanpageName[i] = listFanpageName[i]['href'].split('/')[-1]
-    listFanpageName = [i for i in listFanpageName if i != None]
-    print(listFanpageName)
-    return listFanpageName
+def get_FangpageID_By_Search(driver, txt, timeout = 15):
+    try:
+        driver.get("https://www.facebook.com/search/pages?q=" + txt)
+        sleep(2)
+        scrollToEndOfPage(driver, timeout)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        listFanpage = soup.find_all('div', attrs={'data-visualcompletion': 'ignore-dynamic'})
+        listFanpageName = [i.find('a', attrs={'aria-hidden':'true', 'role':'presentation', 'href' : lambda x: x and re.match("https:\/\/www\.facebook\.com\/((profile\.php\?id=\d+)|([a-zA-Z0-9\.]){5,})", x)}) for i in listFanpage]
+        for i in range(len(listFanpageName)):
+            if(listFanpageName[i] != None):
+                if(listFanpageName[i]['href'].__contains__('profile.php')):
+                    listFanpageName[i] = listFanpageName[i]['href'].split('/')[-1].split('?id=')[-1]
+                else:
+                    listFanpageName[i] = listFanpageName[i]['href'].split('/')[-1]
+        listFanpageName = [i for i in listFanpageName if i != None]
+        return listFanpageName
+    except NoSuchElementException:
+        raise NoSuchElementException
 
 #Tìm kiếm ID bài viết của Group 
 def get_GroupPublicID_By_Search(driver, txt, timeout = 60):
-    driver.get("https://www.facebook.com/groups/search/groups/?q=" + txt + "&filters=eyJwdWJsaWNfZ3JvdXBzOjAiOiJ7XCJuYW1lXCI6XCJwdWJsaWNfZ3JvdXBzXCIsXCJhcmdzXCI6XCJcIn0ifQ%3D%3D")
-    sleep(2)
-    scrollToEndOfPage(driver, timeout)
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    listGroup = soup.find('div', attrs={'aria-label':'Kết quả tìm kiếm'}).find_all('div', attrs={'data-visualcompletion': 'ignore-dynamic', 'style': lambda x: x and 'padding-left:' in x})
-    listGroupName = [i.find('a', attrs={'aria-hidden':'true', 'role':'presentation', 'href' : lambda x: x and re.match("https:\/\/www\.facebook\.com\/groups\/(([a-zA-Z0-9\.]){5,}|\d+)", x)}) for i in listGroup]
-    listGroupIDOrName = [i['href'][:-1].split('/')[-1] for i in listGroupName if i != None]
-    return listGroupIDOrName
+    try:
+        driver.get("https://www.facebook.com/groups/search/groups/?q=" + txt + "&filters=eyJwdWJsaWNfZ3JvdXBzOjAiOiJ7XCJuYW1lXCI6XCJwdWJsaWNfZ3JvdXBzXCIsXCJhcmdzXCI6XCJcIn0ifQ%3D%3D")
+        sleep(2)
+        scrollToEndOfPage(driver, timeout)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        listGroup = soup.find('div', attrs={'aria-label':'Kết quả tìm kiếm'}).find_all('div', attrs={'data-visualcompletion': 'ignore-dynamic', 'style': lambda x: x and 'padding-left:' in x})
+        listGroupName = [i.find('a', attrs={'aria-hidden':'true', 'role':'presentation', 'href' : lambda x: x and re.match("https:\/\/www\.facebook\.com\/groups\/(([a-zA-Z0-9\.]){5,}|\d+)", x)}) for i in listGroup]
+        listGroupIDOrName = [i['href'][:-1].split('/')[-1] for i in listGroupName if i != None]
+        return listGroupIDOrName
+    except NoSuchElementException:
+        raise NoSuchElementException
 
 #Tìm kiếm ID bài viết của các đã join
 def get_JoinedGroupID_By_Search(driver, txt, timeout = 60):
-    driver.get("https://www.facebook.com/groups/search/groups/?q=" + txt + "&filters=eyJteV9ncm91cHM6MCI6IntcIm5hbWVcIjpcIm15X2dyb3Vwc1wiLFwiYXJnc1wiOlwiXCJ9In0%3D")
-    sleep(2)
-    scrollToEndOfPage(driver, timeout)
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    listGroup = soup.find('div', attrs={'aria-label':'Kết quả tìm kiếm'}).find_all('div', attrs={'data-visualcompletion': 'ignore-dynamic', 'style': lambda x: x and 'padding-left:' in x})
-    listGroupName = [i.find('a', attrs={'aria-hidden':'true', 'role':'presentation', 'href' : lambda x: x and re.match("https:\/\/www\.facebook\.com\/groups\/(([a-zA-Z0-9\.]){5,}|\d+)", x)}) for i in listGroup]
-    listGroupIDOrName = [i['href'][:-1].split('/')[-1] for i in listGroupName if i != None]
-    return listGroupIDOrName
+    try:
+        driver.get("https://www.facebook.com/groups/search/groups/?q=" + txt + "&filters=eyJteV9ncm91cHM6MCI6IntcIm5hbWVcIjpcIm15X2dyb3Vwc1wiLFwiYXJnc1wiOlwiXCJ9In0%3D")
+        sleep(2)
+        scrollToEndOfPage(driver, timeout)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        listGroup = soup.find('div', attrs={'aria-label':'Kết quả tìm kiếm'}).find_all('div', attrs={'data-visualcompletion': 'ignore-dynamic', 'style': lambda x: x and 'padding-left:' in x})
+        listGroupName = [i.find('a', attrs={'aria-hidden':'true', 'role':'presentation', 'href' : lambda x: x and re.match("https:\/\/www\.facebook\.com\/groups\/(([a-zA-Z0-9\.]){5,}|\d+)", x)}) for i in listGroup]
+        listGroupIDOrName = [i['href'][:-1].split('/')[-1] for i in listGroupName if i != None]
+        return listGroupIDOrName
+    except NoSuchElementException:
+        raise NoSuchElementException
 
 #Lấy post ID của bài viết trong group
 def getPostsIDGroup(driver, idGroup, numberPost=10):
     try:
         driver.get('https://mbasic.facebook.com/groups/' + str(idGroup))
-        sleep(3)
+        sleep(2)
         listAllIDPOST = postController.GetAllIDPost()
         sumLinks = readDataFileITxtID(filePostGroupID)
         while (len(sumLinks) < numberPost):
             try:
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                sleep(3)
                 likeBtn = driver.find_elements(By.XPATH, '//*[contains(@id, "like_")]')
                 if len(likeBtn):
                     for id in likeBtn:
                         idPost = id.get_attribute('id').replace("like_", "")
                         if (idPost not in sumLinks and len(sumLinks) < numberPost and idPost not in listAllIDPOST):
                             sumLinks.append(idPost)
+                            print("Đã lọc được bài viết có ID:", idPost)
                             writeFileTxtID(filePostGroupID, idPost)
                 nextBtn = driver.find_elements(By.XPATH, '//a[contains(@href, "?bacr")]')
                 if (len(nextBtn)):
                     nextBtn[0].click()
-                    sleep(3)
+                    sleep(2)
                 else:
                     break
             except WebDriverException:
@@ -213,6 +220,10 @@ def getPostsIDGroup(driver, idGroup, numberPost=10):
                 break
             except Exception:
                 traceback.print_exc()
+    except NoSuchElementException:
+        raise NoSuchElementException
+    except AttributeError:
+        raise AttributeError
     except Exception:
         traceback.print_exc()
 
@@ -220,7 +231,7 @@ def getPostsIDGroup(driver, idGroup, numberPost=10):
 def getPostIDFanpage(driver, idFanpage, numberpost=10):
     try:
         driver.get("https://mbasic.facebook.com/" + str(idFanpage));
-        sleep(3)
+        sleep(2)
         listAllIDPOST = postController.GetAllIDPost()
         # địa chỉ URL hiện tại
         current_url = driver.current_url
@@ -228,29 +239,34 @@ def getPostIDFanpage(driver, idFanpage, numberpost=10):
         nameUser = current_url.split("/")[-1]
         timeline = driver.find_element(By.XPATH, "//a[starts-with(@href, '/" + nameUser + "?v=timeline')]")
         timeline.click()
-        sleep(3)
+        sleep(2)
         sumLinks = readDataFileITxtID(filePostFanpageID)
         while (len(sumLinks) < numberpost):
             try:
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                sleep(3)
                 likeBtn = driver.find_elements(By.XPATH, '//*[contains(@id, "like_")]')
                 if len(likeBtn):
                     for id in likeBtn:
                         idPost = id.get_attribute('id').replace("like_", "")
-                        if (idPost not in sumLinks and len(sumLinks) <= numberpost and idPost not in listAllIDPOST):
+                        if (idPost not in sumLinks and len(sumLinks) < numberpost and idPost not in listAllIDPOST):
                             sumLinks.append(idPost)
+                            print("Đã lọc được bài viết có ID:", idPost)
                             writeFileTxtID(filePostFanpageID, idPost)
                 nextBtn = driver.find_elements(By.XPATH, '//a[contains(@href, "?cursor=")]')
                 if (len(nextBtn)):
                     nextBtn[0].click()
-                    sleep(3)
+                    sleep(2)
                 else:
                     break
             except WebDriverException:
                 traceback.print_exc()
+    except NoSuchElementException:
+        raise NoSuchElementException
+    except AttributeError:
+        raise AttributeError
     except Exception:
         traceback.print_exc()
+
 def parse_date(date_string):
     try:
         parsed_date = datetime.strptime(date_string, "%d tháng %m lúc %H:%M")
@@ -325,13 +341,15 @@ def getContentFromPostID(driver, postID):
             obj['LinkImg'] = None
         obj['LinkPost'] = "http://www.facebook.com/" + postID
         return obj
+    except AttributeError:
+        raise AttributeError
     except Exception:
         traceback.print_exc()
-        
 #Tải ảnh
 def download_image(driver, url, IDpost):
     try:
         driver.get(url)
+        sleep(2)
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         image_src = soup.find('img', {'data-visualcompletion': 'media-vc-image'})
         if image_src is None:

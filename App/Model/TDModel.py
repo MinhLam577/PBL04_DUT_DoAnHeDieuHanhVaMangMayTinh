@@ -1,6 +1,6 @@
 from config.db import SessionLocal
 from pydantic import BaseModel, validator
-from sqlalchemy import text
+from sqlalchemy import text, select
 from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
 from fastapi import Request, Depends, Form
@@ -16,7 +16,23 @@ def get_db():
         yield db
     finally:
         db.close()
-        
+def ConvertTD(td: TuyenDung):
+    return {
+        "IDTD": td.IDTD, 
+        "NoiTD": td.NoiTD, 
+        "NgayTD": td.NgayTD, 
+        "SoLuongTD": td.SoLuongTD, 
+        "LinhVucTD": td.LinhVucTD, 
+        "ViTriTD": td.ViTriTD, 
+        "MotaCongViec": td.MotaCongViec, 
+        "YeuCauCongViec": td.YeuCauCongViec, 
+        "QuyenLoi": td.QuyenLoi, 
+        "DiaDiem": td.DiaDiem, 
+        "SDT": td.SDT, 
+        "Gmail": td.Gmail, 
+        "LuongTD": td.LuongTD,
+        "IDPost": td.IDPost
+    }
 class TDModel:
     def AddTD(self, td: TuyenDung):
         with SessionLocal() as db:
@@ -50,7 +66,8 @@ class TDModel:
                     "DiaDiem": td.DiaDiem, 
                     "SDT": td.SDT, 
                     "Gmail": td.Gmail, 
-                    "LuongTD": td.LuongTD
+                    "LuongTD": td.LuongTD,
+                    "IDPost": td.IDPost
                 })
                 db.commit()
                 return True
@@ -61,34 +78,9 @@ class TDModel:
             listTD = db.query(TuyenDung).all()
             listTDConvert = []
             for TD in listTD:
-                IDTD = TD.IDTD
-                NoiTD = TD.NoiTD
-                NgayTD = TD.NgayTD
-                SoLuongTD = TD.SoLuongTD
-                LinhVucTD = TD.LinhVucTD
-                ViTriTD = TD.ViTriTD
-                MotaCongViec = TD.MotaCongViec
-                YeuCauCongViec = TD.YeuCauCongViec
-                QuyenLoi = TD.QuyenLoi
-                DiaDiem = TD.DiaDiem
-                SDT = TD.SDT
-                Gmail = TD.Gmail
-                LuongTD = TD.LuongTD
-                listTDConvert.append({
-                    "IDTD": IDTD, 
-                    "NoiTD": NoiTD, 
-                    "NgayTD": NgayTD, 
-                    "SoLuongTD": SoLuongTD, 
-                    "LinhVucTD": LinhVucTD, 
-                    "ViTriTD": ViTriTD, 
-                    "MotaCongViec": MotaCongViec, 
-                    "YeuCauCongViec": YeuCauCongViec, 
-                    "QuyenLoi": QuyenLoi, 
-                    "DiaDiem": DiaDiem, 
-                    "SDT": SDT, 
-                    "Gmail": Gmail, 
-                    "LuongTD": LuongTD
-                })
+                listTDConvert.append(
+                    ConvertTD(TD)
+                )
             return listTDConvert
     def GetTDByIDTD(self, IDTD: str):
         with SessionLocal() as db:
@@ -106,15 +98,43 @@ class TDModel:
                 raise TDException("Xóa tuyển dụng cũ thất bại")
     def TimKiemTD(self, Text: str, LinhVucTD: str, DiaDiem: str):
         with SessionLocal() as db:
-            res = None
+            res = []
             try:
                 if(LinhVucTD == 'All' and DiaDiem == "All"):
-                    res = db.execute(text(f"CALL SearchTuyenDung('{Text}', '{Text}', '{Text}', '', '')")).fetchall()
+                    res = db.query(TuyenDung).filter(
+                        (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                        (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                        (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))
+                    ).all()
                 elif(LinhVucTD == "All" and DiaDiem != "All"):
-                    res = db.execute(text(f"CALL SearchTuyenDung('{Text}', '{Text}', '{Text}', '', '{DiaDiem}')")).fetchall()
+                    res = db.query(TuyenDung).filter((
+                        (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                        (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                        (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))) &
+                        (TuyenDung.DiaDiem.like('%'+DiaDiem+'%'))
+                    ).all()
                 elif(LinhVucTD != "All" and DiaDiem == "All"):
-                    res = db.execute(text(f"CALL SearchTuyenDung('{Text}', '{Text}', '{Text}', '{LinhVucTD}', '')")).fetchall()
-                if(res != None):
-                    return res
+                    res = db.query(TuyenDung).filter((
+                        (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                        (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                        (TuyenDung.YeuCauCongViec.like('%'+Text+'%')))&
+                        (TuyenDung.LinhVucTD == LinhVucTD)
+                    ).all()
+                else:
+                    res = db.query(TuyenDung).filter((
+                        (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                        (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                        (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))) &
+                        (TuyenDung.DiaDiem.like('%'+DiaDiem+'%')) &
+                        (TuyenDung.LinhVucTD == LinhVucTD)
+                    ).all()
+                if(res == None):
+                    return None
+                listTDConvert = []
+                for TD in res:
+                    listTDConvert.append(ConvertTD(TD))
+                return listTDConvert
             except Exception as e:
                 raise TDException("Tìm kiếm tuyển dụng thất bại, lỗi: ", e)
+
+

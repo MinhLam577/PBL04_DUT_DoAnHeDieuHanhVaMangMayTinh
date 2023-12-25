@@ -26,8 +26,6 @@
             }
             return values;
           }
-        var currentURL = window.location.href;
         function SelectItemMenu(duongdan) {
-            currentURL = duongdan;
             document.getElementById('frame').src = duongdan;
         }

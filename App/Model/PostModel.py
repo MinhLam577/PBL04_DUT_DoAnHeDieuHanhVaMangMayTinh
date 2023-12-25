@@ -47,15 +47,6 @@ class PostModel:
             listPost = db.query(Post.IDPost).all()
             listPost = [post.IDPost for post in listPost]
             return listPost
-    def DeleteOldPost(self):
-        with SessionLocal() as db:
-            try:
-                tdModel.DeleteOldTD()
-                db.execute(text("CALL DeleteOldPosts"))
-                db.commit()
-                return True
-            except Exception:
-                raise PostException("Xóa bài viết cũ thất bại")
     def DeleteDuplicatePost(self):
         with SessionLocal() as db:
             try:
