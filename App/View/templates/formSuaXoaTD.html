@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/danhsach.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div class="table">
+        <div class="table_header">
+            <h3>DANH SÁCH TUYỂN DỤNG</h3>
+            <div>
+                <input placeholder="Tìm kiếm">
+                <button id="add_new" onclick="redirectToHref('adminTuyenDung.html')"><i class="fa-solid fa-plus"></i> Add New</button>
+
+            </div>
+        </div>
+        <div class="table_section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>IDTD</th>
+                        <th>Ngày đăng bài</th>
+                        <th>Vị trí tuyển dụng</th>
+                        <th>Lĩnh vực tuyển dụng</th>
+                        <th>Mô tả công việc</th>
+                        <th>Lương tuyển(vnd)</th>
+                        <th>Địa điểm</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>TD00012</td>
+                        <td>2023-11-18</td>
+                        <td>Nhân viên</td>
+                        <td>Kinh doanh quán</td>
+                        <td>Tuyển nhân viên part-time chốt đơn các shop Online
+                            Thời gian:
+                            Ca 1: 9h30-13h (18Ok)
+                            Ca 2: 13h-16h (18Ok)
+                            Ca 3: 16h-19h (18Ok)
+                            Ca 4: 19h-21h30 (18Ok)
+                            Xoay ca linh hoạt</td>
+                        <td>5000000 </td>
+                        <td>Đà nẵng</td>
+                        <td>
+                            <button><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>TD00012</td>
+                        <td>2023-11-18</td>
+                        <td>Nhân viên</td>
+                        <td>Kinh doanh quán</td>
+                        <td>Tuyển nhân viên part-time chốt đơn các shop Online
+                            Thời gian:
+                            Ca 1: 9h30-13h (18Ok)
+                            Ca 2: 13h-16h (18Ok)
+                            Ca 3: 16h-19h (18Ok)
+                            Ca 4: 19h-21h30 (18Ok)
+                            Xoay ca linh hoạt</td>
+                        <td>5000000 </td>
+                        <td>Đà nẵng</td>
+                        <td>
+                            <button><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>TD00342</td>
+                        <td>2023-12-18</td>
+                        <td>Lao công</td>
+                        <td>Dọn dẹp quán</td>
+                        <td>
+                            Ca 1: 9h30-13h (18Ok)
+                            Ca 2: 13h-16h (18Ok)
+                            Ca 3: 16h-19h (18Ok)
+                            Ca 4: 19h-21h30 (18Ok)
+                            Xoay ca linh hoạt</td>
+                        <td>6000000 </td>
+                        <td>Phú Thọ</td>
+                        <td>
+                            <button onclick="redirectToHref('adminTuyenDung.html')"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        function redirectToHref(href) {
+            window.location.href = href;
+        }
+    </script>
+</body>
+</html>
