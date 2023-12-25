@@ -96,6 +96,19 @@ class TDModel:
                 return True
             except Exception:
                 raise TDException("Xóa tuyển dụng cũ thất bại")
+    def TimKiemTDByID(self, IDTD: str):
+        with SessionLocal() as db:
+            res = []
+            try:
+                res = db.query(TuyenDung).filter(TuyenDung.IDTD.like('%'+IDTD+'%')).all()
+                if(res == None):
+                    return None
+                listTDConvert = []
+                for TD in res:
+                    listTDConvert.append(ConvertTD(TD))
+                return listTDConvert
+            except Exception as e:
+                raise TDException("Tìm kiếm tuyển dụng theo ID thất bại, lỗi: ", e)
     def TimKiemTD(self, Text: str, LinhVucTD: str, DiaDiem: str):
         with SessionLocal() as db:
             res = []

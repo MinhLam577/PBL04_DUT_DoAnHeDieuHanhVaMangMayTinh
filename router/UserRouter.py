@@ -14,6 +14,10 @@ async def GetAllUser():
 def CheckLogin(user: UserLogin):
     return userController.CheckLogin(user.Gmail, user.Password)
 
+@userRoute.get("/Users/{Gmail}")
+def GetUserByGmail(Gmail: str):
+    return userController.GetUserByGmail(Gmail)
+
 #Kiểm tra đăng nhập theo JWT handler
 @userRoute.post("/CheckLoginJWT/")
 async def LoginJWT(user: UserLogin):
@@ -24,20 +28,40 @@ async def LoginJWT(user: UserLogin):
 #API đăng kí tài khoản cho user
 @userRoute.post("/Register/")
 async def Register(user: UserRegister):
-    return userController.AddUser(user)
+    return userController.AddUserRegister(user)
 
 #API lấy lại mật khẩu theo gmail
 @userRoute.post("/ForgotPassword/")
 async def ForgotPassword(Gmail: str = Body(...)):
     return userController.ForgotPassword(Gmail)
 
+#Thêm user
+@userRoute.post("/Users/AddUser/")
+async def AddUser(user: UserAdd):
+    try:
+        return userController.AddUser(user)
+    except UserExeception as e:
+        return JSONResponse(
+            content={"message": getattr(e, 'message', repr(e))},
+        ) 
+
 #Cật nhật user theo gmail
 @userRoute.put("/Users/UpdateUser/")
-async def UpdateUser(IDUser: str = Body(...), user: UserUpdate = Body(...)):
-    return userController.UpdateUser(IDUser, user)
+async def UpdateUser(user: UserUpdate):
+    try:
+        return userController.UpdateUser(user)
+    except UserExeception as e:
+        return JSONResponse(
+            content={"message": getattr(e, 'message', repr(e))},
+        ) 
 
 #Xóa user theo gmail
 @userRoute.delete("/Users/DeleteUser/")
 async def DeleteUserByGmail(Gmail: str = Form(...)):
     return userController.DeleteUserByGmail(Gmail)
 
+@userRoute.post("/Users/SearchUserByGmail")
+async def SearchUserByGmail(Gmail: str = Form(None)):
+    if Gmail is None:
+        Gmail = ""
+    return userController.SearchUserByGmail(Gmail)

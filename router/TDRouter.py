@@ -59,3 +59,10 @@ async def UpdateTD(IDTD: str = Form(...), NoiTD: str = Form(None), NgayTD: datet
 @tdRouter.post('/TDs/SearchTD/')
 async def TimKiemTD(Text: str = Form(...), LinhVucTD: str = Form(...), DiaDiem: str = Form(...)):
     return tdController.TimKiemTD(Text, LinhVucTD, DiaDiem)
+
+#Tìm kiếm tuyển dụng theo IDTD
+@tdRouter.post('/TDs/SearchTDByID/')
+async def TimKiemTDByID(IDTD: str = Form(None)):
+    if IDTD is None:
+        IDTD = ""
+    return tdController.TimKiemTDByID(IDTD)

@@ -24,10 +24,17 @@ class SiteController:
         "An Giang","Bà Rịa - Vũng Tàu","Bắc Giang","Bắc Kạn","Bạc Liêu","Bắc Ninh","Bến Tre","Bình Định","Bình Dương","Bình Phước","Bình Thuận","Cà Mau","Cần Thơ","Cao Bằng","Đà Nẵng", "Đắk Lắk","Đắk Nông", "Điện Biên", "Đồng Nai", "Đồng Tháp", "Gia Lai", "Hà Giang",  "Hà Nam", "Hà Nội", "Hà Tĩnh", "Hải Dương", "Hải Phòng", "Hậu Giang", "Hòa Bình", "Hưng Yên", "Khánh Hòa", "Kiên Giang", "Kon Tum" "Lai Châu", "Lâm Đồng", "Lạng Sơn", "Lào Cai", "Long An", "Nam Định", "Nghệ An", "Ninh Bình", "Ninh Thuận", "Phú Thọ", "Phú Yên", "Quảng Bình", "Quảng Nam", "Quảng Ngãi", "Quảng Ninh", "Quảng Trị", "Sóc Trăng", "Sơn La", "Tây Ninh", "Thái Bình","Thái Nguyên","Thanh Hóa","Thừa Thiên Huế","Tiền Giang","Thành phố Hồ Chí Minh","Trà Vinh","Tuyên Quang","Vĩnh Long","Vĩnh Phúc","Yên Bái"
         ]
         return template.TemplateResponse("index.html", {"request": request, 'userID':userID, 'listTD': listTD, 'LinhVucTD': LinhVucTD, 'DiaDiem': DiaDiem, 'ViTriTD': ViTriTD, 'NoiTD': NoiTD, 'userType': "admin", 'YeuCauCongViec': YeuCauCongViec})
-    def adminEditTD(self, request):
-        return template.TemplateResponse("formSuaXoaTD.html", {"request": request})
-    def adminTuyenDung(self, request):
-        return template.TemplateResponse("adminTuyenDung.html", {"request": request})
+    def adminEditTD(self, request, userID: str):
+        listTD = tdController.GetAllTDs()
+        listTD = sorted(listTD, key=lambda x: datetime.strptime(str(x['NgayTD']), '%Y-%m-%d %H:%M:%S'), reverse=True)
+        return template.TemplateResponse("formSuaXoaTD.html", {"request": request, 'userID': userID, 'listTD': listTD})
+    def EditTDByID(self, request, userID: str, IDTD: str):
+        td = tdController.GetTDByIDTD(IDTD)
+        if td is None:
+            return None
+        return template.TemplateResponse("adminEditTD.html", {"request": request, 'userID': userID, 'td': td})
+    def adminAddTD(self, request, userID: str):
+        return template.TemplateResponse("adminAddTD.html", {"request": request, 'userID': userID})
     def LoginSuccess(self, request, userType: str | None = None, userID: str | None = None):
         if(userType == 'admin'):
             return template.TemplateResponse("admin2.html", {"request": request, 'userID' : userID})
@@ -46,8 +53,8 @@ class SiteController:
             "An Giang","Bà Rịa - Vũng Tàu","Bắc Giang","Bắc Kạn","Bạc Liêu","Bắc Ninh","Bến Tre","Bình Định","Bình Dương","Bình Phước","Bình Thuận","Cà Mau","Cần Thơ","Cao Bằng","Đà Nẵng", "Đắk Lắk","Đắk Nông", "Điện Biên", "Đồng Nai", "Đồng Tháp", "Gia Lai", "Hà Giang",  "Hà Nam", "Hà Nội", "Hà Tĩnh", "Hải Dương", "Hải Phòng", "Hậu Giang", "Hòa Bình", "Hưng Yên", "Khánh Hòa", "Kiên Giang", "Kon Tum" "Lai Châu", "Lâm Đồng", "Lạng Sơn", "Lào Cai", "Long An", "Nam Định", "Nghệ An", "Ninh Bình", "Ninh Thuận", "Phú Thọ", "Phú Yên", "Quảng Bình", "Quảng Nam", "Quảng Ngãi", "Quảng Ninh", "Quảng Trị", "Sóc Trăng", "Sơn La", "Tây Ninh", "Thái Bình","Thái Nguyên","Thanh Hóa","Thừa Thiên Huế","Tiền Giang","Thành phố Hồ Chí Minh","Trà Vinh","Tuyên Quang","Vĩnh Long","Vĩnh Phúc","Yên Bái"
             ]
             return template.TemplateResponse("index.html", {"request": request, 'listTD': listTD, 'userID' : userID, 'LinhVucTD': LinhVucTD, 'DiaDiem': DiaDiem, 'ViTriTD': ViTriTD, 'NoiTD': NoiTD, 'userType': "user", 'YeuCauCongVIec': YeuCauCongViec})
-    def TongQuan(self, request):
-        return template.TemplateResponse("tongquan.html", {"request": request})
+    def TongQuan(self, request, userID: str):
+        return template.TemplateResponse("tongquan.html", {"request": request, 'userID': userID})
     def danhsachtk(self, request):
         dstk = user_controller.GetAllUser()
         return template.TemplateResponse("danhsachtk.html", {"request": request, 'dstk': dstk})
