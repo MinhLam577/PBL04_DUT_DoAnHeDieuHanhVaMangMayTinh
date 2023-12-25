@@ -25,7 +25,7 @@ class SiteController:
         ]
         return template.TemplateResponse("index.html", {"request": request, 'userID':userID, 'listTD': listTD, 'LinhVucTD': LinhVucTD, 'DiaDiem': DiaDiem, 'ViTriTD': ViTriTD, 'NoiTD': NoiTD, 'userType': "admin", 'YeuCauCongViec': YeuCauCongViec})
     def adminEditTD(self, request):
-        return template.TemplateResponse("adminEditTD.html", {"request": request})
+        return template.TemplateResponse("formSuaXoaTD.html", {"request": request})
     def adminTuyenDung(self, request):
         return template.TemplateResponse("adminTuyenDung.html", {"request": request})
     def LoginSuccess(self, request, userType: str | None = None, userID: str | None = None):
