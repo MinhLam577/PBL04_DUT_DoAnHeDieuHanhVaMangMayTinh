@@ -43,7 +43,7 @@
 </head>
 
 <body class="boxed-layout">
-
+   
    <div class="body-inner">
 
       <div id="top-bar" class="top-bar">
@@ -728,8 +728,8 @@
                            <div
                               class="post-block-style post-float-half clearfix d-flex justify-content-stretch align-item-stretch">
                               <div class="post-thumb" style="width: 20%">
-                                 <img class="img-fluid" id="{{td.IDPost}}" alt="" src=" "
-                                       style="width:100%; height:100%" onerror="load({{td.IDPost}})"/>
+                                 <img class="img-fluid" id="{{td.IDPost}}" alt="" src="{{ url_for('static', path='/images/TDImages/' ~ td.IDPost ~ '.jpg') }}" style="width:100%; height:100%" 
+                                 onerror='this.src = "{{ url_for('static', path='/images/TDImages/default.jpg') }}"'/>
                               </div>
                               <div class="post-content" style="width: 100%">
                                  <h2 class="post-title">
@@ -1223,12 +1223,6 @@
          
 	================================================== -->
       <script>
-         function load(IDPost){
-            var imgElement = document.getElementById(IDPost);
-            IDPost = decodeURIComponent(IDPost)
-            var newSrc = `{{ url_for('static', path='/images/TDImages/${IDPost}.jpg') }}`;
-            imgElement.src = newSrc;
-         }
          function autocomplete(inp, arr) {
             const autocomplete = document.querySelector(".autocomplete");
             /*the autocomplete function takes two arguments,

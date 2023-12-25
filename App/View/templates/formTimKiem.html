@@ -910,8 +910,8 @@
             if(pos_xet != -1)
                Text = Text.substring(0, pos_xet);
             Text = encodeURIComponent(Text);
-            CurrentUrl = "localhost:8000/"+{{userID}}+"/tim-kiem-DuLieu/"
-            window.location.href = CurrentUrl+`/${Text}/${LinhVucTD}/${DiaDiem}`
+            CurrentUrl = "http://localhost:8000/"+"{{userID}}"+"/tim-kiem-DuLieu/"
+            window.location.href = CurrentUrl+`${Text}/${LinhVucTD}/${DiaDiem}`
          })
       </script>
       <!-- initialize jQuery Library -->
