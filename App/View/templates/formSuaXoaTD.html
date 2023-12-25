@@ -12,90 +12,106 @@
         <div class="table_header">
             <h3>DANH SÁCH TUYỂN DỤNG</h3>
             <div>
-                <input placeholder="Tìm kiếm">
-                <button id="add_new" onclick="redirectToHref('adminTuyenDung.html')"><i class="fa-solid fa-plus"></i> Add New</button>
-
+                <input id="Find_TD_By_IDTD" placeholder="Tìm kiếm theo IDTD">
+                <button id="add_new"><i class="fa-solid fa-plus"></i> Add New</button>
             </div>
         </div>
         <div class="table_section">
-            <table>
+            <table id="DuLieuTD">
                 <thead>
                     <tr>
                         <th>IDTD</th>
-                        <th>Ngày đăng bài</th>
+                        <th>Ngày tuyển dụng</th>
                         <th>Vị trí tuyển dụng</th>
                         <th>Lĩnh vực tuyển dụng</th>
                         <th>Mô tả công việc</th>
-                        <th>Lương tuyển(vnd)</th>
+                        <th>Lương tuyển(vnd hoặc usd)</th>
                         <th>Địa điểm</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {%for td in listTD%}
                     <tr>
-                        <td>TD00012</td>
-                        <td>2023-11-18</td>
-                        <td>Nhân viên</td>
-                        <td>Kinh doanh quán</td>
-                        <td>Tuyển nhân viên part-time chốt đơn các shop Online
-                            Thời gian:
-                            Ca 1: 9h30-13h (18Ok)
-                            Ca 2: 13h-16h (18Ok)
-                            Ca 3: 16h-19h (18Ok)
-                            Ca 4: 19h-21h30 (18Ok)
-                            Xoay ca linh hoạt</td>
-                        <td>5000000 </td>
-                        <td>Đà nẵng</td>
+                        <td>{{td.IDTD}}</td>
+                        <td>{{td.NgayTD}}</td>
+                        <td>{{td.ViTriTD}}</td>
+                        <td>{{td.LinhVucTD}}</td>
+                        <td>{{td.MotaCongViec}}</td>
+                        <td>{{td.LuongTD}}</td>
+                        <td>{{td.DiaDiem}}</td>
                         <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
+                            <button type="button" onclick="update_TD('{{td.IDTD}}')" id="update_TD_{{td.IDTD}}"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button type="button" onclick="del_TD_('{{td.IDTD}}')" id="del_TD_{{td.IDTD}}"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>TD00012</td>
-                        <td>2023-11-18</td>
-                        <td>Nhân viên</td>
-                        <td>Kinh doanh quán</td>
-                        <td>Tuyển nhân viên part-time chốt đơn các shop Online
-                            Thời gian:
-                            Ca 1: 9h30-13h (18Ok)
-                            Ca 2: 13h-16h (18Ok)
-                            Ca 3: 16h-19h (18Ok)
-                            Ca 4: 19h-21h30 (18Ok)
-                            Xoay ca linh hoạt</td>
-                        <td>5000000 </td>
-                        <td>Đà nẵng</td>
-                        <td>
-                            <button><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>TD00342</td>
-                        <td>2023-12-18</td>
-                        <td>Lao công</td>
-                        <td>Dọn dẹp quán</td>
-                        <td>
-                            Ca 1: 9h30-13h (18Ok)
-                            Ca 2: 13h-16h (18Ok)
-                            Ca 3: 16h-19h (18Ok)
-                            Ca 4: 19h-21h30 (18Ok)
-                            Xoay ca linh hoạt</td>
-                        <td>6000000 </td>
-                        <td>Phú Thọ</td>
-                        <td>
-                            <button onclick="redirectToHref('adminTuyenDung.html')"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
+                    {%endfor%}
                 </tbody>
             </table>
         </div>
     </div>
     <script>
-        function redirectToHref(href) {
-            window.location.href = href;
+        function update_TD(IDTD){
+            document.getElementById("update_TD_"+IDTD).addEventListener("click",function(e){
+                CurrentUrl = window.location.href
+                window.location.href = CurrentUrl+"/" + IDTD
+            });
         }
+        function del_TD_(IDTD){
+            document.getElementById("del_TD_"+IDTD).addEventListener("click",function(e){
+                formdata = new FormData()
+                formdata.append('IDTD', IDTD)
+                fetch('/TDs/DeleteTD/', {
+                    'method': 'DELETE',
+                    'body': formdata
+                })
+                .then(respone => respone.json())
+                .then(data => {
+                    if(data == true){
+                        window.location.reload()
+                    }
+                    else{
+                        alert('xóa tuyển dụng thất bại')
+                    }
+                })
+                .catch(err => alert('Xóa tuyển dụng thất bại, lỗi: '+ err))
+            });
+        }
+        document.getElementById("add_new").addEventListener("click", function(e) {
+            let CurrentUrl = window.location.href.replace("admin-Edit-TD", "admin-Add-TD");
+            window.frameElement.src = CurrentUrl
+        });
+        document.getElementById("Find_TD_By_IDTD").addEventListener("input", function() {
+            var value = this.value;
+            formdata = new FormData();
+            formdata.append('IDTD', value);
+            fetch('/TDs/SearchTDByID/', {
+                'method': 'POST',
+                'body': formdata
+            })
+                .then(response => response.json())
+                .then(data => {
+                    var tbody = document.querySelector("#DuLieuTD tbody");
+                    tbody.innerHTML = '';
+                    for (var i = 0; i < data.length; i++) {
+                        var row = `<tr>
+                            <td>${data[i].IDTD}</td>
+                            <td>${data[i].NgayTD}</td>
+                            <td>${data[i].ViTriTD}</td>
+                            <td>${data[i].LinhVucTD}</td>
+                            <td>${data[i].MotaCongViec}</td>
+                            <td>${data[i].LuongTD}</td>
+                            <td>${data[i].DiaDiem}</td>
+                            <td>
+                                <button type="button" onclick="update_TD('${data[i].IDTD}')" id="update_TD_${data[i].IDTD}"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button type="button" onclick="del_TD_('${data[i].IDTD}')" id="del_TD_${data[i].IDTD}"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
     </script>
 </body>
 </html>

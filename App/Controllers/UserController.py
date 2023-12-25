@@ -6,13 +6,19 @@ class UserController:
         self.UserModel = UserModel() 
     def GetAllUser(self):
         return self.UserModel.GetAllUser()
+    def GetUserByGmail(self, Gmail: str):
+        return self.UserModel.GetUserByGmail(Gmail)
     def CheckLogin(self, Gmail, Password):
         return self.UserModel.CheckLogin(Gmail, Password)
     def ForgotPassword(self, Gmail):
         return self.UserModel.ForgotPassword(Gmail)
-    def AddUser(self, user):
+    def AddUser(self, user: UserAdd):
+        return self.UserModel.AddUser(user)
+    def AddUserRegister(self, user):
         return self.UserModel.AddUserRegister(user)
     def DeleteUserByGmail(self, Gmail: str):
         return self.UserModel.DeleteUserByGmail(Gmail)
-    def UpdateUser(self, IDUser: str, user: UserUpdate):
-        return self.UserModel.UpdateUser(IDUser, user)
+    def UpdateUser(self, user: UserUpdate):
+        return self.UserModel.UpdateUser(user)
+    def SearchUserByGmail(self, Gmail: str):
+        return self.UserModel.SearchUserByGmail(Gmail)

@@ -37,8 +37,8 @@ async def danhsachtk(request: Request):
     return siteController.danhsachtk(request)
 
 @siteRouter.get("/{userID}/TongQuan", response_class=HTMLResponse)
-async def tongQuan(request: Request):
-    return siteController.TongQuan(request)
+async def tongQuan(request: Request, userID: str):
+    return siteController.TongQuan(request, userID)
 
 @siteRouter.get("/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}", response_class=HTMLResponse)
 async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
@@ -48,14 +48,22 @@ async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None,
 async def formTimKiem(request: Request, userID: str = None):
     return siteController.formTimKiem(request, None, None, None, userID)
 #Trang admin tuyển dụng
-@siteRouter.get("/{userID}/adminTuyenDung", response_class=HTMLResponse)
-async def adminTuyenDung(request: Request):
-    return siteController.adminTuyenDung(request)
+@siteRouter.get("/{userID}/admin-Add-TD", response_class=HTMLResponse)
+async def adminAddTD(request: Request, userID: str):
+    return siteController.adminAddTD(request, userID)
 
-#Trang chỉnh sửa tuyển dụng của admin
+#Trang cật nhật bài tuyển dụng của admin
+@siteRouter.get("/{userID}/admin-Edit-TD/{IDTD}", response_class=HTMLResponse)
+async def EditTDByID(request: Request, userID: str, IDTD: str):
+    res = siteController.EditTDByID(request, userID, IDTD)
+    if res == None:
+        raise HTTPException(status_code=404, detail="Không tìm thấy ID bài tuyển dụng")
+    return res
+
+#Trang chủ chỉnh sửa tuyển dụng của admin
 @siteRouter.get("/{userID}/admin-Edit-TD", response_class=HTMLResponse)
-async def adminEditTD(request: Request):
-    return siteController.adminEditTD(request)
+async def adminEditTD(request: Request, userID: str):
+    return siteController.adminEditTD(request, userID)
 
 #Kiểm tra đăng nhập thành công
 @siteRouter.post("/CheckLoginSuccess/", response_class=HTMLResponse)
