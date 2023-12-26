@@ -156,7 +156,6 @@
         document.getElementById("Find_TK").addEventListener("input", function() {
             var value = this.value;
             var formdata = new FormData();
-            console.log(value)
             formdata.append('Gmail', value);
             fetch('/Users/SearchUserByGmail', {
                 method: 'POST',
