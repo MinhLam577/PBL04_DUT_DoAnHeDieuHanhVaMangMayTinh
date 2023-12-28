@@ -117,7 +117,7 @@
                                  <a href="/">Home</a>
                               </li>
                               <li>
-                                 <a href="/Login">Login</a>
+                                 <a href="/Login" id="Login_href">Login</a>
                               </li>
                            </ul><!--/ Nav ul end -->
                         </div><!--/ Collapse end -->
@@ -791,6 +791,15 @@
          
 	================================================== -->
       <script>
+         const Login_href = document.getElementById("Login_href")
+         const tokenExist = window.sessionStorage.getItem("{{userID}}")
+         console.log(tokenExist)
+         if (tokenExist != null) {
+            Login_href.innerHTML = "Logout"
+         }
+         else {
+            Login_href.innerHTML = "Login"
+         }
          function autocomplete(inp, arr) {
             const autocomplete = document.querySelector(".autocomplete");
             /*the autocomplete function takes two arguments,

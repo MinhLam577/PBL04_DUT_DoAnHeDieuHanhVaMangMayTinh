@@ -16,6 +16,7 @@ async def login(request: Request):
 @siteRouter.get("/Login", response_class=HTMLResponse, name = "Giao diện đăng nhập")
 async def login(request: Request):
     return siteController.Login(request)
+
 #Trang chủ admin
 @siteRouter.get("/admin/{userID}", response_class=HTMLResponse, name = "Giao diện trang chủ admin khi đăng nhập thành công")
 async def index(request: Request, userID: str):
