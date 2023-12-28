@@ -1,7 +1,7 @@
 from App.Model.UserEntity import User
 from config.db import SessionLocal
 from pydantic import BaseModel, validator
-from sqlalchemy import text
+from sqlalchemy import text, extract, func
 from fastapi.responses import JSONResponse
 from email.message import EmailMessage
 import ssl
@@ -226,6 +226,21 @@ class UserModel:
                 return listObject
             except Exception as e:
                 raise UserExeception("Tìm kiếm tuyển dụng theo ID thất bại, lỗi: " + getattr(e, 'message', repr(e)))
+    def GetPhanTramSoVoiThangTruoc(self):
+        with SessionLocal() as db:
+            percentage_change = 0
+            try:
+                last_month_count = db.query(User).filter(extract('month', User.ThoiGianDangKi) == extract('month', func.now()) - 1).count()
+                this_month_count = db.query(User).filter(extract('month', User.ThoiGianDangKi) == extract('month', func.now())).count()
+                if last_month_count == 0 and this_month_count > 0:
+                    percentage_change = 100 * this_month_count
+                elif last_month_count == 0 and this_month_count == 0:
+                    percentage_change = 0
+                else:
+                    percentage_change = ((this_month_count - last_month_count) / last_month_count) * 100
+                return percentage_change
+            except Exception:
+                raise UserExeception("Lấy phần trăm so với tháng trước thất bại")
 
 
 

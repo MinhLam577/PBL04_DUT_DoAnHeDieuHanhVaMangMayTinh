@@ -1,6 +1,6 @@
 from config.db import SessionLocal
 from pydantic import BaseModel, validator
-from sqlalchemy import text, select
+from sqlalchemy import func, extract
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
@@ -8,6 +8,7 @@ from fastapi import Request, Depends, Form
 from App.Model.TDEntity import *
 from sqlalchemy import String, DateTime, UnicodeText    
 from App.Model.PostModel import PostModel
+from App.Model.TuongTacModel import *
 class TDException(Exception):
     def __init__(self, message: str):
         self.message = message
@@ -94,6 +95,26 @@ class TDModel:
                 return db.query(TuyenDung).filter(TuyenDung.IDTD == IDTD).first()
             except Exception:
                 raise TDException("Lấy tuyển dụng theo IDTD thất bại")
+    def GetTDTuongTac(self):
+        with SessionLocal() as db:
+            try:
+                interaction_count = func.count(TuongTac.IDTD)
+                listTD = db.query(TuyenDung, interaction_count)\
+                        .join(TuongTac, TuyenDung.IDTD == TuongTac.IDTD)\
+                        .filter(
+                            extract('month', TuyenDung.NgayTD) == extract('month', func.now()),
+                            extract('year', TuyenDung.NgayTD) == extract('year', func.now())
+                        )\
+                        .group_by(TuyenDung.IDTD)\
+                        .all()
+                listTDConvert = []
+                for TD, count in listTD:
+                    listTDConvert.append(
+                        {**ConvertTD(TD), **{"count": count}}
+                    )
+                return listTDConvert
+            except Exception:
+                raise TDException("Lấy tuyển dụng tương tác thất bại")
     def TimKiemTDByID(self, IDTD: str):
         with SessionLocal() as db:
             res = []
