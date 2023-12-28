@@ -8,4 +8,6 @@ class TuongTacController:
         return self.TuongTacModel.AddTT(tt)
     def DeleteTT(self, tt: TuongTacDel):
         return self.TuongTacModel.DeleteTT(tt)
+    def DeleteTTByIDUser(self, IDUser: str):
+        return self.TuongTacModel.DeleteTTByIDUser(IDUser)
     

@@ -48,4 +48,12 @@ class TuongTacModel:
                 return True
             except Exception:
                 raise TuongTacException("Bạn chưa quan tâm bài tuyển dụng này")
+    def DeleteTTByIDUser(self, IDUser: str):
+        with SessionLocal() as db:
+            try:
+                db.query(TuongTac).filter(TuongTac.IDUser == IDUser).delete()
+                db.commit()
+                return True
+            except Exception:
+                raise TuongTacException("Xóa quan tâm theo IDUser thất bại, lỗi: " + getattr(e, 'message', repr(e)))
     

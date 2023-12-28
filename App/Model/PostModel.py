@@ -5,11 +5,9 @@ from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
 from fastapi import Request, Depends, Form
 from App.Model.PostEntity import *
-from App.Model.TDModel import TDModel
 class PostException(Exception):
     def __init__(self, message: str):
         self.message = message
-tdModel = TDModel()
 def get_db():
     try:
         db = SessionLocal()
@@ -47,6 +45,14 @@ class PostModel:
             listPost = db.query(Post.IDPost).all()
             listPost = [post.IDPost for post in listPost]
             return listPost
+    def DeletePostByIDPost(self, IDPost: str):
+        with SessionLocal() as db:
+            try:
+                db.query(Post).filter(Post.IDPost == IDPost).delete()
+                db.commit()
+                return True
+            except Exception as e:
+                raise PostException(getattr(e, 'message', repr(e)))
     def DeleteDuplicatePost(self):
         with SessionLocal() as db:
             try:

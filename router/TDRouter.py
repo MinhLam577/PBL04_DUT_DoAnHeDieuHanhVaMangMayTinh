@@ -36,8 +36,9 @@ async def AddTD(NoiTD: str = Form(None), NgayTD: datetime = Form(None), SoLuongT
         td = TuyenDung(IDTD=IDTD, NoiTD=NoiTD, NgayTD=NgayTD, SoLuongTD=SoLuongTD, LinhVucTD=LinhVucTD, ViTriTD=ViTriTD, MotaCongViec=MoTaCongViec, YeuCauCongViec=YeuCauCongViec, QuyenLoi=QuyenLoi, DiaDiem=DiaDiem, SDT=SDT, Gmail=Gmail, LuongTD=LuongTD, IDPost=IDPost)
         return tdController.AddTD(td)
     except Exception as e:
-        raise HTTPException(status_code=409, detail=str(e))
-
+        return JSONResponse(
+            content={"message": getattr(e, 'message', repr(e))},
+        )
 #Xóa tuyển dụng theo IDTD 
 @tdRouter.delete("/TDs/DeleteTD/", name="Xóa tuyển dụng theo IDTD")
 async def DeleteTD(IDTD: str = Form(...)):

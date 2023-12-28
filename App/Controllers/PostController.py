@@ -14,3 +14,5 @@ class PostControllers:
         return self.PostModel.DeleteDuplicatePost()
     def DeleteOldPost(self):
         return self.PostModel.DeleteOldPost()
+    def DeletePostByIDPost(self, IDPost: str):
+        return self.PostModel.DeletePostByIDPost(IDPost)
