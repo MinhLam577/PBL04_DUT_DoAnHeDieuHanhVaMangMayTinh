@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Request, status, Depends, Header, HTTPException, Form, Body
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from typing import Annotated
 from starlette.datastructures import URL
 from App.Controllers.SiteController import *
 from App.auth.jwt_bearer import jwtBearer
 from App.auth.jwt_handler import decodeJWT
-import js2py
 import json
 siteRouter = APIRouter()
 siteController = SiteController()
@@ -14,20 +13,44 @@ siteController = SiteController()
 async def login(request: Request):
     return siteController.index(request)
 
-#Trang chủ
-@siteRouter.get("/{userID}", response_class=HTMLResponse, name = "Giao diện trang chủ admin khi đăng nhập thành công")
+@siteRouter.get("/Login", response_class=HTMLResponse, name = "Giao diện đăng nhập")
+async def login(request: Request):
+    return siteController.Login(request)
+#Trang chủ admin
+@siteRouter.get("/admin/{userID}", response_class=HTMLResponse, name = "Giao diện trang chủ admin khi đăng nhập thành công")
 async def index(request: Request, userID: str):
-    return siteController.adminIndex(request, userID)
+    user = user_controller.GetUserByGmail(userID)
+    if user is None:
+        return RedirectResponse(url="/Login")
+    if user.QuyenUser == "admin":
+        return siteController.adminIndex(request, userID)
+    return RedirectResponse(url="/Login")
 
 #Chi tiết tuyển dụng theo userID
 @siteRouter.get("/{userID}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
 async def formChiTiet(request: Request, IDTD: str, userID: str):
     return siteController.formChiTiet(request, IDTD, userID)
 
-#Chi tiết tuyển dụng khi tìm kiếm
+#Chi tiết tuyển dụng
+@siteRouter.get("/admin/{userID}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
+async def formChiTiet(request: Request, IDTD: str, userID: str = None):
+    return siteController.formChiTiet(request, IDTD, userID)
+
+#Chi tiết tuyển dụng
+@siteRouter.get("/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
+async def formChiTiet(request: Request, IDTD: str, userID: str = None):
+    return siteController.formChiTiet(request, IDTD, userID)
+
+#Chi tiết tuyển dụng khi tìm kiếm đã đăng nhập
 @siteRouter.get("/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse
                 , name = "Giao diện chi tiết tuyển dụng trang tìm kiếm")
 async def formChiTietTimKiem(request: Request, IDTD: str, userID: str):
+    return siteController.formChiTiet(request, IDTD, userID)
+
+#Chi tiết tuyển dụng khi tìm kiếm ko đăng nhập
+@siteRouter.get("/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse
+                , name = "Giao diện chi tiết tuyển dụng trang tìm kiếm không đăng nhập")
+async def formChiTietTimKiem(request: Request, IDTD: str, userID: str = None):
     return siteController.formChiTiet(request, IDTD, userID)
 
 @siteRouter.get("/{userID}/danh-sach-tk", response_class=HTMLResponse, name = "Giao diện danh sách tài khoản của admin")
@@ -38,7 +61,13 @@ async def danhsachtk(request: Request):
 async def tongQuan(request: Request, userID: str):
     return siteController.TongQuan(request, userID)
 
+#Tìm kiếm khi đã đăng nhập 
 @siteRouter.get("/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}", response_class=HTMLResponse, name = "Giao diện tìm kiếm có dữ liệu")
+async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
+    return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, userID)
+
+#Tìm kiếm khi chưa đăng nhập
+@siteRouter.get("/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}", response_class=HTMLResponse, name = "Giao diện tìm kiếm có dữ liệu")
 async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
     return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, userID)
 
@@ -56,7 +85,9 @@ async def adminAddTD(request: Request, userID: str):
 async def EditTDByID(request: Request, userID: str, IDTD: str):
     res = siteController.EditTDByID(request, userID, IDTD)
     if res == None:
-        raise HTTPException(status_code=404, detail="Không tìm thấy ID bài tuyển dụng")
+        return JSONResponse(
+            content={"message": "Không tìm thấy bài tuyển dụng"}
+        )
     return res
 
 #Trang chủ chỉnh sửa tuyển dụng của admin

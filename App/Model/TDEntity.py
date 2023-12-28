@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, DateTime, UnicodeText    
+from sqlalchemy import Column, String, DateTime, UnicodeText, Double
 from config.db import *
 class TuyenDung(Base):
     __tablename__ = "TuyenDung"
@@ -15,5 +15,5 @@ class TuyenDung(Base):
     SDT = Column(String, nullable=True)
     Gmail = Column(String, nullable=True)
     IDPost = Column(String, nullable=True)
-    LuongTD = Column(String, nullable=True)
+    LuongTD = Column(Double, nullable=True)
 Base.metadata.create_all(bind=engine)

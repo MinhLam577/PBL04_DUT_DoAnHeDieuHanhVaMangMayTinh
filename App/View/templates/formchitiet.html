@@ -415,7 +415,11 @@
          .catch(error => console.log(error));
          document.getElementById("btn_QuanTam").addEventListener("click", function(){
             IDTD = "{{IDTD}}";
-            IDUser = "{{user.IDUser}}";
+            IDUser = "{{user.IDUser if user.IDUser else ''}}";
+            if(IDUser == ""){
+               window.location.href = "/Login";
+               return;
+            }
             dulieu = {
                IDTD: IDTD,
                IDUser: IDUser
@@ -438,13 +442,12 @@
             })
             .catch(error => alert("Quan tâm thất bại, lỗi hệ thống: " + error));
          });
-         //
          document.getElementById("btn_HuyQuantam").addEventListener("click", function(){
             IDTD = "{{IDTD}}";
-            IDUser = "{{user.IDUser}}";
-            dulieu = {
-               IDTD: IDTD,
-               IDUser: IDUser
+            IDUser = "{{user.IDUser if user.IDUser else ''}}";
+            if(IDUser == ""){
+               window.location.href = "/Login";
+               return;
             }
             fetch("/TuongTac/DeleteTT/", {
                method: "DELETE",
