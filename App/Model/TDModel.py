@@ -1,11 +1,13 @@
 from config.db import SessionLocal
 from pydantic import BaseModel, validator
 from sqlalchemy import text, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
 from fastapi import Request, Depends, Form
 from App.Model.TDEntity import *
 from sqlalchemy import String, DateTime, UnicodeText    
+from App.Model.PostModel import PostModel
 class TDException(Exception):
     def __init__(self, message: str):
         self.message = message
@@ -40,16 +42,20 @@ class TDModel:
                 db.add(td)
                 db.commit()
                 return True
-            except Exception:
-                raise TDException("Thêm tuyển dụng thất bại")
+            except IntegrityError as e:
+                raise TDException("IDPost đã tồn tại hoặc không tồn tại")
+            except Exception as e:
+                raise TDException(getattr(e, 'message', repr(e)))
     def DeleteTD(self, IDTD: str):
         with SessionLocal() as db:
             try:
+                postModel = PostModel()
+                IDPost = self.GetTDByIDTD(IDTD).IDPost
+                postModel.DeletePostByIDPost(IDPost)
                 db.query(TuyenDung).filter(TuyenDung.IDTD == IDTD).delete()
                 db.commit()
                 return True
             except Exception:
-                print("Xóa thất bại")
                 raise TDException("Xóa tuyển dụng thất bại")
     def UpdateTD(self, td: TuyenDung):
         with SessionLocal() as db:
@@ -88,14 +94,6 @@ class TDModel:
                 return db.query(TuyenDung).filter(TuyenDung.IDTD == IDTD).first()
             except Exception:
                 raise TDException("Lấy tuyển dụng theo IDTD thất bại")
-    def DeleteOldTD(self):  
-        with SessionLocal() as db:
-            try:
-                db.execute(text("CALL DeleteOldTD"))
-                db.commit()
-                return True
-            except Exception:
-                raise TDException("Xóa tuyển dụng cũ thất bại")
     def TimKiemTDByID(self, IDTD: str):
         with SessionLocal() as db:
             res = []

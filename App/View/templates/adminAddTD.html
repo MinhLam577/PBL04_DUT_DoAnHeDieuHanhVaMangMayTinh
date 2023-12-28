@@ -133,9 +133,9 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data == true) {
-                        alert('Thêm thành công');
+                        alert('Thêm tuyển dụng thành công');
                     } else {
-                        alert('IDPost đã tồn tại');
+                        alert(data.message);
                     }
                 })
                 .catch(err => alert("Thêm tuyển dụng thất bại, lỗi: " + err))

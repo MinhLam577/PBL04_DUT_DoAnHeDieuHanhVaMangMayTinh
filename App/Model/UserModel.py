@@ -166,6 +166,7 @@ class UserModel:
                 if(us == None):
                     raise UserExeception("Gmail không tồn tại")
                 else:
+                    
                     db.query(User).filter(User.Gmail == Gmail).delete()
                     db.commit()
                     return True

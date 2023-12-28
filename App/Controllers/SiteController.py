@@ -37,7 +37,7 @@ class SiteController:
         return template.TemplateResponse("adminAddTD.html", {"request": request, 'userID': userID})
     def LoginSuccess(self, request, userType: str | None = None, userID: str | None = None):
         if(userType == 'admin'):
-            return template.TemplateResponse("admin2.html", {"request": request, 'userID' : userID})
+            return template.TemplateResponse("adminIndex.html", {"request": request, 'userID' : userID})
         else:
             listTD = tdController.GetAllTDs()
             listTD = sorted(listTD, key=lambda x: datetime.strptime(str(x['NgayTD']), '%Y-%m-%d %H:%M:%S'), reverse=True)

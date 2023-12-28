@@ -1,5 +1,6 @@
 from App.Model.UserModel import *
 from fastapi.templating import Jinja2Templates
+from App.Controllers.TuongTacController import TuongTacController
 template = Jinja2Templates(directory="App/View/templates")
 class UserController:
     def __init__(self):
