@@ -1,7 +1,9 @@
 from config.db import SessionLocal
 from pydantic import BaseModel, validator
-from sqlalchemy import text
+from sqlalchemy import text, select, func
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import and_
 from fastapi.responses import JSONResponse
 from fastapi import Request, Depends, Form
 from App.Model.PostEntity import *
@@ -21,8 +23,10 @@ class PostModel:
                 db.add(post)
                 db.commit()
                 return True
-            except Exception:
-                raise PostException("Thêm bài viết thất bại")
+            except IntegrityError as e:
+                raise PostException(getattr(e, 'message', repr(e)))
+            except Exception as e:
+                raise PostException(getattr(e, 'message', repr(e)))
     def GetAllPost(self):
         with SessionLocal() as db:
             listPost = db.query(Post).all()
@@ -56,8 +60,20 @@ class PostModel:
     def DeleteDuplicatePost(self):
         with SessionLocal() as db:
             try:
-                db.execute(text("CALL `DeleteDuplicatePosts`()"))
+                subquery = db.query(
+                Post.ContentPost, 
+                func.max(Post.IDPost).label('idpost')
+                    ).group_by(
+                        Post.ContentPost
+                    ).having(
+                        func.count(Post.ContentPost) > 1
+                    ).subquery()
+                # Xóa các bài viết trùng lặp
+                db.query(Post).filter(
+                        Post.ContentPost == subquery.c.ContentPost,
+                        Post.IDPost != subquery.c.idpost
+                    ).delete(synchronize_session=False)
                 db.commit()
                 return True
-            except Exception:
-                raise PostException("Xóa bài viết trùng lặp thất bại")
+            except Exception as e:
+                raise PostException("Xóa bài viết trùng lặp thất bại, lỗi: " + getattr(e, 'message', repr(e)))

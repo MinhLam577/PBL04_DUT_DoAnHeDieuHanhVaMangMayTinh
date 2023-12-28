@@ -94,14 +94,6 @@ class TDModel:
                 return db.query(TuyenDung).filter(TuyenDung.IDTD == IDTD).first()
             except Exception:
                 raise TDException("Lấy tuyển dụng theo IDTD thất bại")
-    def DeleteOldTD(self):  
-        with SessionLocal() as db:
-            try:
-                db.execute(text("CALL DeleteOldTD"))
-                db.commit()
-                return True
-            except Exception:
-                raise TDException("Xóa tuyển dụng cũ thất bại")
     def TimKiemTDByID(self, IDTD: str):
         with SessionLocal() as db:
             res = []
