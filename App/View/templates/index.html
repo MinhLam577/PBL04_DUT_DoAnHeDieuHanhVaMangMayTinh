@@ -114,7 +114,10 @@
                         <div id="navbarSupportedContent" class="collapse navbar-collapse navbar-responsive-collapse">
                            <ul class="nav navbar-nav">
                               <li>
-                                 <a href="category-style4.html">Home</a>
+                                 <a href="/">Home</a>
+                              </li>
+                              <li>
+                                 <a href="/Login" id="Login_href">Login</a>
                               </li>
                            </ul><!--/ Nav ul end -->
                         </div><!--/ Collapse end -->
@@ -315,7 +318,7 @@
                               </div>
                               <div class="post-content" style="width: 100%">
                                  <h2 class="post-title">
-                                    <a href="{{userID}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
+                                    <a href="{{userID if userID is not none else ''}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
                                  </h2>
                                  <div class="post-meta">
                                     {%if td.NoiTD != none%}
@@ -788,6 +791,15 @@
          
 	================================================== -->
       <script>
+         const Login_href = document.getElementById("Login_href")
+         const tokenExist = window.sessionStorage.getItem("{{userID}}")
+         console.log(tokenExist)
+         if (tokenExist != null) {
+            Login_href.innerHTML = "Logout"
+         }
+         else {
+            Login_href.innerHTML = "Login"
+         }
          function autocomplete(inp, arr) {
             const autocomplete = document.querySelector(".autocomplete");
             /*the autocomplete function takes two arguments,
@@ -938,7 +950,13 @@
             if(pos_xet != -1)
                Text = Text.substring(0, pos_xet);
             Text = encodeURIComponent(Text);
-            window.location.href = `/{{userID}}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
+            var userID = JSON.parse(JSON.stringify('{{userID}}'));
+            if(userID != "" && userID != null){
+               window.location.href = `http://localhost:${window.location.port}/${userID}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
+            }
+            else{
+               window.location.href = `http://localhost:${window.location.port}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
+            }
          })
       </script>
       <!-- initialize jQuery Library -->

@@ -124,7 +124,7 @@
                 if (data == true) {
                     alert('Cật nhật tuyển dụng thành công');
                 } else {
-                    alert('Cật nhật tuyển dụng thất bại, lỗi: ' + data.message);
+                    alert(data.message);
                 }
             })
             .catch(err => alert("Cật nhật tuyển dụng thất bại, lỗi: " + err))

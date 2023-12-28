@@ -32,9 +32,11 @@ LoginForm.addEventListener("submit", function(event){
                 const Gmail = data["userID"];
                 const data_form = new FormData();
                 data_form.append("token", Token);
-                const existingToken = window.sessionStorage.getItem(Gmail);
-                if(!existingToken)
-                     window.sessionStorage.setItem(Gmail, Token);
+                const existingToken = window.localStorage.getItem(Gmail);
+                if(!existingToken){
+                    window.localStorage.setItem(Gmail, Token);
+                }
+                window.sessionStorage.setItem(Gmail, Token);
                 const form_submit = document.createElement("form");
                 form_submit.setAttribute("method", "POST");
                 form_submit.setAttribute("action", "/"+Gmail);

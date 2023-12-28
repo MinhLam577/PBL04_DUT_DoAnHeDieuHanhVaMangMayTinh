@@ -40,9 +40,35 @@ class TDModel:
     def AddTD(self, td: TuyenDung):
         with SessionLocal() as db:
             try:
+                if td.SoLuongTD != None:
+                    SoLuongTD = td.SoLuongTD 
+                    if not re.match("^[0-9]+$", str(SoLuongTD)):
+                        raise TDException("Số lượng tuyển dụng phải là số nguyên dương")
+                    else:
+                        if int(SoLuongTD) <= 0:
+                            raise TDException("Số lượng tuyển dụng phải lớn hơn 0")
+                if td.LuongTD != None:
+                    LuongTD = td.LuongTD
+                    if not re.match("^[0-9.]+$", str(LuongTD)):
+                        raise TDException("Lương tuyển dụng phải là số dương")
+                    else:
+                        if(float(LuongTD) <= 0):
+                            raise TDException("Lương tuyển dụng phải lớn hơn 0")
+                if td.Gmail != None:
+                    Gmail = td.Gmail
+                    if not re.match("^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$", Gmail, re.IGNORECASE):
+                        raise TDException('Gmail phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
+                if td.SDT != None:
+                    SDT = td.SDT
+                    if not re.match("^[0-9]+$", SDT, re.IGNORECASE) or not len(SDT) == 10:
+                        raise TDException('Số điện thoại phải toàn số nguyên và có độ dài là 10')
+                if td.NgayTD >= datetime.now():
+                    raise TDException("Ngày tuyển dụng phải nhỏ hơn ngày hiện tại")
                 db.add(td)
                 db.commit()
                 return True
+            except ValueError:
+                raise TDException("Lương tuyển dụng phải là số thực")
             except IntegrityError as e:
                 raise TDException("IDPost đã tồn tại hoặc không tồn tại")
             except Exception as e:
@@ -61,6 +87,31 @@ class TDModel:
     def UpdateTD(self, td: TuyenDung):
         with SessionLocal() as db:
             try:
+                if td.SoLuongTD != None:
+                    SoLuongTD = td.SoLuongTD 
+                    if not re.match("^[0-9]+$", str(SoLuongTD)):
+                        raise TDException("Số lượng tuyển dụng phải là số nguyên dương")
+                    else:
+                        if int(SoLuongTD) <= 0:
+                            raise TDException("Số lượng tuyển dụng phải lớn hơn 0")
+                if td.LuongTD != None:
+                    LuongTD = td.LuongTD
+                    if not re.match("^[0-9.]+$", str(LuongTD)):
+                        raise TDException("Lương tuyển dụng phải là số dương")
+                    else:
+                        if(float(LuongTD) <= 0):
+                            raise TDException("Lương tuyển dụng phải lớn hơn 0")
+                if td.Gmail != None:
+                    Gmail = td.Gmail
+                    if not re.match("^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$", Gmail, re.IGNORECASE):
+                        raise TDException('Gmail phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
+                if td.SDT != None:
+                    SDT = td.SDT
+                    if not re.match("^[0-9]+$", SDT, re.IGNORECASE) or not len(SDT) == 10:
+                        raise TDException('Số điện thoại phải toàn số nguyên và có độ dài là 10')
+                if td.NgayTD >= datetime.now():
+                    raise TDException("Ngày tuyển dụng phải nhỏ hơn ngày hiện tại")
+                print("Đến đây")
                 db.query(TuyenDung).filter(TuyenDung.IDTD == td.IDTD).update({
                     "NoiTD": td.NoiTD, 
                     "NgayTD": td.NgayTD, 
@@ -78,8 +129,8 @@ class TDModel:
                 })
                 db.commit()
                 return True
-            except Exception:
-                raise TDException("Cập nhật tuyển dụng thất bại")
+            except Exception as e:
+                raise TDException(getattr(e, 'message', repr(e)))
     def GetAllTD(self):
         with SessionLocal() as db:
             listTD = db.query(TuyenDung).all()
