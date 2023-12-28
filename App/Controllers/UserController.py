@@ -23,3 +23,5 @@ class UserController:
         return self.UserModel.UpdateUser(user)
     def SearchUserByGmail(self, Gmail: str):
         return self.UserModel.SearchUserByGmail(Gmail)
+    def GetPhanTramSoVoiThangTruoc(self):
+        return self.UserModel.GetPhanTramSoVoiThangTruoc()

@@ -30,6 +30,17 @@ class TuongTacDel(BaseModel):
     IDTD: str
 
 class TuongTacModel:
+    def GetAllTT(self):
+        with SessionLocal() as db:
+            listTT = db.query(TuongTac).all()
+            listTTConvert = []
+            for tt in listTT:
+                IDTT = tt.IDTT
+                IDUser = tt.IDUser
+                IDTD = tt.IDTD
+                ThoiDiem = tt.ThoiDiem
+                listTTConvert.append({"IDTT": IDTT, "IDUser": IDUser, "IDTD": IDTD, "ThoiDiem": ThoiDiem})
+            return listTTConvert
     def AddTT(self, tt: TuongTacAdd):
         with SessionLocal() as db:
             try:
@@ -54,6 +65,6 @@ class TuongTacModel:
                 db.query(TuongTac).filter(TuongTac.IDUser == IDUser).delete()
                 db.commit()
                 return True
-            except Exception:
+            except Exception as e:
                 raise TuongTacException("Xóa quan tâm theo IDUser thất bại, lỗi: " + getattr(e, 'message', repr(e)))
     
