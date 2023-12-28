@@ -12,18 +12,18 @@ tdRouter = APIRouter()
 tdController = TDController()
 
 #Lấy tất cả tuyển dụng
-@tdRouter.get('/TDs/')
+@tdRouter.get('/TDs/', name="Lấy tất cả bài tuyển dụng")
 async def GetAllTDs():
     return tdController.GetAllTDs()
 
 #Lấy tuyển dụng theo IDTD
-@tdRouter.get("/TDs/{IDTD}")
+@tdRouter.get("/TDs/{IDTD}", name="Lấy tuyển dụng theo IDTD")
 async def GetTD(IDTD: str):
     td = tdController.GetTDByIDTD(IDTD)
     return td
 
 #Thêm mới tuyển dụng
-@tdRouter.post("/TDs/AddTD/")
+@tdRouter.post("/TDs/AddTD/", name="Thêm mới tuyển dụng")
 async def AddTD(NoiTD: str = Form(None), NgayTD: datetime = Form(None), SoLuongTD: int = Form(None), LinhVucTD: str = Form(None), ViTriTD: str = Form(None), MoTaCongViec: str = Form(None), YeuCauCongViec: str = Form(None), QuyenLoi: str = Form(None), DiaDiem: str = Form(None), SDT: str = Form(None), Gmail: str = Form(None), LuongTD: str = Form(None), IDPost: str = Form(None)):
     try:
         listTD = tdController.GetAllTDs()
@@ -39,7 +39,7 @@ async def AddTD(NoiTD: str = Form(None), NgayTD: datetime = Form(None), SoLuongT
         raise HTTPException(status_code=409, detail=str(e))
 
 #Xóa tuyển dụng theo IDTD 
-@tdRouter.delete("/TDs/DeleteTD/")
+@tdRouter.delete("/TDs/DeleteTD/", name="Xóa tuyển dụng theo IDTD")
 async def DeleteTD(IDTD: str = Form(...)):
     try:
         return tdController.DeleteTD(IDTD)
@@ -47,8 +47,8 @@ async def DeleteTD(IDTD: str = Form(...)):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
     
 #Cật nhật tuyển dụng theo IDTD
-@tdRouter.put("/TDs/UpdateTD/")
-async def UpdateTD(IDTD: str = Form(...), NoiTD: str = Form(None), NgayTD: datetime = Form(None), SoLuongTD: int = Form(None), LinhVucTD: str = Form(None), ViTriTD: str = Form(None), MoTaCongViec: str = Form(None), YeuCauCongViec: str = Form(None), QuyenLoi: str = Form(None), DiaDiem: str = Form(None), SDT: str = Form(None), Gmail: str = Form(None), LuongTD: str = Form(None), IDPost: str = Form(None)):
+@tdRouter.put("/TDs/UpdateTD/", name="Cật nhật tuyển dụng theo IDTD")
+async def UpdateTD(IDTD: str = Form(), NoiTD: str = Form(None), NgayTD: datetime = Form(None), SoLuongTD: int = Form(None), LinhVucTD: str = Form(None), ViTriTD: str = Form(None), MoTaCongViec: str = Form(None), YeuCauCongViec: str = Form(None), QuyenLoi: str = Form(None), DiaDiem: str = Form(None), SDT: str = Form(None), Gmail: str = Form(None), LuongTD: str = Form(None), IDPost: str = Form(None)):
     try:
         td = TuyenDung(IDTD=IDTD, NoiTD=NoiTD, NgayTD=NgayTD, SoLuongTD=SoLuongTD, LinhVucTD=LinhVucTD, ViTriTD=ViTriTD, MotaCongViec=MoTaCongViec, YeuCauCongViec=YeuCauCongViec, QuyenLoi=QuyenLoi, DiaDiem=DiaDiem, SDT=SDT, Gmail=Gmail, LuongTD=LuongTD,IDPost=IDPost)
         return tdController.UpdateTD(td)
@@ -56,12 +56,12 @@ async def UpdateTD(IDTD: str = Form(...), NoiTD: str = Form(None), NgayTD: datet
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
 #Tìm kiếm tuyển dụng
-@tdRouter.post('/TDs/SearchTD/')
+@tdRouter.post('/TDs/SearchTD/', name="Tìm kiếm tuyển dụng theo Nơi tuyển dụng, Vị trí tuyển dụng, Yêu cầu công việc, lĩnh vực tuyển dụng và địa điểm tuyển dụng")
 async def TimKiemTD(Text: str = Form(...), LinhVucTD: str = Form(...), DiaDiem: str = Form(...)):
     return tdController.TimKiemTD(Text, LinhVucTD, DiaDiem)
 
 #Tìm kiếm tuyển dụng theo IDTD
-@tdRouter.post('/TDs/SearchTDByID/')
+@tdRouter.post('/TDs/SearchTDByID/', name="Tìm kiếm tuyển dụng theo IDTD")
 async def TimKiemTDByID(IDTD: str = Form(None)):
     if IDTD is None:
         IDTD = ""
