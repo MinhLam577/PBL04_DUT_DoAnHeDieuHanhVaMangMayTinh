@@ -19,21 +19,16 @@ async def login(request: Request):
 async def index(request: Request, userID: str):
     return siteController.adminIndex(request, userID)
 
-#chi tiết tuyển dụng
-@siteRouter.get("/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng trang chủ User")
-async def formChiTiet(request: Request, IDTD: str):
-    return siteController.formChiTiet(request, IDTD)
-
-#Tìm kiếm tuyển dụng
-@siteRouter.get("/{userID}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng trang chủ Admin")
-async def formChiTiet(request: Request, IDTD: str):
-    return siteController.formChiTiet(request, IDTD)
+#Chi tiết tuyển dụng theo userID
+@siteRouter.get("/{userID}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
+async def formChiTiet(request: Request, IDTD: str, userID: str):
+    return siteController.formChiTiet(request, IDTD, userID)
 
 #Chi tiết tuyển dụng khi tìm kiếm
 @siteRouter.get("/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse
                 , name = "Giao diện chi tiết tuyển dụng trang tìm kiếm")
-async def formChiTietTimKiem(request: Request, IDTD: str):
-    return siteController.formChiTiet(request, IDTD)
+async def formChiTietTimKiem(request: Request, IDTD: str, userID: str):
+    return siteController.formChiTiet(request, IDTD, userID)
 
 @siteRouter.get("/{userID}/danh-sach-tk", response_class=HTMLResponse, name = "Giao diện danh sách tài khoản của admin")
 async def danhsachtk(request: Request):
@@ -50,6 +45,7 @@ async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None,
 @siteRouter.get("/{userID}/tim-kiem-DuLieu", response_class=HTMLResponse, name="Giao diện tìm kiếm không có dữ liệu")
 async def formTimKiem(request: Request, userID: str = None):
     return siteController.formTimKiem(request, None, None, None, userID)
+
 #Trang admin tuyển dụng
 @siteRouter.get("/{userID}/admin-Add-TD", response_class=HTMLResponse, name="Giao diện thêm tuyển dụng")
 async def adminAddTD(request: Request, userID: str):
