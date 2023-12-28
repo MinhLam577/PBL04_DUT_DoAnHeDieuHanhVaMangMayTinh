@@ -18,7 +18,7 @@
                         <h1 class="card-title">Thêm bài tuyển dụng</h1>
                     </div>
                     <div class="card-body">
-                        <form class="needs-validation" action="/TDs/UpdateTD/" method="post" id="UpdateTD" autocomplete="off">
+                        <form class="needs-validation" id="UpdateTD" autocomplete="off">
                             <div class="form-group">
                                 <label for="NoiTD">Nơi tuyển dụng</label>
                                 <input type="text" class="form-control" placeholder="Nơi tuyển dụng" id="NoiTD"
@@ -96,19 +96,19 @@
     </section>
     <script>
         function reset() {
-            const NoiTD = document.getElementById('NoiTD').value = '{{td.NoiTD}}';
-            const NgayTD = document.getElementById('NgayTD').value = '{{td.NgayTD}}';
-            const SoLuongTD = document.getElementById('SoLuongTD').value = '{{td.SoLuongTD}}';
-            const LinhVucTD = document.getElementById('LinhVucTD').value = '{{td.LinhVucTD}}';
-            const ViTriTD = document.getElementById('ViTriTD').value = '{{td.ViTriTD}}';
-            const LuongTD = document.getElementById('LuongTD').value = '{{td.LuongTD}}';
-            const YeuCauCongViec = document.getElementById('YeuCauCongViec').value = '{{td.YeuCauCongViec}}';
-            const MoTaCongViec = document.getElementById('MoTaCongViec').value = '{{td.MotaCongViec}}';
-            const QuyenLoi = document.getElementById('QuyenLoi').value = '{{td.QuyenLoi}}';
-            const DiaDiem = document.getElementById('DiaDiem').value = '{td.DiaDiem}';
-            const SDT = document.getElementById('SDT').value = '{{td.SDT}}';
-            const Gmail = document.getElementById('Gmail').value = '{{td.Gmail}}';
-            const IDPost = document.getElementById('IDPost').value = '{{td.IDPost}}';
+            const NoiTD = document.getElementById('NoiTD').value = `{{td.NoiTD}}`;
+            const NgayTD = document.getElementById('NgayTD').value = `{{td.NgayTD}}`;
+            const SoLuongTD = document.getElementById('SoLuongTD').value = `{{td.SoLuongTD}}`;
+            const LinhVucTD = document.getElementById('LinhVucTD').value = `{{td.LinhVucTD}}`;
+            const ViTriTD = document.getElementById('ViTriTD').value = `{{td.ViTriTD}}`;
+            const LuongTD = document.getElementById('LuongTD').value = `{{td.LuongTD}}`;
+            const YeuCauCongViec = document.getElementById('YeuCauCongViec').value = `{{td.YeuCauCongViec}}`;
+            const MoTaCongViec = document.getElementById('MoTaCongViec').value = `{{td.MotaCongViec}}`;
+            const QuyenLoi = document.getElementById('QuyenLoi').value = `{{td.QuyenLoi}}`;
+            const DiaDiem = document.getElementById('DiaDiem').value = `{td.DiaDiem}`;
+            const SDT = document.getElementById('SDT').value = `{{td.SDT}}`;
+            const Gmail = document.getElementById('Gmail').value = `{{td.Gmail}}`;
+            const IDPost = document.getElementById('IDPost').value = `{{td.IDPost}}`;
         }
         const UpdateTDForm = document.getElementById('UpdateTD');
         UpdateTDForm.onsubmit = function(e) {
