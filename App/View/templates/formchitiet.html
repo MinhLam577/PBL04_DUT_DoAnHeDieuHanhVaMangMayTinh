@@ -214,9 +214,10 @@
                               <p>Quan tâm để nhận được thông báo được cật nhật về bài tuyển dụng</p>
                            </div>
                            <div class="newsletter-form">
-                              <form action="#" method="post">
+                              <form>
                                  <div class="form-group">
-                                    <button class="btn btn-primary">Quan tâm</button>
+                                    <button type="button" class="btn btn-primary mr-2" id = "btn_QuanTam">Quan tâm</button>
+                                    <button type="button" class="btn btn-primary" id = "btn_HuyQuantam">Hủy</button>
                                  </div>
                               </form>
                            </div>
@@ -412,6 +413,57 @@
             document.getElementById("DiaDiem").innerHTML = DiaDiem;
          })
          .catch(error => console.log(error));
+         document.getElementById("btn_QuanTam").addEventListener("click", function(){
+            IDTD = "{{IDTD}}";
+            IDUser = "{{user.IDUser}}";
+            dulieu = {
+               IDTD: IDTD,
+               IDUser: IDUser
+            }
+            fetch("/TuongTac/AddTT/", {
+               method: "Post",
+               headers: {
+                  "Content-Type": "application/json"
+               },
+               body: JSON.stringify(dulieu)
+            })
+            .then(respone=>respone.json())
+            .then(data =>{
+               if(data == true) {
+                  alert("Quan tâm thành công");
+               }
+               else {
+                  alert(data.message);
+               }
+            })
+            .catch(error => alert("Quan tâm thất bại, lỗi hệ thống: " + error));
+         });
+         //
+         document.getElementById("btn_HuyQuantam").addEventListener("click", function(){
+            IDTD = "{{IDTD}}";
+            IDUser = "{{user.IDUser}}";
+            dulieu = {
+               IDTD: IDTD,
+               IDUser: IDUser
+            }
+            fetch("/TuongTac/DeleteTT/", {
+               method: "DELETE",
+               headers: {
+                  "Content-Type": "application/json"
+               },
+               body: JSON.stringify(dulieu)
+            })
+            .then(respone=>respone.json())
+            .then(data =>{
+               if(data == true) {
+                  alert("Bạn đã hủy quan tâm bài tuyển dụng này thành công");
+               }
+               else {
+                  alert(data.message);
+               }
+            })
+            .catch(error => alert("lỗi hệ thống: " + error));
+         });
    </script>
    <!-- initialize jQuery Library -->
    <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>

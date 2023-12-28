@@ -588,11 +588,7 @@
                               </div>
                               <div class="post-content" style="width: 100%">
                                  <h2 class="post-title">
-                                    {% if userType == "admin" %}
-                                    <a href="/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
-                                    {%else%}
                                     <a href="{{userID}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
-                                    {%endif%}
                                  </h2>
                                  <div class="post-meta">
                                     {%if td.NoiTD != none%}

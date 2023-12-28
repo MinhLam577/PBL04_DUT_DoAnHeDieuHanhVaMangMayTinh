@@ -58,8 +58,9 @@ class SiteController:
     def danhsachtk(self, request):
         dstk = user_controller.GetAllUser()
         return template.TemplateResponse("danhsachtk.html", {"request": request, 'dstk': dstk})
-    def formChiTiet(self, request, IDTD: str):
-        return template.TemplateResponse("formchitiet.html", {"request": request, 'IDTD': IDTD})
+    def formChiTiet(self, request, IDTD: str, userID: str):
+        user = user_controller.GetUserByGmail(userID)
+        return template.TemplateResponse("formchitiet.html", {"request": request, 'IDTD': IDTD, "user": user})
     def formTimKiem(self, request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
         if(LinhVucTD != None and DiaDiem != None and Text != None):
             listTD_Search = tdController.TimKiemTD(Text, LinhVucTD, DiaDiem)
