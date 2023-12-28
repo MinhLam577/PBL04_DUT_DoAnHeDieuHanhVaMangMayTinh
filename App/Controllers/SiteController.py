@@ -1,11 +1,13 @@
 from fastapi.templating import Jinja2Templates
 from App.Controllers.TDController import TDController
 from App.Controllers.UserController import UserController
+from App.Controllers.TuongTacController import TuongTacController
 from datetime import datetime
 import json
 template = Jinja2Templates(directory="App/View/templates")
 tdController = TDController()
 user_controller = UserController()
+tt_Controller = TuongTacController()
 class SiteController:
     def index(self, request):
         return template.TemplateResponse("login.html", {"request": request})
@@ -54,7 +56,12 @@ class SiteController:
             ]
             return template.TemplateResponse("index.html", {"request": request, 'listTD': listTD, 'userID' : userID, 'LinhVucTD': LinhVucTD, 'DiaDiem': DiaDiem, 'ViTriTD': ViTriTD, 'NoiTD': NoiTD, 'userType': "user", 'YeuCauCongVIec': YeuCauCongViec})
     def TongQuan(self, request, userID: str):
-        return template.TemplateResponse("tongquan.html", {"request": request, 'userID': userID})
+        listTD = tdController.GetAllTDs()
+        listUser = user_controller.GetAllUser()
+        listTT = tt_Controller.GetAllTT()
+        listTDTT = tdController.GetTDTuongTac()
+        percentage = user_controller.GetPhanTramSoVoiThangTruoc()
+        return template.TemplateResponse("tongquan.html", {"request": request, 'userID': userID, 'listTD': listTD, 'listUser': listUser, 'listTT': listTT, 'listTDTT': listTDTT, 'percentage': percentage})
     def danhsachtk(self, request):
         dstk = user_controller.GetAllUser()
         return template.TemplateResponse("danhsachtk.html", {"request": request, 'dstk': dstk})

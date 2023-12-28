@@ -16,3 +16,5 @@ class TDController:
         return self.TDModel.TimKiemTD(Text, LinhVucTD, DiaDiem)
     def TimKiemTDByID(self, IDTD: str):
         return self.TDModel.TimKiemTDByID(IDTD)
+    def GetTDTuongTac(self):
+        return self.TDModel.GetTDTuongTac()

@@ -19,7 +19,7 @@
             <div class="col-md-3">
                 <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                     <div>
-                        <h3 class="fs-2">720</h3>
+                        <h3 class="fs-2">{{listTD|length}}</h3>
                         <p class="fs-5">Bài tuyển dụng</p>
                     </div>
                     <i class="fas fa-newspaper fs-1 text-success border rounded-full bg-light p-3"></i>
@@ -28,7 +28,7 @@
             <div class="col-md-3">
                 <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                     <div>
-                        <h3 class="fs-2">200</h3>
+                        <h3 class="fs-2">{{listUser|length}}</h3>
                         <p class="fs-5">Người dùng</p>
                     </div>
                     <i class="fas fa-person fs-1 text-success border rounded-full bg-light p-3"></i>
@@ -37,7 +37,7 @@
             <div class="col-md-3">
                 <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                     <div>
-                        <h3 class="fs-2">7120</h3>
+                        <h3 class="fs-2">{{listTT|length}}</h3>
                         <p class="fs-5">Số lượt tương tác</p>
                     </div>
                     <i class="fas fa-heart fs-1 text-success border rounded-full bg-light p-3"></i>
@@ -46,7 +46,7 @@
             <div class="col-md-3">
                 <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
                     <div>
-                        <h3 class="fs-2">25%</h3>
+                        <h3 class="fs-2">{{percentage}}%</h3>
                         <p class="fs-5">Increase</p>
                     </div>
                     <i class="fas fa-chart-line fs-1 text-success border rounded-full bg-light p-3"></i>
@@ -60,19 +60,25 @@
                     <thead>
                         <tr>
                             <th scope="col" width="50">#</th>
-                            <th scope="col">Bài viết</th>
+                            <th scope="col">IDTD</th>
+                            <th scope="col">Nơi tuyển dụng</th>
+                            <th scope="col">Lĩnh vực tuyển dụng</th>
+                            <th scope="col">Vị trí tuyển dụng</th>
                             <th scope="col">Lượt quan tâm</th>
-                            <th scope="col">....</th>
                         </tr>
                     </thead>
+                    {% for td in listTDTT%}
                     <tbody>
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Kinh tế</td>
-                            <td>1200</td>
-                            <td>....</td>
+                            <th scope="row">{{loop.index}}</th>
+                            <td>{{td.IDTD}}</td>
+                            <td>{{td.NoiTD if td.NoiTD != none else '...'}}</td>
+                            <td>{{td.LinhVucTD}}</td>
+                            <td>...</td>
+                            <td>{{td.count}}</td>
                         </tr>
                     </tbody>
+                    {% endfor %}
                 </table>
             </div>
         </div>
