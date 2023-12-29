@@ -222,7 +222,11 @@
                               </div>
                               <div class="post-content" style="width: 100%">
                                  <h2 class="post-title">
-                                    <a href="/{{user.Gmail}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
+                                    {% if user != ''%}
+                                       <a href="/{{user.Gmail}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
+                                    {%else%}
+                                       <a href="/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
+                                    {%endif%}
                                  </h2>
                                  <div class="post-meta">
                                     {%if td.NoiTD != none%}
