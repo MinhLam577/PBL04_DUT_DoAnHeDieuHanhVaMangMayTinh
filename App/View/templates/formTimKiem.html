@@ -42,7 +42,15 @@
    <link rel="stylesheet" href="{{ url_for('static', path='/css/colorbox.css') }}">
 
    <link rel="stylesheet" href="{{ url_for('static', path='/css/style2.css')}}">
-
+   <script>
+      //Kiểm tra userID có tồn tai trong session khi đã đăng nhập 
+      if("{{userType}}" & "{{userID}}"){
+         const tokenExists_localStorage = window.localStrorage.getItem("{{userID}}")
+         if(tokenExists_localStorage == null){
+            window.location.href = "/Login"
+         }
+      }
+  </script>
 </head>
 
 <body class="boxed-layout">
@@ -117,7 +125,7 @@
                         <div id="navbarSupportedContent" class="collapse navbar-collapse navbar-responsive-collapse">
                            <ul class="nav navbar-nav">
                               <li>
-                                 <a href="/">Home</a>
+                                 <a href="/" id = "Home">Home</a>
                               </li>
                               <li>
                                  <a href="/Login" id="Login_href">Login</a>
@@ -336,11 +344,21 @@
 
       <script>
          const Login_href = document.getElementById("Login_href")
+         const Home = document.getElementById("Home")
          const tokenExist = window.sessionStorage.getItem("{{userID}}")
-         if (tokenExist != null) {
-            Login_href.innerHTML = "Logout"
+         const userType = '{{user.QuyenUser}}'
+         if (tokenExist != null & userType == 'admin') {
+            Home.setAttribute("style", "display:none")
+            Login_href.setAttribute("style", "display:none")
          }
-         else {
+         else if(tokenExist != null & userType == 'user'){
+            Login_href.innerHTML = "Logout"
+            Login_href.href = `http://localhost:${window.location.port}/Login`
+            Login_href.addEventListener("click", function(){
+               window.sessionStorage.removeItem("{{userID}}")
+            })
+         }
+         else if(tokenExist == null){
             Login_href.innerHTML = "Login"
          }
          function autocomplete(inp, arr) {
