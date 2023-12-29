@@ -41,10 +41,22 @@
    <link rel="stylesheet" href="{{ url_for('static', path='/css/colorbox.css') }}">
    <link rel="stylesheet" href="{{ url_for('static', path='/css/style2.css')}}">
    <script>
-      const tokenExist = window.sessionStorage.getItem("{{userID}}")
-      if(tokenExist == null & '{{userType}}' == 'admin'){
-          window.location.href = "/Login"
+      //Kiểm tra userID có tồn tai trong session khi đã đăng nhập 
+      if("{{userType}}" & "{{userID}}"){
+         const tokenExists_localStorage = window.localStrorage.getItem("{{userID}}")
+         if(tokenExists_localStorage == null){
+            window.location.href = "/Login"
+         }
       }
+
+      //Nếu là admin thì bắt buộc phải đăng nhập
+      if("{{userType}}" == "admin"){
+         const tokenExists_sessionStorage = window.sessionStorage.getItem("{{userID}}")
+         if(tokenExists_sessionStorage == null){
+            window.location.href = "/Login"
+         }
+      }
+
   </script>
 </head>
 
@@ -799,6 +811,8 @@
       <script>
          const Login_href = document.getElementById("Login_href")
          const Home = document.getElementById("Home")
+         //Kiểm tra phiên làm việc của riêng từng user
+         const tokenExist = window.sessionStorage.getItem("{{userID}}")
          if (tokenExist != null & '{{userType}}' == 'admin') {
             Home.setAttribute("style", "display:none")
             Login_href.setAttribute("style", "display:none")
@@ -813,7 +827,6 @@
          else if(tokenExist == null){
             Login_href.innerHTML = "Login"
          }
-         
          function autocomplete(inp, arr) {
             const autocomplete = document.querySelector(".autocomplete");
             /*the autocomplete function takes two arguments,
