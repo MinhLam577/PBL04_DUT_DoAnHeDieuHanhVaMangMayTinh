@@ -76,4 +76,4 @@ class PostModel:
                 db.commit()
                 return True
             except Exception as e:
-                raise PostException("Xóa bài viết trùng lặp thất bại, lỗi: " + getattr(e, 'message', repr(e)))
+                raise PostException(getattr(e, 'message', repr(e)))

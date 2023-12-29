@@ -20,6 +20,7 @@ LoginForm.addEventListener("submit", function(event){
         Message.innerHTML = "";
         Message.setAttribute("id", "Message");
         Message.setAttribute("style", "color: red;");
+        isLogin = false
         Token = JSON.stringify(data);
         if(!data["message"]){
             const form_data = new FormData();
@@ -27,7 +28,8 @@ LoginForm.addEventListener("submit", function(event){
             fetch("/CheckLoginSuccess/", {
                 method: "POST",
                 body: form_data
-            }).then(Response => Response.json())
+            })
+            .then(Response => Response.json())
             .then(data => {
                 const Gmail = data["userID"];
                 const data_form = new FormData();
@@ -35,6 +37,7 @@ LoginForm.addEventListener("submit", function(event){
                 const existingToken = window.localStorage.getItem(Gmail);
                 if(!existingToken){
                     window.localStorage.setItem(Gmail, Token);
+                    
                 }
                 window.sessionStorage.setItem(Gmail, Token);
                 const form_submit = document.createElement("form");
@@ -55,9 +58,9 @@ LoginForm.addEventListener("submit", function(event){
         NhapPassword = document.getElementById("NhapPassword");
         if(Message.innerHTML !== "")
             NhapPassword.appendChild(Message);
-            setTimeout(function() { 
-                Message.remove();
-            }, 7000);
+        setTimeout(function() { 
+            Message.remove();
+        }, 7000);
     })
     .catch(error => console.log(error));
 });

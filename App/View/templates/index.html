@@ -8,7 +8,7 @@
    <!-- Basic Page Needs
 	================================================== -->
    <meta charset="utf-8">
-   <title>News247 - Tìm kiếm việc làm</title>
+   <title>News247 - Trang chủ tìm kiếm việc làm</title>
 
    <!-- Mobile Specific Metas
 	================================================== -->
@@ -45,14 +45,14 @@
       if("{{userID}}" != "" && "{{userType}}"){
          const tokenExists_localStorage = window.localStorage.getItem("{{userID}}")
          if(tokenExists_localStorage == null){
-            window.location.href = "/Login"
+            window.location.href = "/"
          }
       }
       //Nếu là admin thì bắt buộc phải đăng nhập
       if("{{userType}}" == "admin"){
          const tokenExists_sessionStorage = window.sessionStorage.getItem("{{userID}}")
          if(tokenExists_sessionStorage == null){
-            window.location.href = "/Login"
+            window.location.href = "/"
          }
       }
 
@@ -178,7 +178,7 @@
                      </div>
                      <div class="col form-group">
                         <input class="form-control me 2" type="search" name="keyword" id="keyword" autocomplete="off"
-                           placeholder="Vị trí, kĩ năng, nơi tuyển" required
+                           placeholder="Vị trí, kĩ năng, nơi tuyển"
                            style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                         <div class="autocomplete"></div>
                      </div>
@@ -195,7 +195,7 @@
                            <option value="Above50M">Trên 50 triệu</option>
                         </select>
                      </div>
-                     <button class="btn btn-outline-info" type="submit" id="Find_TD">Tìm kiếm</button>
+                     <button class="btn btn-outline-info" type="button" id="Find_TD">Tìm kiếm</button>
                   </div>
                </form>
             </div>
@@ -843,6 +843,9 @@
          const AnhUser = document.getElementById("AnhUser")
          //Kiểm tra phiên làm việc của riêng từng user
          const tokenExist = window.sessionStorage.getItem("{{userID}}")
+         var CurrentUrl = window.location.href
+         var part = CurrentUrl.split("/")
+         var url = part.slice(0, 3).join("/")
          if (tokenExist != null & '{{userType}}' == 'admin') {
             Home.setAttribute("style", "display:none")
             AnhUser.setAttribute("style", "display:none")
@@ -850,9 +853,10 @@
          }
          else if(tokenExist != null & '{{userType}}' == 'user'){
             Login_href.innerHTML = "Logout"
-            Login_href.href = `http://localhost:${window.location.port}/Login`
+            Login_href.href = `/`
             Login_href.addEventListener("click", function(){
                window.sessionStorage.removeItem("{{userID}}")
+               window.localStorage.removeItem("{{userID}}")
             })
          }
          else if(tokenExist == null){
@@ -996,11 +1000,10 @@
             var Text = document.getElementById("keyword").title
             if(Text == "" || Text == null){
                Text = document.getElementById("keyword").value
-               if(Text == "" || Text == null){
-                  alert("Vui lòng nhập thông tin tìm kiếm")
-                  return
+               if(Text == null || Text == ""){
+                  Text = " "
                }
-            }  
+            } 
             var position_endline = Text.indexOf('\n');
             if (position_endline != -1) {
                Text = Text.substring(0, position_endline);
@@ -1009,9 +1012,9 @@
             if(pos_xet != -1)
                Text = Text.substring(0, pos_xet);
             Text = encodeURIComponent(Text);
-            var userID = JSON.parse(JSON.stringify('{{userID}}'));
-            console.log("CurrentUrl: " + window.location.href)
+            var userID = '{{userID}}';
             CurrentUrl = window.location.href
+            console.log(CurrentUrl)
             if(userID != "" && userID != null){
                window.location.href = `${CurrentUrl}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}/${LuongTD}`
             }

@@ -15,7 +15,7 @@
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-header">
-                        <h1 class="card-title">Thêm bài tuyển dụng</h1>
+                        <h1 class="card-title">Cật nhật bài tuyển dụng</h1>
                     </div>
                     <div class="card-body">
                         <form class="needs-validation" id="UpdateTD" autocomplete="off">
@@ -111,6 +111,9 @@
             const IDPost = document.getElementById('IDPost').value = `{{td.IDPost}}`;
         }
         const UpdateTDForm = document.getElementById('UpdateTD');
+        var CurrentUrl = window.location.href
+        var part = CurrentUrl.split('/')
+        var url = part.slice(0, 4).join('/')
         UpdateTDForm.onsubmit = function(e) {
             e.preventDefault();
             const formData = new FormData(UpdateTDForm);
@@ -123,11 +126,12 @@
             .then(data => {
                 if (data == true) {
                     alert('Cật nhật tuyển dụng thành công');
+                    window.location.href = url + '/admin-Edit-TD';
                 } else {
                     alert(data.message);
                 }
             })
-            .catch(err => alert("Cật nhật tuyển dụng thất bại, lỗi: " + err))
+            .catch(err => alert("Lỗi hệ thống: " + err))
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

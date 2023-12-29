@@ -71,10 +71,10 @@
                         window.location.reload()
                     }
                     else{
-                        alert('xóa tuyển dụng thất bại')
+                        alert(data.message)
                     }
                 })
-                .catch(err => alert('Xóa tuyển dụng thất bại, lỗi: '+ err))
+                .catch(err => alert("Lỗi hệ thống: " + err))
             });
         }
         document.getElementById("add_new").addEventListener("click", function(e) {

@@ -121,9 +121,11 @@
             e.preventDefault();
             userID = "{{userID}}";
             tokenExist = window.sessionStorage.getItem(userID);
-            if(tokenExist != null)
+            if(tokenExist != null){
                 window.sessionStorage.removeItem(userID)
-            window.location.href = "/Login";
+                window.localStorage.removeItem(userID)
+            }
+            window.location.href = "/";
         })
     </script>
     <!-- Jquery CDN link -->

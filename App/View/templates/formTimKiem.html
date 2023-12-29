@@ -44,10 +44,11 @@
    <link rel="stylesheet" href="{{ url_for('static', path='/css/style2.css')}}">
    <script>
       //Kiểm tra userID có tồn tai trong session khi đã đăng nhập 
-      if("{{userID}}" != "" && "{{userType}}"){
-         const tokenExists_localStorage = window.localStorage.getItem("{{userID}}")
+      if("{{user}}" != ""){
+         userID = "{{user.Gmail}}"
+         const tokenExists_localStorage = window.localStorage.getItem(userID)
          if(tokenExists_localStorage == null){
-            window.location.href = "/Login"
+            window.location.href = "/"
          }
       }
   </script>
@@ -106,7 +107,9 @@
             <div class="row">
                <div class="col-md-3 col-sm-12">
                   <div class="logo">
-                     <img src="{{ url_for('static', path='/images/logos/logo.png') }}" alt="">
+                     <a href="/{{user.Gmail if user != '' else ''}}" id="Home">
+                        <img src="{{ url_for('static', path='/images/logos/logo.png') }}" alt="">
+                     </a>
                   </div>
                </div><!-- logo col end -->
 
@@ -122,12 +125,19 @@
 
                         <div id="navbarSupportedContent" class="collapse navbar-collapse navbar-responsive-collapse">
                            <ul class="nav navbar-nav">
-                              <li>
-                                 <a href="/{{userID if userID is not none else ''}}" id="Home">Home</a>
-                              </li>
-                              <li>
-                                 <a href="/Login" id="Login_href">Login</a>
-                              </li>
+                              <ul class="nav navbar-nav">
+                                 <img src="{{ url_for('static', path='/images/logos/user.jpg') }}" alt="anh user" style="
+                                 margin-left: 270px;
+                                 position: relative;
+                                 width: 60px;
+                                 height: 60px;
+                                 border-radius: 50%;
+                                 cursor: pointer;
+                                 overflow: hidden;" id = "AnhUser">
+                                 <li>
+                                    <a href="/Login" id="Login_href">Login</a>
+                                 </li>
+                              </ul><!--/ Nav ul end -->
                            </ul><!--/ Nav ul end -->
                         </div><!--/ Collapse end -->
 
@@ -165,7 +175,7 @@
                      </div>
                      <div class="col form-group">
                         <input class="form-control me 2" type="search" name="keyword" id="keyword"
-                           placeholder="Chức danh, kĩ năng, nơi tuyển" autocomplete="off" required>
+                           placeholder="Vị trí, kĩ năng, nơi tuyển" autocomplete="off">
                         <div class="autocomplete"></div>
                      </div>
                      <div class="col form-group">
@@ -212,7 +222,7 @@
                               </div>
                               <div class="post-content" style="width: 100%">
                                  <h2 class="post-title">
-                                    <a href="/{{userID}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
+                                    <a href="/{{user.Gmail}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
                                  </h2>
                                  <div class="post-meta">
                                     {%if td.NoiTD != none%}
@@ -356,17 +366,23 @@
       <script>
          const Login_href = document.getElementById("Login_href")
          const Home = document.getElementById("Home")
-         const tokenExist = window.sessionStorage.getItem("{{userID}}")
+         const AnhUser = document.getElementById("AnhUser")
+         const tokenExist = window.sessionStorage.getItem("{{user.Gmail}}")
          const userType = '{{user.QuyenUser}}'
+         var CurrentUrl = window.location.href
+         var part = CurrentUrl.split("/")
+         var url = part.slice(0, 3).join("/")
          if (tokenExist != null & userType == 'admin') {
             Home.setAttribute("style", "display:none")
+            AnhUser.setAttribute("style", "display:none")
             Login_href.setAttribute("style", "display:none")
          }
          else if(tokenExist != null & userType == 'user'){
-            Login_href.innerHTML = "Logout"
-            Login_href.href = `http://localhost:${window.location.port}/Login`
+            Login_href.innerHTML = "LogOut"
+            CurrentUrl = window.location.href
+            Login_href.href = `/`
             Login_href.addEventListener("click", function(){
-               window.sessionStorage.removeItem("{{userID}}")
+               window.sessionStorage.removeItem("{{user.Gmail}}")
             })
          }
          else if(tokenExist == null){
@@ -510,11 +526,10 @@
             var Text = document.getElementById("keyword").title
             if(Text == "" || Text == null){
                Text = document.getElementById("keyword").value
-               if(Text == "" || Text == null){
-                  alert("Vui lòng nhập thông tin tìm kiếm")
-                  return
+               if(Text == null || Text == ""){
+                  Text = " "
                }
-            }  
+            }
             var position_endline = Text.indexOf('\n');
             if (position_endline != -1) {
                Text = Text.substring(0, position_endline);

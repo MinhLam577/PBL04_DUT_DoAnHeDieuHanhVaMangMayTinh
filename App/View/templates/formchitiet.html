@@ -41,6 +41,16 @@
    <link rel="stylesheet" href="{{ url_for('static', path='/css/colorbox.css') }}">
 
    <link rel="stylesheet" href="{{ url_for('static', path='/css/style2.css')}}">
+   <script>
+      //Kiểm tra userID có tồn tai trong session khi đã đăng nhập 
+      if("{{user}}" != ""){
+         userID = "{{user.Gmail}}"
+         const tokenExists_localStorage = window.localStorage.getItem(userID)
+         if(tokenExists_localStorage == null){
+            window.location.href = "/"
+         }
+      }
+  </script>
 </head>
 
 <body class="boxed-layout">
@@ -94,7 +104,7 @@
             <div class="row">
                <div class="col-md-3 col-sm-12">
                   <div class="logo">
-                     <a href="index.html">
+                     <a href="/{{user.Gmail if user != '' else ''}}" id="Home">
                         <img src="{{ url_for('static', path='/images/logos/logo.png') }}" alt="">
                      </a>
                   </div>
@@ -417,7 +427,7 @@
             IDTD = "{{IDTD}}";
             IDUser = "{{user.IDUser if user.IDUser else ''}}";
             if(IDUser == ""){
-               window.location.href = "/Login";
+               window.location.href = "/";
                return;
             }
             dulieu = {
@@ -440,13 +450,13 @@
                   alert(data.message);
                }
             })
-            .catch(error => alert("Quan tâm thất bại, lỗi hệ thống: " + error));
+            .catch(error => alert("Lỗi hệ thống: " + err));
          });
          document.getElementById("btn_HuyQuantam").addEventListener("click", function(){
             IDTD = "{{IDTD}}";
             IDUser = "{{user.IDUser if user.IDUser else ''}}";
             if(IDUser == ""){
-               window.location.href = "/Login";
+               window.location.href = "/";
                return;
             }
             fetch("/TuongTac/DeleteTT/", {
@@ -459,7 +469,7 @@
             .then(respone=>respone.json())
             .then(data =>{
                if(data == true) {
-                  alert("Bạn đã hủy quan tâm bài tuyển dụng này thành công");
+                  alert("Hủy quan tâm thành công");
                }
                else {
                   alert(data.message);
