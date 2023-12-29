@@ -42,13 +42,12 @@
    <link rel="stylesheet" href="{{ url_for('static', path='/css/style2.css')}}">
    <script>
       //Kiểm tra userID có tồn tai trong session khi đã đăng nhập 
-      if("{{userType}}" & "{{userID}}"){
-         const tokenExists_localStorage = window.localStrorage.getItem("{{userID}}")
+      if("{{userID}}" & "{{userType}}"){
+         const tokenExists_localStorage = window.localStorage.getItem("{{userID}}")
          if(tokenExists_localStorage == null){
             window.location.href = "/Login"
          }
       }
-
       //Nếu là admin thì bắt buộc phải đăng nhập
       if("{{userType}}" == "admin"){
          const tokenExists_sessionStorage = window.sessionStorage.getItem("{{userID}}")
@@ -132,7 +131,7 @@
                         <div id="navbarSupportedContent" class="collapse navbar-collapse navbar-responsive-collapse">
                            <ul class="nav navbar-nav">
                               <li>
-                                 <a href="/" id="Home">Home</a>
+                                 <a href="/{{userID if userID is not none else ''}}" id="Home">Home</a>
                               </li>
                               <li>
                                  <a href="/Login" id="Login_href">Login</a>
