@@ -44,8 +44,8 @@
    <link rel="stylesheet" href="{{ url_for('static', path='/css/style2.css')}}">
    <script>
       //Kiểm tra userID có tồn tai trong session khi đã đăng nhập 
-      if("{{userType}}" & "{{userID}}"){
-         const tokenExists_localStorage = window.localStrorage.getItem("{{userID}}")
+      if("{{userID}}" & "{{userType}}"){
+         const tokenExists_localStorage = window.localStorage.getItem("{{userID}}")
          if(tokenExists_localStorage == null){
             window.location.href = "/Login"
          }
@@ -125,7 +125,7 @@
                         <div id="navbarSupportedContent" class="collapse navbar-collapse navbar-responsive-collapse">
                            <ul class="nav navbar-nav">
                               <li>
-                                 <a href="/" id = "Home">Home</a>
+                                 <a href="/{{userID if userID is not none else ''}}" id = "Home">Home</a>
                               </li>
                               <li>
                                  <a href="/Login" id="Login_href">Login</a>
@@ -201,7 +201,7 @@
                               </div>
                               <div class="post-content" style="width: 100%">
                                  <h2 class="post-title">
-                                    <a href="{{userID}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
+                                    <a href="/{{userID}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
                                  </h2>
                                  <div class="post-meta">
                                     {%if td.NoiTD != none%}
@@ -511,11 +511,13 @@
             if(pos_xet != -1)
                Text = Text.substring(0, pos_xet);
             Text = encodeURIComponent(Text);
-            {% if userID != none%}
-               window.location.href = `http://localhost:${window.location.port}/{{userID}}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
-            {%else%}
-               window.location.href = `http://localhost:${window.location.port}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
-            {%endif%}
+            CurrentUrl = window.location.href
+            let parts = CurrentUrl.split("/");
+            let index = parts.indexOf("tim-kiem-DuLieu");
+            let neededParts = parts.slice(0, index + 1).join("/");
+            let url = neededParts + `/${Text}/${LinhVucTD}/${DiaDiem}`
+            window.location.href = url
+            
          })
       </script>
       <!-- initialize jQuery Library -->

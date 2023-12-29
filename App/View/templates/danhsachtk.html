@@ -90,7 +90,7 @@
         function del(Gmail) {
             formdata = new FormData();
             formdata.append('Gmail', Gmail);
-            window.localStrorage.removeItem(Gmail);
+            window.localStorage.removeItem(Gmail);
             fetch("/Users/DeleteUser/", {
                 "method": "DELETE",
                 "body": formdata

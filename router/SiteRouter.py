@@ -17,6 +17,16 @@ async def login(request: Request):
 async def login(request: Request):
     return siteController.Login(request)
 
+@siteRouter.get("/{userID}", response_class=HTMLResponse, name = "Giao diện trang chủ admin khi đăng nhập thành công")
+async def index(request: Request, userID: str):
+    user = user_controller.GetUserByGmail(userID)
+    if user is None:
+        return RedirectResponse(url="/Login")
+    if user.QuyenUser == "user":
+        return siteController.LoginSuccess(request, "user", userID)
+    else:
+        return RedirectResponse(url="/admin/{userID}")
+
 #Trang chủ admin
 @siteRouter.get("/admin/{userID}", response_class=HTMLResponse, name = "Giao diện trang chủ admin khi đăng nhập thành công")
 async def index(request: Request, userID: str):
@@ -32,26 +42,14 @@ async def index(request: Request, userID: str):
 async def formChiTiet(request: Request, IDTD: str, userID: str):
     return siteController.formChiTiet(request, IDTD, userID)
 
-#Chi tiết tuyển dụng
+#Chi tiết tuyển dụng của admin đã đăng nhập
 @siteRouter.get("/admin/{userID}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
 async def formChiTiet(request: Request, IDTD: str, userID: str = None):
     return siteController.formChiTiet(request, IDTD, userID)
 
-#Chi tiết tuyển dụng
+#Chi tiết tuyển dụng khi không đăng nhập
 @siteRouter.get("/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
 async def formChiTiet(request: Request, IDTD: str, userID: str = None):
-    return siteController.formChiTiet(request, IDTD, userID)
-
-#Chi tiết tuyển dụng khi tìm kiếm đã đăng nhập
-@siteRouter.get("/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse
-                , name = "Giao diện chi tiết tuyển dụng trang tìm kiếm")
-async def formChiTietTimKiem(request: Request, IDTD: str, userID: str):
-    return siteController.formChiTiet(request, IDTD, userID)
-
-#Chi tiết tuyển dụng khi tìm kiếm ko đăng nhập
-@siteRouter.get("/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse
-                , name = "Giao diện chi tiết tuyển dụng trang tìm kiếm không đăng nhập")
-async def formChiTietTimKiem(request: Request, IDTD: str, userID: str = None):
     return siteController.formChiTiet(request, IDTD, userID)
 
 @siteRouter.get("/{userID}/danh-sach-tk", response_class=HTMLResponse, name = "Giao diện danh sách tài khoản của admin")
@@ -67,12 +65,18 @@ async def tongQuan(request: Request, userID: str):
 async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
     return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, userID)
 
+@siteRouter.get("/admin/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
+async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
+    return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, userID)
+
 #Tìm kiếm khi chưa đăng nhập
 @siteRouter.get("/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}", response_class=HTMLResponse, name = "Giao diện tìm kiếm có dữ liệu")
 async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
     return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, userID)
 
-@siteRouter.get("/{userID}/tim-kiem-DuLieu", response_class=HTMLResponse, name="Giao diện tìm kiếm không có dữ liệu")
+
+#Tìm kiếm của admin khi không có dữ liệu
+@siteRouter.get("/admin/{userID}/tim-kiem-DuLieu", response_class=HTMLResponse, name="Giao diện tìm kiếm không có dữ liệu")
 async def formTimKiem(request: Request, userID: str = None):
     return siteController.formTimKiem(request, None, None, None, userID)
 

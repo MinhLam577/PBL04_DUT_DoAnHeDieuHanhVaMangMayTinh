@@ -42,13 +42,12 @@
    <link rel="stylesheet" href="{{ url_for('static', path='/css/style2.css')}}">
    <script>
       //Kiểm tra userID có tồn tai trong session khi đã đăng nhập 
-      if("{{userType}}" & "{{userID}}"){
-         const tokenExists_localStorage = window.localStrorage.getItem("{{userID}}")
+      if("{{userID}}" & "{{userType}}"){
+         const tokenExists_localStorage = window.localStorage.getItem("{{userID}}")
          if(tokenExists_localStorage == null){
             window.location.href = "/Login"
          }
       }
-
       //Nếu là admin thì bắt buộc phải đăng nhập
       if("{{userType}}" == "admin"){
          const tokenExists_sessionStorage = window.sessionStorage.getItem("{{userID}}")
@@ -111,9 +110,7 @@
       <header id="header" class="header header-menu">
          <div class="container">
             <div class="row">
-               <div class="col-md-5 col-sm-12">
-               </div><!-- logo col end -->
-               <div class="col-md-2 col-sm-12">
+               <div class="col-md-3 col-sm-12">
                   <div class="logo">
                      <a href="index-5.html">
                         <img src="{{ url_for('static', path='/images/logos/logo.png') }}" alt="">
@@ -121,7 +118,7 @@
                   </div>
                </div><!-- logo col end -->
 
-               <div class="col-md-5 col-sm-12">
+               <div class="col-md-7 col-sm-12">
                   <nav class="navbar navbar-expand-lg col site-navigation navigation">
                      <div class="site-nav-inner float-left">
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -133,12 +130,10 @@
 
                         <div id="navbarSupportedContent" class="collapse navbar-collapse navbar-responsive-collapse">
                            <ul class="nav navbar-nav">
-                              <li style="margin-left: 250px;">
-                                 <img src="{{ url_for('static', path='/images/logos/user.jpg') }}" alt="" style="    position: relative;
-                                 width: 60px;
-                                 height: 60px;
-                                 border-radius: 50%;
-                                 cursor: pointer;">
+                              <li>
+                                 <a href="/{{userID if userID is not none else ''}}" id="Home">Home</a>
+                              </li>
+                              <li>
                                  <a href="/Login" id="Login_href">Login</a>
                               </li>
                            </ul><!--/ Nav ul end -->
@@ -147,6 +142,8 @@
                      </div><!-- Site Navbar inner end -->
                   </nav><!--/ Navigation end -->
                </div><!-- Header with Menu -->
+
+
             </div><!-- Row end -->
          </div><!-- Logo and banner area end -->
          <!-- Site search end -->
@@ -337,20 +334,12 @@
                                  onerror='this.src = "{{ url_for('static', path='/images/TDImages/default.png') }}"'/>
                               </div>
                               <div class="post-content" style="width: 100%">
-                                 <h2 class="post-title" style=" 
-                                 overflow: hidden;
-                                 text-overflow: ellipsis;
-                                 max-width: 80ch;
-                                 white-space: nowrap;">
+                                 <h2 class="post-title">
                                     <a href="{{userID if userID is not none else ''}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
                                  </h2>
                                  <div class="post-meta">
                                     {%if td.NoiTD != none%}
-                                    <span class="post-author" style="
-                                    overflow: hidden;
-                                    text-overflow: ellipsis;
-                                    max-width: 40ch;
-                                    white-space: nowrap;">
+                                    <span class="post-author">
                                        Nơi tuyển dụng: {{td.NoiTD}}
                                     </span>
                                     {%else%}
@@ -368,17 +357,9 @@
                                     {{td.Email}}
                                     {%endif%}
                                     {%endif%}
-                                    <span class="post-date" style="
-                                    overflow: hidden;
-                                    text-overflow: ellipsis;
-                                    max-width: 50ch;
-                                    white-space: nowrap;">Ngày tuyển: {{td.NgayTD}}</span>
+                                    <span class="post-date">Ngày tuyển: {{td.NgayTD}}</span>
                                  </div>
-                                 <p style=" 
-                                 overflow: hidden;
-                                 text-overflow: ellipsis;
-                                 max-width: 60ch;
-                                 white-space: nowrap;">Địa điểm: {{td.DiaDiem}}</p>
+                                 <p>Địa điểm: {{td.DiaDiem}}</p>
                               </div><!-- Post content end -->
                            </div><!-- Post Block style 1 end -->
                            {%if loop.index != listTD|length%}
@@ -996,11 +977,13 @@
                Text = Text.substring(0, pos_xet);
             Text = encodeURIComponent(Text);
             var userID = JSON.parse(JSON.stringify('{{userID}}'));
+            console.log("CurrentUrl: " + window.location.href)
+            CurrentUrl = window.location.href
             if(userID != "" && userID != null){
-               window.location.href = `http://localhost:${window.location.port}/${userID}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
+               window.location.href = `${CurrentUrl}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
             }
             else{
-               window.location.href = `http://localhost:${window.location.port}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
+               window.location.href = `${CurrentUrl}tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
             }
          })
       </script>
