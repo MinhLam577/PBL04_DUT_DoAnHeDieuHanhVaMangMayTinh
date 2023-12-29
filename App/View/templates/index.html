@@ -977,11 +977,13 @@
                Text = Text.substring(0, pos_xet);
             Text = encodeURIComponent(Text);
             var userID = JSON.parse(JSON.stringify('{{userID}}'));
+            console.log("CurrentUrl: " + window.location.href)
+            CurrentUrl = window.location.href
             if(userID != "" && userID != null){
-               window.location.href = `http://localhost:${window.location.port}/${userID}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
+               window.location.href = `${CurrentUrl}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
             }
             else{
-               window.location.href = `http://localhost:${window.location.port}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
+               window.location.href = `${CurrentUrl}tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
             }
          })
       </script>
