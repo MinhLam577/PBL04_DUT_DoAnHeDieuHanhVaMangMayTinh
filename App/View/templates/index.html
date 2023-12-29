@@ -42,7 +42,7 @@
    <link rel="stylesheet" href="{{ url_for('static', path='/css/style2.css')}}">
    <script>
       //Kiểm tra userID có tồn tai trong session khi đã đăng nhập 
-      if("{{userID}}" & "{{userType}}"){
+      if("{{userID}}" != ""){
          const tokenExists_localStorage = window.localStorage.getItem("{{userID}}")
          if(tokenExists_localStorage == null){
             window.location.href = "/Login"
