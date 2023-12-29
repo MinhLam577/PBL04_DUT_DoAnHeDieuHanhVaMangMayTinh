@@ -106,9 +106,7 @@
             <div class="row">
                <div class="col-md-3 col-sm-12">
                   <div class="logo">
-                     <a href="index.html">
-                        <img src="{{ url_for('static', path='/images/logos/logo.png') }}" alt="">
-                     </a>
+                     <img src="{{ url_for('static', path='/images/logos/logo.png') }}" alt="">
                   </div>
                </div><!-- logo col end -->
 
@@ -125,7 +123,7 @@
                         <div id="navbarSupportedContent" class="collapse navbar-collapse navbar-responsive-collapse">
                            <ul class="nav navbar-nav">
                               <li>
-                                 <a href="/{{userID if userID is not none else ''}}" id = "Home">Home</a>
+                                 <a href="/{{userID if userID is not none else ''}}" id="Home">Home</a>
                               </li>
                               <li>
                                  <a href="/Login" id="Login_href">Login</a>

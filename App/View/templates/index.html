@@ -128,7 +128,6 @@
                            <span class="navbar-toggler-icon"></span>
                         </button>
                         <!-- End of Navbar toggler -->
-
                         <div id="navbarSupportedContent" class="collapse navbar-collapse navbar-responsive-collapse">
                            <ul class="nav navbar-nav">
                               <img src="{{ url_for('static', path='/images/logos/user.jpg') }}" alt="anh user" style="
@@ -138,7 +137,7 @@
                               height: 60px;
                               border-radius: 50%;
                               cursor: pointer;
-                              overflow: hidden;">
+                              overflow: hidden;" id = "AnhUser">
                               <li>
                                  <a href="/Login" id="Login_href">Login</a>
                               </li>
@@ -841,10 +840,12 @@
       <script>
          const Login_href = document.getElementById("Login_href")
          const Home = document.getElementById("Home")
+         const AnhUser = document.getElementById("AnhUser")
          //Kiểm tra phiên làm việc của riêng từng user
          const tokenExist = window.sessionStorage.getItem("{{userID}}")
          if (tokenExist != null & '{{userType}}' == 'admin') {
             Home.setAttribute("style", "display:none")
+            AnhUser.setAttribute("style", "display:none")
             Login_href.setAttribute("style", "display:none")
          }
          else if(tokenExist != null & '{{userType}}' == 'user'){
