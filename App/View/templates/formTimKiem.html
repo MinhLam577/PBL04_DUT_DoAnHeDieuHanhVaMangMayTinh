@@ -142,11 +142,6 @@
                <form action="" class="d-flex">
                   <div class="row advanced-search">
                      <div class="col form-group">
-                        <input class="form-control me 2" type="search" name="keyword" id="keyword"
-                           placeholder="Chức danh, kĩ năng, nơi tuyển" autocomplete="off" required>
-                        <div class="autocomplete"></div>
-                     </div>
-                     <div class="col form-group">
                         <select class="form-control" id="LinhVuc_Select">
                            <option value="All">Tất cả lĩnh vực</option>
                            {%for lv in LinhVucTD%}
@@ -161,6 +156,11 @@
                            <option value='{{dd}}'>{{dd}}</option>
                            {%endfor%}
                         </select>
+                     </div>
+                     <div class="col form-group">
+                        <input class="form-control me 2" type="search" name="keyword" id="keyword"
+                           placeholder="Chức danh, kĩ năng, nơi tuyển" autocomplete="off" required>
+                        <div class="autocomplete"></div>
                      </div>
                      <button class="btn btn-outline-info" type="submit" id="Find_TD">Tìm kiếm</button>
                   </div>
