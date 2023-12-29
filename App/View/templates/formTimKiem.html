@@ -513,7 +513,15 @@
             Text = encodeURIComponent(Text);
             CurrentUrl = window.location.href
             {% if userID != none%}
-               window.location.href = `${CurrentUrl}/{{userID}}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
+               if(userType != 'admin')
+                  window.location.href = `${CurrentUrl}/{{userID}}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
+               else{
+                  let parts = CurrentUrl.split("/");
+                  let index = parts.indexOf("tim-kiem-DuLieu");
+                  let neededParts = parts.slice(0, index + 1).join("/");
+                  let url = neededParts + `/${Text}/${LinhVucTD}/${DiaDiem}`
+                  window.location.href = url
+               }  
             {%else%}
                window.location.href = `${CurrentUrl}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
             {%endif%}

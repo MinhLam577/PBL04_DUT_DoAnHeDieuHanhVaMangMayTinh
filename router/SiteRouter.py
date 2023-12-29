@@ -65,7 +65,6 @@ async def tongQuan(request: Request, userID: str):
 async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
     return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, userID)
 
-#Chi tiết tuyển dụng của admin đã đăng nhập
 @siteRouter.get("/admin/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
 async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
     return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, userID)
@@ -75,8 +74,9 @@ async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None,
 async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
     return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, userID)
 
+
 #Tìm kiếm của admin khi không có dữ liệu
-@siteRouter.get("/{userID}/tim-kiem-DuLieu", response_class=HTMLResponse, name="Giao diện tìm kiếm không có dữ liệu")
+@siteRouter.get("/admin/{userID}/tim-kiem-DuLieu", response_class=HTMLResponse, name="Giao diện tìm kiếm không có dữ liệu")
 async def formTimKiem(request: Request, userID: str = None):
     return siteController.formTimKiem(request, None, None, None, userID)
 
