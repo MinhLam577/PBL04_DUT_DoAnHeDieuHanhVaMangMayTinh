@@ -111,7 +111,9 @@
       <header id="header" class="header header-menu">
          <div class="container">
             <div class="row">
-               <div class="col-md-3 col-sm-12">
+               <div class="col-md-5 col-sm-12">
+               </div><!-- logo col end -->
+               <div class="col-md-2 col-sm-12">
                   <div class="logo">
                      <a href="index-5.html">
                         <img src="{{ url_for('static', path='/images/logos/logo.png') }}" alt="">
@@ -119,7 +121,7 @@
                   </div>
                </div><!-- logo col end -->
 
-               <div class="col-md-7 col-sm-12">
+               <div class="col-md-5 col-sm-12">
                   <nav class="navbar navbar-expand-lg col site-navigation navigation">
                      <div class="site-nav-inner float-left">
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -131,10 +133,12 @@
 
                         <div id="navbarSupportedContent" class="collapse navbar-collapse navbar-responsive-collapse">
                            <ul class="nav navbar-nav">
-                              <li>
-                                 <a href="/" id="Home">Home</a>
-                              </li>
-                              <li>
+                              <li style="margin-left: 250px;">
+                                 <img src="{{ url_for('static', path='/images/logos/user.jpg') }}" alt="" style="    position: relative;
+                                 width: 60px;
+                                 height: 60px;
+                                 border-radius: 50%;
+                                 cursor: pointer;">
                                  <a href="/Login" id="Login_href">Login</a>
                               </li>
                            </ul><!--/ Nav ul end -->
@@ -143,8 +147,6 @@
                      </div><!-- Site Navbar inner end -->
                   </nav><!--/ Navigation end -->
                </div><!-- Header with Menu -->
-
-
             </div><!-- Row end -->
          </div><!-- Logo and banner area end -->
          <!-- Site search end -->
@@ -335,12 +337,20 @@
                                  onerror='this.src = "{{ url_for('static', path='/images/TDImages/default.png') }}"'/>
                               </div>
                               <div class="post-content" style="width: 100%">
-                                 <h2 class="post-title">
+                                 <h2 class="post-title" style=" 
+                                 overflow: hidden;
+                                 text-overflow: ellipsis;
+                                 max-width: 80ch;
+                                 white-space: nowrap;">
                                     <a href="{{userID if userID is not none else ''}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
                                  </h2>
                                  <div class="post-meta">
                                     {%if td.NoiTD != none%}
-                                    <span class="post-author">
+                                    <span class="post-author" style="
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    max-width: 40ch;
+                                    white-space: nowrap;">
                                        Nơi tuyển dụng: {{td.NoiTD}}
                                     </span>
                                     {%else%}
@@ -358,9 +368,17 @@
                                     {{td.Email}}
                                     {%endif%}
                                     {%endif%}
-                                    <span class="post-date">Ngày tuyển: {{td.NgayTD}}</span>
+                                    <span class="post-date" style="
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    max-width: 50ch;
+                                    white-space: nowrap;">Ngày tuyển: {{td.NgayTD}}</span>
                                  </div>
-                                 <p>Địa điểm: {{td.DiaDiem}}</p>
+                                 <p style=" 
+                                 overflow: hidden;
+                                 text-overflow: ellipsis;
+                                 max-width: 60ch;
+                                 white-space: nowrap;">Địa điểm: {{td.DiaDiem}}</p>
                               </div><!-- Post content end -->
                            </div><!-- Post Block style 1 end -->
                            {%if loop.index != listTD|length%}
