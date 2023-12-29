@@ -427,8 +427,15 @@
             IDTD = "{{IDTD}}";
             IDUser = "{{user.IDUser if user.IDUser else ''}}";
             if(IDUser == ""){
-               window.location.href = "/Login";
+               window.location.href = "/";
                return;
+            }
+            else{
+               const tokenExist = window.localStorage.getItem(IDUser);
+               if(tokenExist == null){
+                  window.location.href = "/";
+                  return;
+               }
             }
             dulieu = {
                IDTD: IDTD,
@@ -456,8 +463,15 @@
             IDTD = "{{IDTD}}";
             IDUser = "{{user.IDUser if user.IDUser else ''}}";
             if(IDUser == ""){
-               window.location.href = "/Login";
+               window.location.href = "/";
                return;
+            }
+            else{
+               const tokenExist = window.localStorage.getItem(IDUser);
+               if(tokenExist == null){
+                  window.location.href = "/";
+                  return
+               }
             }
             fetch("/TuongTac/DeleteTT/", {
                method: "DELETE",
