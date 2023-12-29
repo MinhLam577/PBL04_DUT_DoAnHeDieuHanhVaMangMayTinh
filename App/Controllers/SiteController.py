@@ -83,9 +83,9 @@ class SiteController:
     def formChiTiet(self, request, IDTD: str, userID: str):
         user = user_controller.GetUserByGmail(userID)
         return template.TemplateResponse("formchitiet.html", {"request": request, 'IDTD': IDTD, "user": user})
-    def formTimKiem(self, request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
-        if(LinhVucTD != None and DiaDiem != None and Text != None):
-            listTD_Search = tdController.TimKiemTD(Text, LinhVucTD, DiaDiem)
+    def formTimKiem(self, request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, LuongTD: str = None, userID: str = None):
+        if(LinhVucTD != None and DiaDiem != None and Text != None and LuongTD != None):
+            listTD_Search = tdController.TimKiemTD(Text, LinhVucTD, DiaDiem, LuongTD)
             listTD_Search = sorted(listTD_Search, key=lambda x: datetime.strptime(str(x['NgayTD']), '%Y-%m-%d %H:%M:%S'), reverse=True)
             LinhVucTD = None
             ViTriTD = None

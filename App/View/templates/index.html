@@ -42,7 +42,7 @@
    <link rel="stylesheet" href="{{ url_for('static', path='/css/style2.css')}}">
    <script>
       //Kiểm tra userID có tồn tai trong session khi đã đăng nhập 
-      if("{{userID}}" != ""){
+      if("{{userID}}" != "" && "{{userType}}"){
          const tokenExists_localStorage = window.localStorage.getItem("{{userID}}")
          if(tokenExists_localStorage == null){
             window.location.href = "/Login"
@@ -182,6 +182,19 @@
                            placeholder="Vị trí, kĩ năng, nơi tuyển" required
                            style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                         <div class="autocomplete"></div>
+                     </div>
+                     <div class="col form-group">
+                        <select class="form-control" id="LuongTD_Select">
+                           <option value="All">Tất cả lương</option>
+                           <option value="None">Trao đổi trực tiếp</option>
+                           <option value="Below1M">Dưới 1 triệu</option>
+                           <option value="1-10">1 triệu - 10 triệu</option>
+                           <option value="10-20">10 triệu - 20 triệu</option>
+                           <option value="20-30">20 triệu - 30 triệu</option>
+                           <option value="30-40">30 triệu - 40 triệu</option>
+                           <option value="40-50">40 triệu - 50 triệu</option>
+                           <option value="Above50M">Trên 50 triệu</option>
+                        </select>
                      </div>
                      <button class="btn btn-outline-info" type="submit" id="Find_TD">Tìm kiếm</button>
                   </div>
@@ -978,6 +991,7 @@
             e.preventDefault()
             var LinhVucTD = document.getElementById("LinhVuc_Select").value
             var DiaDiem = document.getElementById("DiaDiem_Select").value
+            var LuongTD = document.getElementById("LuongTD_Select").value
             var Text = document.getElementById("keyword").title
             if(Text == "" || Text == null){
                Text = document.getElementById("keyword").value
@@ -998,10 +1012,10 @@
             console.log("CurrentUrl: " + window.location.href)
             CurrentUrl = window.location.href
             if(userID != "" && userID != null){
-               window.location.href = `${CurrentUrl}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
+               window.location.href = `${CurrentUrl}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}/${LuongTD}`
             }
             else{
-               window.location.href = `${CurrentUrl}tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}`
+               window.location.href = `${CurrentUrl}tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}/${LuongTD}`
             }
          })
       </script>

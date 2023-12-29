@@ -61,24 +61,24 @@ async def tongQuan(request: Request, userID: str):
     return siteController.TongQuan(request, userID)
 
 #Tìm kiếm khi đã đăng nhập 
-@siteRouter.get("/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}", response_class=HTMLResponse, name = "Giao diện tìm kiếm có dữ liệu")
-async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
-    return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, userID)
+@siteRouter.get("/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/{LuongTD}", response_class=HTMLResponse, name = "Giao diện tìm kiếm có dữ liệu")
+async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None, LuongTD: str = None):
+    return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, LuongTD, userID)
 
-@siteRouter.get("/admin/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
-async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
-    return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, userID)
+@siteRouter.get("/admin/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/{LuongTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
+async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None, LuongTD: str = None):
+    return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, LuongTD, userID)
 
 #Tìm kiếm khi chưa đăng nhập
-@siteRouter.get("/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}", response_class=HTMLResponse, name = "Giao diện tìm kiếm có dữ liệu")
-async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None):
-    return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, userID)
+@siteRouter.get("/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/{LuongTD}", response_class=HTMLResponse, name = "Giao diện tìm kiếm có dữ liệu")
+async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None, LuongTD: str = None):
+    return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, LuongTD, userID)
 
 
 #Tìm kiếm của admin khi không có dữ liệu
 @siteRouter.get("/admin/{userID}/tim-kiem-DuLieu", response_class=HTMLResponse, name="Giao diện tìm kiếm không có dữ liệu")
 async def formTimKiem(request: Request, userID: str = None):
-    return siteController.formTimKiem(request, None, None, None, userID)
+    return siteController.formTimKiem(request, None, None, None, None, userID)
 
 #Trang admin tuyển dụng
 @siteRouter.get("/{userID}/admin-Add-TD", response_class=HTMLResponse, name="Giao diện thêm tuyển dụng")
