@@ -66,5 +66,5 @@ class TuongTacModel:
                 db.commit()
                 return True
             except Exception as e:
-                raise TuongTacException("Xóa quan tâm theo IDUser thất bại, lỗi: " + getattr(e, 'message', repr(e)))
+                raise TuongTacException(getattr(e, 'message', repr(e)))
     

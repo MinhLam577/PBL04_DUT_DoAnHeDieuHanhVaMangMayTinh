@@ -164,8 +164,8 @@ class TDModel:
                         {**ConvertTD(TD), **{"count": count}}
                     )
                 return listTDConvert
-            except Exception:
-                raise TDException("Lấy tuyển dụng tương tác thất bại")
+            except Exception as e:
+                raise TDException(getattr(e, 'message', repr(e)))
     def TimKiemTDByID(self, IDTD: str):
         with SessionLocal() as db:
             res = []
@@ -178,7 +178,7 @@ class TDModel:
                     listTDConvert.append(ConvertTD(TD))
                 return listTDConvert
             except Exception as e:
-                raise TDException("Tìm kiếm tuyển dụng theo ID thất bại, lỗi: ", e)
+                raise TDException(getattr(e, 'message', repr(e)))
     def TimKiemTD(self, Text: str, LinhVucTD: str, DiaDiem: str, LuongTD: str):
         with SessionLocal() as db:
             res = []
@@ -358,6 +358,6 @@ class TDModel:
                     listTDConvert.append(ConvertTD(TD))
                 return listTDConvert
             except Exception as e:
-                raise TDException("Tìm kiếm tuyển dụng thất bại, lỗi: ", e)
+                raise TDException(getattr(e, 'message', repr(e)))
 
 

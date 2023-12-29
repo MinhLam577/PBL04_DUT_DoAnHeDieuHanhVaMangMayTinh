@@ -45,15 +45,6 @@ class UserRegister(UserLogin):
             raise UserExeception('Mật khẩu phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
         return Password
     IDUser: str = "user" + str(np.random.randint(1, 999999))
-    @validator('IDUser')
-    def iduser_validator(cls, IDUser):
-        with SessionLocal() as db:
-            us = db.query(User).filter(User.IDUser == IDUser).first()
-            if(us != None):
-                while(us != None):
-                    IDUser = "user" + str(np.random.randint(1, 999999))
-                    us = db.query(User).filter(User.IDUser == IDUser).first()
-        return IDUser
     QuyenUser: str = "user"
     NhapLai: str
 
@@ -86,15 +77,6 @@ class UserAdd(BaseModel):
             raise UserExeception('Mật khẩu phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
         return Password
     IDUser: str = "user" + str(np.random.randint(1, 999999))
-    @validator('IDUser')
-    def iduser_validator(cls, IDUser):
-        with SessionLocal() as db:
-            us = db.query(User).filter(User.IDUser == IDUser).first()
-            if(us != None):
-                while(us != None):
-                    IDUser = "user" + str(np.random.randint(1, 999999))
-                    us = db.query(User).filter(User.IDUser == IDUser).first()
-        return IDUser
     QuyenUser: str = "user"
     ThoiGianDangKi: date = datetime.now().date()
 def get_db():
@@ -158,7 +140,7 @@ class UserModel:
                     db.commit()
                     return True
             except Exception as e:
-                raise UserExeception('lỗi: ' + getattr(e, 'message', repr(e)))
+                raise UserExeception(getattr(e, 'message', repr(e)))
     def DeleteUserByGmail(self, Gmail: str):
         with SessionLocal() as db:
             try:
@@ -166,21 +148,24 @@ class UserModel:
                 if(us == None):
                     raise UserExeception("Gmail không tồn tại")
                 else:
-                    
                     db.query(User).filter(User.Gmail == Gmail).delete()
                     db.commit()
                     return True
             except UserExeception:
                 raise UserExeception('Gmail không tồn tại')
             except Exception as e:
-                raise UserExeception('Lỗi hệ thống, lỗi: ' + getattr(e, 'message', repr(e)))
+                raise UserExeception(getattr(e, 'message', repr(e)))
     def AddUser(self, user: UserAdd):
         with SessionLocal() as db:
             try:
                 us = db.query(User).filter(User.Gmail == user.Gmail).first()
                 if(us != None):
-                    raise UserExeception
+                    raise UserExeception("Gmail đã tồn tại")
                 else:
+                    listUserID = [record[0] for record in db.query(User.IDUser).all()]
+                    IDUser = user.IDUser
+                    while IDUser in listUserID:
+                        IDUser = "user" + str(np.random.randint(1, 999999))
                     db.add(User(IDUser = user.IDUser, Gmail = user.Gmail, Password = user.Password, 
                                 QuyenUser = user.QuyenUser, ThoiGianDangKi = user.ThoiGianDangKi))
                     db.commit()
@@ -188,15 +173,13 @@ class UserModel:
             except UserExeception:
                 raise UserExeception('Gmail đã tồn tại')
             except Exception as e:
-                raise UserExeception('Lỗi hệ thống, lỗi: ' + getattr(e, 'message', repr(e)))
+                raise UserExeception(getattr(e, 'message', repr(e)))
     def AddUserRegister(self, user):
         with SessionLocal() as db:
+            listUserID = [record[0] for record in db.query(User.IDUser).all()]
             IDUser = user.IDUser
-            us = db.query(User).filter(User.IDUser == IDUser).first()
-            if(us != None):
-                while(us != None):
-                    IDUser = "user" + str(np.random.randint(10000, 999999))
-                    us = db.query(User).filter(User.IDUser == IDUser).first()
+            while IDUser in listUserID:
+                IDUser = "user" + str(np.random.randint(1, 999999))
             Gmail = user.Gmail
             NhapLai = user.NhapLai
             Password = user.Password
@@ -225,7 +208,7 @@ class UserModel:
                     listObject.append({'IDUser': IDUser, 'Gmail': Gmail, 'Password': Password, 'QuyenUser': QuyenUser})
                 return listObject
             except Exception as e:
-                raise UserExeception("Tìm kiếm tuyển dụng theo ID thất bại, lỗi: " + getattr(e, 'message', repr(e)))
+                raise UserExeception(getattr(e, 'message', repr(e)))
     def GetPhanTramSoVoiThangTruoc(self):
         with SessionLocal() as db:
             percentage_change = 0

@@ -152,10 +152,10 @@
                         window.location.reload()
                     }
                     else {
-                        alert("Update user thất bại, lỗi: " + data.message)
+                        alert(data.message)
                     }
                 })
-                .catch(err => alert("Update user thất bại, lỗi: " + err))
+                .catch(err => alert("Lỗi hệ thống: " + err))
         });
         function attachUpdateEvent() {
             document.querySelectorAll(".update").forEach(function (element) {

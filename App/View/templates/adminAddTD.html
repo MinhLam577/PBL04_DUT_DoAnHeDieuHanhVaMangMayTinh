@@ -123,6 +123,9 @@
             IDPost.value = '';
         }
         const AddTDForm = document.getElementById('AddTD');
+        var CurrentUrl = window.location.href
+        var part = CurrentUrl.split('/')
+        var url = part.slice(0, 4).join('/')
         AddTDForm.onsubmit = function(e) {
             e.preventDefault();
             const formData = new FormData(AddTDForm);
@@ -134,11 +137,12 @@
                 .then(data => {
                     if (data == true) {
                         alert('Thêm tuyển dụng thành công');
+                        window.location.href = url + '/admin-Edit-TD';
                     } else {
                         alert(data.message);
                     }
                 })
-                .catch(err => alert("Thêm tuyển dụng thất bại, lỗi: " + err))
+                .catch(err => alert("Lỗi hệ thống: " + err))
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

@@ -74,7 +74,6 @@ async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None,
 async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None, LuongTD: str = None):
     return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, LuongTD, userID)
 
-
 #Tìm kiếm của admin khi không có dữ liệu
 @siteRouter.get("/admin/{userID}/tim-kiem-DuLieu", response_class=HTMLResponse, name="Giao diện tìm kiếm không có dữ liệu")
 async def formTimKiem(request: Request, userID: str = None):
