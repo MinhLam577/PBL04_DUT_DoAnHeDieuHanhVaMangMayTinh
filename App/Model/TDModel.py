@@ -179,31 +179,87 @@ class TDModel:
                 return listTDConvert
             except Exception as e:
                 raise TDException("Tìm kiếm tuyển dụng theo ID thất bại, lỗi: ", e)
-    def TimKiemTD(self, Text: str, LinhVucTD: str, DiaDiem: str):
+    def TimKiemTD(self, Text: str, LinhVucTD: str, DiaDiem: str, LuongTD: str):
         with SessionLocal() as db:
             res = []
             try:
-                if(LinhVucTD == 'All' and DiaDiem == "All"):
+                if(LinhVucTD == "All" and DiaDiem == "All" and LuongTD == "All"):
                     res = db.query(TuyenDung).filter(
                         (TuyenDung.ViTriTD.like('%'+Text+'%')) |
                         (TuyenDung.NoiTD.like('%'+Text+'%')) |
                         (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))
                     ).all()
-                elif(LinhVucTD == "All" and DiaDiem != "All"):
-                    res = db.query(TuyenDung).filter((
-                        (TuyenDung.ViTriTD.like('%'+Text+'%')) |
-                        (TuyenDung.NoiTD.like('%'+Text+'%')) |
-                        (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))) &
-                        (TuyenDung.DiaDiem.like('%'+DiaDiem+'%'))
-                    ).all()
-                elif(LinhVucTD != "All" and DiaDiem == "All"):
-                    res = db.query(TuyenDung).filter((
-                        (TuyenDung.ViTriTD.like('%'+Text+'%')) |
-                        (TuyenDung.NoiTD.like('%'+Text+'%')) |
-                        (TuyenDung.YeuCauCongViec.like('%'+Text+'%')))&
-                        (TuyenDung.LinhVucTD == LinhVucTD)
-                    ).all()
-                else:
+                elif(LinhVucTD == "All" and DiaDiem != "All" and LuongTD != "All"):
+                    if(LuongTD == "None"):
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))) &
+                            (TuyenDung.DiaDiem.like('%'+DiaDiem+'%')) &
+                            (TuyenDung.LuongTD == None)
+                        ).all()
+                    elif(LuongTD == "Below1M"):
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))) &
+                            (TuyenDung.DiaDiem.like('%'+DiaDiem+'%')) &
+                            (TuyenDung.LuongTD < 10**6)
+                        ).all()
+                    elif(LuongTD == "Above50M"):
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))) &
+                            (TuyenDung.DiaDiem.like('%'+DiaDiem+'%')) &
+                            (TuyenDung.LuongTD > 50*10**6)
+                        ).all()
+                    else:
+                        start = int(LuongTD.split("-")[0]) * 10**6
+                        end = int(LuongTD.split("-")[1]) * 10**6 - 1
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))) &
+                            (TuyenDung.DiaDiem.like('%'+DiaDiem+'%')) &
+                            (TuyenDung.LuongTD.between(start, end))
+                        ).all()
+                elif(LinhVucTD != "All" and DiaDiem == "All" and LuongTD != "All"):
+                    if(LuongTD == "None"):
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%')))&
+                            (TuyenDung.LinhVucTD == LinhVucTD) &
+                            (TuyenDung.LuongTD == None)
+                        ).all()
+                    elif(LuongTD == "Below1M"):
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%')))&
+                            (TuyenDung.LinhVucTD == LinhVucTD) &
+                            (TuyenDung.LuongTD < 10**6)
+                        ).all()
+                    elif(LuongTD == "Above50M"):
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%')))&
+                            (TuyenDung.LinhVucTD == LinhVucTD) &
+                            (TuyenDung.LuongTD > 50*10**6)
+                        ).all()
+                    else:
+                        start = int(LuongTD.split("-")[0]) * 10**6
+                        end = int(LuongTD.split("-")[1]) * 10**6 - 1
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%')))&
+                            (TuyenDung.LinhVucTD == LinhVucTD) &
+                            (TuyenDung.LuongTD.between(start, end))
+                        ).all()
+                elif(LinhVucTD != "All" and DiaDiem != "All" and LuongTD == "All"):
                     res = db.query(TuyenDung).filter((
                         (TuyenDung.ViTriTD.like('%'+Text+'%')) |
                         (TuyenDung.NoiTD.like('%'+Text+'%')) |
@@ -211,6 +267,90 @@ class TDModel:
                         (TuyenDung.DiaDiem.like('%'+DiaDiem+'%')) &
                         (TuyenDung.LinhVucTD == LinhVucTD)
                     ).all()
+                elif(LinhVucTD != "All" and DiaDiem == "All" and LuongTD == "All"):
+                    res = db.query(TuyenDung).filter((
+                        (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                        (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                        (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))) &
+                        (TuyenDung.LinhVucTD == LinhVucTD)
+                    ).all()
+                elif(LinhVucTD == "All" and DiaDiem != "All" and LuongTD == "All"):
+                    res = db.query(TuyenDung).filter((
+                        (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                        (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                        (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))) &
+                        (TuyenDung.DiaDiem.like('%'+DiaDiem+'%'))
+                    ).all()
+                elif(LinhVucTD == "All" and DiaDiem == "All" and LuongTD != "All"):
+                    if(LuongTD == "None"):
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))) &
+                            (TuyenDung.LuongTD == None)
+                        ).all()
+                    elif(LuongTD == "Below1M"):
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))) &
+                            (TuyenDung.LuongTD < 10**6)
+                        ).all()
+                    elif(LuongTD == "Above50M"):
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))) &
+                            (TuyenDung.LuongTD > 50*10**6)
+                        ).all()
+                    else:
+                        start = int(LuongTD.split("-")[0]) * 10**6
+                        end = int(LuongTD.split("-")[1]) * 10**6 - 1
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%'))) &
+                            (TuyenDung.LuongTD.between(start, end))
+                        ).all()
+                elif(LinhVucTD != "All" and DiaDiem != "All" and LuongTD != "All"):
+                    if(LuongTD == "None"):
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%')))&
+                            (TuyenDung.DiaDiem.like('%'+DiaDiem+'%')) &
+                            (TuyenDung.LinhVucTD == LinhVucTD) &
+                            (TuyenDung.LuongTD == None)
+                        ).all()
+                    elif(LuongTD == "Below1M"):
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%')))&
+                            (TuyenDung.DiaDiem.like('%'+DiaDiem+'%')) &
+                            (TuyenDung.LinhVucTD == LinhVucTD) &
+                            (TuyenDung.LuongTD < 10**6)
+                        ).all()
+                    elif(LuongTD == "Above50M"):
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%')))&
+                            (TuyenDung.DiaDiem.like('%'+DiaDiem+'%')) &
+                            (TuyenDung.LinhVucTD == LinhVucTD) &
+                            (TuyenDung.LuongTD > 50*10**6)
+                        ).all()
+                    else:
+                        start = int(LuongTD.split("-")[0]) * 10**6
+                        end = int(LuongTD.split("-")[1]) * 10**6 - 1
+                        res = db.query(TuyenDung).filter((
+                            (TuyenDung.ViTriTD.like('%'+Text+'%')) |
+                            (TuyenDung.NoiTD.like('%'+Text+'%')) |
+                            (TuyenDung.YeuCauCongViec.like('%'+Text+'%')))&
+                            (TuyenDung.DiaDiem.like('%'+DiaDiem+'%')) &
+                            (TuyenDung.LinhVucTD == LinhVucTD) &
+                            (TuyenDung.LuongTD.between(start, end))
+                        ).all()
                 if(res == None):
                     return None
                 listTDConvert = []
