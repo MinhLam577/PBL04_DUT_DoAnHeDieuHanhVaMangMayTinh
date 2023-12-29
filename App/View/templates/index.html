@@ -110,15 +110,16 @@
       <header id="header" class="header header-menu">
          <div class="container">
             <div class="row">
-               <div class="col-md-3 col-sm-12">
+               <div class="col-md-5 col-sm-12">
+               </div><!-- logo col end -->
+               <div class="col-md-2 col-sm-12">
                   <div class="logo">
                      <a href="index-5.html">
                         <img src="{{ url_for('static', path='/images/logos/logo.png') }}" alt="">
                      </a>
                   </div>
                </div><!-- logo col end -->
-
-               <div class="col-md-7 col-sm-12">
+               <div class="col-md-5 col-sm-12">
                   <nav class="navbar navbar-expand-lg col site-navigation navigation">
                      <div class="site-nav-inner float-left">
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -130,9 +131,14 @@
 
                         <div id="navbarSupportedContent" class="collapse navbar-collapse navbar-responsive-collapse">
                            <ul class="nav navbar-nav">
-                              <li>
-                                 <a href="/{{userID if userID is not none else ''}}" id="Home">Home</a>
-                              </li>
+                              <img src="{{ url_for('static', path='/images/logos/user.jpg') }}" alt="anh user" style="
+                              margin-left: 270px;
+                              position: relative;
+                              width: 60px;
+                              height: 60px;
+                              border-radius: 50%;
+                              cursor: pointer;
+                              overflow: hidden;">
                               <li>
                                  <a href="/Login" id="Login_href">Login</a>
                               </li>
@@ -334,12 +340,20 @@
                                  onerror='this.src = "{{ url_for('static', path='/images/TDImages/default.png') }}"'/>
                               </div>
                               <div class="post-content" style="width: 100%">
-                                 <h2 class="post-title">
+                                 <h2 class="post-title" style="
+                                 overflow: hidden;
+                                 text-overflow: ellipsis;
+                                 max-width: 80ch;
+                                 white-space: nowrap;">
                                     <a href="{{userID if userID is not none else ''}}/Chi-tiet-td/{{td.IDTD}}">{{td.ViTriTD}}</a>
                                  </h2>
                                  <div class="post-meta">
                                     {%if td.NoiTD != none%}
-                                    <span class="post-author">
+                                    <span class="post-author" style="
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    max-width: 30ch;
+                                    white-space: nowrap;">
                                        Nơi tuyển dụng: {{td.NoiTD}}
                                     </span>
                                     {%else%}
@@ -359,7 +373,11 @@
                                     {%endif%}
                                     <span class="post-date">Ngày tuyển: {{td.NgayTD}}</span>
                                  </div>
-                                 <p>Địa điểm: {{td.DiaDiem}}</p>
+                                 <p style="
+                                 overflow: hidden;
+                                 text-overflow: ellipsis;
+                                 max-width: 80ch;
+                                 white-space: nowrap;">Địa điểm: {{td.DiaDiem}}</p>
                               </div><!-- Post content end -->
                            </div><!-- Post Block style 1 end -->
                            {%if loop.index != listTD|length%}
