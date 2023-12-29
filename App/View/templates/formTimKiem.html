@@ -337,7 +337,6 @@
       <script>
          const Login_href = document.getElementById("Login_href")
          const tokenExist = window.sessionStorage.getItem("{{userID}}")
-         console.log(tokenExist)
          if (tokenExist != null) {
             Login_href.innerHTML = "Logout"
          }
