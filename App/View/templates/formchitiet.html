@@ -427,7 +427,7 @@
             IDTD = "{{IDTD}}";
             IDUser = "{{user.IDUser if user.IDUser else ''}}";
             if(IDUser == ""){
-               window.location.href = "/";
+               window.location.href = "/Login";
                return;
             }
             dulieu = {
@@ -456,7 +456,7 @@
             IDTD = "{{IDTD}}";
             IDUser = "{{user.IDUser if user.IDUser else ''}}";
             if(IDUser == ""){
-               window.location.href = "/";
+               window.location.href = "/Login";
                return;
             }
             fetch("/TuongTac/DeleteTT/", {
