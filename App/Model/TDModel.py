@@ -4,11 +4,12 @@ from sqlalchemy import func, extract
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from fastapi.responses import JSONResponse
-from fastapi import Request, Depends, Form
+from fastapi import Request, Depends, Form, UploadFile
 from App.Model.TDEntity import *
 from sqlalchemy import String, DateTime, UnicodeText    
 from App.Model.PostModel import PostModel
 from App.Model.TuongTacModel import *
+import os
 class TDException(Exception):
     def __init__(self, message: str):
         self.message = message
@@ -36,8 +37,25 @@ def ConvertTD(td: TuyenDung):
         "LuongTD": td.LuongTD,
         "IDPost": td.IDPost
     }
+
+async def Save_image(file, IDPost):
+    try:
+        path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        with open(path + "/View/static/images/TDImages/" + IDPost + ".jpg", "wb") as f:
+            f.write(file)    
+    except Exception as e:
+        raise TDException(getattr(e, 'message', repr(e)))
+
+def Delete_image(IDPost):
+    try:
+        path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/View/static/images/TDImages/" + IDPost + ".jpg"
+        if(os.path.exists(path)):
+            return
+        os.remove(path)
+    except Exception as e:
+        raise TDException(getattr(e, 'message', repr(e)))
 class TDModel:
-    def AddTD(self, td: TuyenDung):
+    async def AddTD(self, td: TuyenDung, image: UploadFile):
         with SessionLocal() as db:
             try:
                 if td.SoLuongTD != None:
@@ -54,23 +72,20 @@ class TDModel:
                     else:
                         if(float(LuongTD) <= 0):
                             raise TDException("Lương tuyển dụng phải lớn hơn 0")
-                if td.Gmail != None:
-                    Gmail = td.Gmail
-                    if not re.match("^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$", Gmail, re.IGNORECASE):
-                        raise TDException('Gmail phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
                 if td.SDT != None:
                     SDT = td.SDT
                     if not re.match("^[0-9]+$", SDT, re.IGNORECASE) or not len(SDT) == 10:
-                        raise TDException('Số điện thoại phải toàn số nguyên và có độ dài là 10')
+                        raise TDException('Số điện thoại phải toàn số nguyên >= 0 và có độ dài là 10')
                 if td.NgayTD >= datetime.now():
                     raise TDException("Ngày tuyển dụng phải nhỏ hơn ngày hiện tại")
                 db.add(td)
                 db.commit()
+                await Save_image(await image.read(), td.IDPost)
                 return True
             except ValueError:
                 raise TDException("Lương tuyển dụng phải là số thực")
             except IntegrityError as e:
-                raise TDException("IDPost đã tồn tại hoặc không tồn tại")
+                raise TDException("IDPost đã tồn tại hoặc không tồn tại, chi tiết: " + getattr(e, 'message', repr(e)))
             except Exception as e:
                 raise TDException(getattr(e, 'message', repr(e)))
     def DeleteTD(self, IDTD: str):
@@ -81,10 +96,11 @@ class TDModel:
                 postModel.DeletePostByIDPost(IDPost)
                 db.query(TuyenDung).filter(TuyenDung.IDTD == IDTD).delete()
                 db.commit()
+                Delete_image(IDPost)
                 return True
-            except Exception:
-                raise TDException("Xóa tuyển dụng thất bại")
-    def UpdateTD(self, td: TuyenDung):
+            except Exception as e:
+                raise TDException(getattr(e, 'message', repr(e)))
+    async def UpdateTD(self, td: TuyenDung, image: UploadFile):
         with SessionLocal() as db:
             try:
                 if td.SoLuongTD != None:
@@ -101,17 +117,12 @@ class TDModel:
                     else:
                         if(float(LuongTD) <= 0):
                             raise TDException("Lương tuyển dụng phải lớn hơn 0")
-                if td.Gmail != None:
-                    Gmail = td.Gmail
-                    if not re.match("^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$", Gmail, re.IGNORECASE):
-                        raise TDException('Gmail phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
                 if td.SDT != None:
                     SDT = td.SDT
                     if not re.match("^[0-9]+$", SDT, re.IGNORECASE) or not len(SDT) == 10:
-                        raise TDException('Số điện thoại phải toàn số nguyên và có độ dài là 10')
+                        raise TDException('Số điện thoại phải toàn số nguyên >= 0 và có độ dài là 10')
                 if td.NgayTD >= datetime.now():
                     raise TDException("Ngày tuyển dụng phải nhỏ hơn ngày hiện tại")
-                print("Đến đây")
                 db.query(TuyenDung).filter(TuyenDung.IDTD == td.IDTD).update({
                     "NoiTD": td.NoiTD, 
                     "NgayTD": td.NgayTD, 
@@ -128,6 +139,7 @@ class TDModel:
                     "IDPost": td.IDPost
                 })
                 db.commit()
+                await Save_image(await image.read(), td.IDPost)
                 return True
             except Exception as e:
                 raise TDException(getattr(e, 'message', repr(e)))

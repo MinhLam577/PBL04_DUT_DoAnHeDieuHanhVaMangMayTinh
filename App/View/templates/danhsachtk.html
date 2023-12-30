@@ -23,6 +23,7 @@
                 <thead>
                     <tr>
                         <th>No.</th>
+                        <th>Loại tài khoản</th>
                         <th>Tên tài khoản</th>
                         <th>Action</th>
                     </tr>
@@ -31,11 +32,12 @@
                     {% for ds in dstk%}
                     <tr>
                         <td>{{loop.index}}</td>
+                        <td>{{ds.QuyenUser}}</td>
                         <td>{{ds.Gmail}}</td>
                         <td>
                             <button id="update_{{ds.Gmail}}" type="button" class="update"><i
                                     class="fa-solid fa-pen-to-square"></i></button>
-                            <button type="button" onclick="del('{{ds.Gmail}}')"><i class="fa-solid fa-trash"
+                            <button type="button" onclick="del('{{ds.Gmail}}', '{{ds.QuyenUser}}')"><i class="fa-solid fa-trash"
                                     value='{{ds.Gmail}}'></i></button>
                         </td>
                     </tr>
@@ -87,20 +89,24 @@
         </div>
     </div>
     <script>
-        function del(Gmail) {
+        function del(Gmail, userType) {
             formdata = new FormData();
+            if(userType == "admin"){
+                alert("Không thể xóa tài khoản admin")
+                return
+            }
             formdata.append('Gmail', Gmail);
-            window.localStorage.removeItem(Gmail);
             fetch("/Users/DeleteUser/", {
                 "method": "DELETE",
                 "body": formdata
             })
             .then(respone => {
                 if (respone.status == 200){
+                    window.localStorage.removeItem(Gmail);
                     window.location.reload()
                 }
             })
-            .catch(err => alert("Xóa user thất bại, lỗi: " + err))
+            .catch(err => alert(err))
         }
 
         document.getElementById("Add_TK").addEventListener("click", function (e) {
@@ -124,10 +130,10 @@
                         window.location.reload()
                     }
                     else {
-                        alert("Thêm user thất bại, lỗi: " + data.message)
+                        alert(data.message)
                     }
                 })
-                .catch(err => alert("Thêm user thất bại, lỗi: " + err))
+                .catch(err => alert(err))
         });
         document.getElementById("Update_TK").addEventListener("click", function (e) {
             var email = document.getElementById("email1").value;

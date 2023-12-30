@@ -1017,6 +1017,8 @@
             if(userID != "" && userID != null){
                var part = CurrentUrl.split("/")
                var url = part.slice(0, 4).join("/")
+               if('{{userType}}' == "admin")
+                  url = part.slice(0, 5).join("/")
                window.location.href = `${url}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}/${LuongTD}`
             }
             else{

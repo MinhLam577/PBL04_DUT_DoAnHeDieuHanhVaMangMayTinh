@@ -18,7 +18,7 @@
                         <h1 class="card-title">Thêm bài tuyển dụng</h1>
                     </div>
                     <div class="card-body">
-                        <form class="needs-validation" action="/TDs/AddTD/" method="post" id="AddTD" autocomplete="off">
+                        <form class="needs-validation" action="/TDs/AddTD/" method="post" id="AddTD" autocomplete="off" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="NoiTD">Nơi tuyển dụng</label>
                                 <input type="text" class="form-control" placeholder="Nơi tuyển dụng" id="NoiTD"
@@ -79,9 +79,17 @@
                                     >
                             </div>
                             <div class="form-group">
-                                <label for="IDPost">IDpost</label>
+                                <label for="IDPost">IDPost(Cần phải lấy từ crawl dữ liệu)</label>
                                 <input type="text" class="form-control" name="IDPost" id="IDPost" placeholder="IDPost"
                                     required>
+                            </div>
+                            <div class="post-thumb" style="width: 50%">
+                                <img class="img-fluid" id="AnhMacDinh" alt="Ảnh tuyển dụng" src="{{ url_for('static', path='/images/TDImages/default.png') }}" style="width:100%; height:100%" 
+                                onerror='this.src = "{{ url_for('static', path='/images/TDImages/default.png') }}"'/>
+                             </div>
+                            <div class="form-group">
+                                <label for="AnhPost">Đăng ảnh(Tên ảnh phải trùng với IDPost và chỉ nhận định dạng jpg)</label>
+                                <input type="file" id="AnhPost" name="image">
                             </div>
                             <div class="form-group d-flex justify-content-around align-items-center">
                                 <button type="submit" class="btn btn-primary">Thêm</button>
@@ -126,6 +134,18 @@
         var CurrentUrl = window.location.href
         var part = CurrentUrl.split('/')
         var url = part.slice(0, 4).join('/')
+        document.getElementById('AnhPost').addEventListener('change', function(e) {
+            // Lấy file đầu tiên từ danh sách các file người dùng đã chọn
+            var file = e.target.files[0];
+            const imageDiv = document.getElementById("AnhMacDinh")
+            if(!file.type.startsWith('image/')){
+                alert("Vui lòng chọn file ảnh")
+                imageDiv.src = "{{ url_for('static', path='/images/TDImages/default.png') }}"
+            }
+            else{
+                imageDiv.src = URL.createObjectURL(file);
+            }
+          });
         AddTDForm.onsubmit = function(e) {
             e.preventDefault();
             const formData = new FormData(AddTDForm);

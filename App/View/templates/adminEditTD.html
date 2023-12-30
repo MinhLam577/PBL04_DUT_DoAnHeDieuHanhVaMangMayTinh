@@ -84,9 +84,17 @@
                                 <input type="text" class="form-control" name="IDPost" id="IDPost" placeholder="IDPost"
                                 value="{{td.IDPost}}" required>
                             </div>
+                            <div class="post-thumb" style="width: 50%">
+                                <img class="img-fluid" id="{{td.IDPost}}" alt="" src="{{ url_for('static', path='/images/TDImages/' ~ td.IDPost ~ '.jpg') }}" style="width:100%; height:100%" 
+                                onerror='this.src = "{{ url_for('static', path='/images/TDImages/default.png') }}"'/>
+                             </div>
+                            <div class="form-group">
+                                <label for="AnhPost">Đổi ảnh(Tên ảnh phải trùng với IDPost và chỉ nhận định dạng jpg)</label>
+                                <input type="file" id="AnhPost" name="image">
+                            </div>
                             <div class="form-group d-flex justify-content-around align-items-center">
                                 <button type="submit" class="btn btn-primary">Cật nhật</button>
-                                <button type="button" class="btn btn-primary" onclick="reset()">Reset</button>
+                                <button type="button" class="btn btn-primary" id="Reset">Reset</button>
                             </div>
                         </form>
                     </div>
@@ -95,7 +103,7 @@
         </div>
     </section>
     <script>
-        function reset() {
+        document.getElementById("Reset").addEventListener('click', function(){
             const NoiTD = document.getElementById('NoiTD').value = `{{td.NoiTD}}`;
             const NgayTD = document.getElementById('NgayTD').value = `{{td.NgayTD}}`;
             const SoLuongTD = document.getElementById('SoLuongTD').value = `{{td.SoLuongTD}}`;
@@ -109,11 +117,26 @@
             const SDT = document.getElementById('SDT').value = `{{td.SDT}}`;
             const Gmail = document.getElementById('Gmail').value = `{{td.Gmail}}`;
             const IDPost = document.getElementById('IDPost').value = `{{td.IDPost}}`;
-        }
+            const imageDiv = document.getElementById("{{td.IDPost}}")
+            imageDiv.src = `{{ url_for('static', path='/images/TDImages/' ~ td.IDPost ~ '.jpg') }}`
+        })
         const UpdateTDForm = document.getElementById('UpdateTD');
         var CurrentUrl = window.location.href
         var part = CurrentUrl.split('/')
         var url = part.slice(0, 4).join('/')
+        document.getElementById('AnhPost').addEventListener('change', function(e) {
+            // Lấy file đầu tiên từ danh sách các file người dùng đã chọn
+            var file = e.target.files[0];
+            const imageDiv = document.getElementById("{{td.IDPost}}")
+            let IDPost = '{{td.IDPost}}'
+            if(!file.type.startsWith('image/')){
+                alert("Vui lòng chọn file ảnh")
+                imageDiv.src = "{{ url_for('static', path='/images/TDImages/default.png') }}"
+            }
+            else{
+                imageDiv.src = URL.createObjectURL(file);
+            }
+          });
         UpdateTDForm.onsubmit = function(e) {
             e.preventDefault();
             const formData = new FormData(UpdateTDForm);
@@ -133,6 +156,7 @@
             })
             .catch(err => alert("Lỗi hệ thống: " + err))
         }
+        
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

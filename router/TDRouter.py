@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Body, Header
+from fastapi import APIRouter, Depends, HTTPException, status, Body, Header, File, UploadFile
 from typing import Optional
 from App.Controllers.TDController import *
 from fastapi.responses import RedirectResponse, HTMLResponse
@@ -21,11 +21,17 @@ async def GetAllTDs():
 async def GetTD(IDTD: str):
     td = tdController.GetTDByIDTD(IDTD)
     return td
-
 #Thêm mới tuyển dụng
 @tdRouter.post("/TDs/AddTD/", name="Thêm mới tuyển dụng")
-async def AddTD(NoiTD: str = Form(None), NgayTD: datetime = Form(None), SoLuongTD: str = Form(None), LinhVucTD: str = Form(None), ViTriTD: str = Form(None), MoTaCongViec: str = Form(None), YeuCauCongViec: str = Form(None), QuyenLoi: str = Form(None), DiaDiem: str = Form(None), SDT: str = Form(None), Gmail: str = Form(None), LuongTD: str = Form(None), IDPost: str = Form(None)):
+async def AddTD(NoiTD: str = Form(None), NgayTD: datetime = Form(None), SoLuongTD: str = Form(None), LinhVucTD: str = Form(None), ViTriTD: str = Form(None), MoTaCongViec: str = Form(None), YeuCauCongViec: str = Form(None), QuyenLoi: str = Form(None), DiaDiem: str = Form(None), SDT: str = Form(None), Gmail: str = Form(None), LuongTD: str = Form(None), IDPost: str = Form(None), image: UploadFile = File(None)):
     try:
+        filename = image.filename
+        if filename != "":
+            if filename.endswith(".jpg") == False:
+                raise Exception("File ảnh chỉ nhận định dạng .jpg")
+            else:
+                if(filename.split(".jpg")[0] != IDPost):
+                    raise Exception("Tên file ảnh phải trùng với IDPost")
         listTD = tdController.GetAllTDs()
         listIDTD = [td["IDTD"] for td in listTD]
         IDTD = ""
@@ -34,7 +40,7 @@ async def AddTD(NoiTD: str = Form(None), NgayTD: datetime = Form(None), SoLuongT
             if(IDTD not in listIDTD):
                 break
         td = TuyenDung(IDTD=IDTD, NoiTD=NoiTD, NgayTD=NgayTD, SoLuongTD=SoLuongTD, LinhVucTD=LinhVucTD, ViTriTD=ViTriTD, MotaCongViec=MoTaCongViec, YeuCauCongViec=YeuCauCongViec, QuyenLoi=QuyenLoi, DiaDiem=DiaDiem, SDT=SDT, Gmail=Gmail, LuongTD=LuongTD, IDPost=IDPost)
-        return tdController.AddTD(td)
+        return await tdController.AddTD(td, image)
     except Exception as e:
         return JSONResponse(
             content={"message": getattr(e, 'message', repr(e))},
@@ -51,15 +57,21 @@ async def DeleteTD(IDTD: str = Form(...)):
     
 #Cật nhật tuyển dụng theo IDTD
 @tdRouter.put("/TDs/UpdateTD/", name="Cật nhật tuyển dụng theo IDTD")
-async def UpdateTD(IDTD: str = Form(), NoiTD: str = Form(None), NgayTD: datetime = Form(None), SoLuongTD: str = Form(None), LinhVucTD: str = Form(None), ViTriTD: str = Form(None), MoTaCongViec: str = Form(None), YeuCauCongViec: str = Form(None), QuyenLoi: str = Form(None), DiaDiem: str = Form(None), SDT: str = Form(None), Gmail: str = Form(None), LuongTD: str = Form(None), IDPost: str = Form(None)):
+async def UpdateTD(IDTD: str = Form(), NoiTD: str = Form(None), NgayTD: datetime = Form(None), SoLuongTD: str = Form(None), LinhVucTD: str = Form(None), ViTriTD: str = Form(None), MoTaCongViec: str = Form(None), YeuCauCongViec: str = Form(None), QuyenLoi: str = Form(None), DiaDiem: str = Form(None), SDT: str = Form(None), Gmail: str = Form(None), LuongTD: str = Form(None), IDPost: str = Form(None), image: UploadFile = File(None)):
     try:
+        filename = image.filename
+        if filename != "":
+            if filename.endswith(".jpg") == False:
+                raise Exception("File ảnh chỉ nhận định dạng .jpg")
+            else:
+                if(filename.split(".jpg")[0] != IDPost):
+                    raise Exception("Tên file ảnh phải trùng với IDPost")
         td = TuyenDung(IDTD=IDTD, NoiTD=NoiTD, NgayTD=NgayTD, SoLuongTD=SoLuongTD, LinhVucTD=LinhVucTD, ViTriTD=ViTriTD, MotaCongViec=MoTaCongViec, YeuCauCongViec=YeuCauCongViec, QuyenLoi=QuyenLoi, DiaDiem=DiaDiem, SDT=SDT, Gmail=Gmail, LuongTD=LuongTD,IDPost=IDPost)
-        return tdController.UpdateTD(td)
+        return await tdController.UpdateTD(td, image)
     except Exception as e:
         return JSONResponse(
             content={"message": getattr(e, 'message', repr(e))},
         )
-
 #Tìm kiếm tuyển dụng
 @tdRouter.post('/TDs/SearchTD/', name="Tìm kiếm tuyển dụng theo Nơi tuyển dụng, Vị trí tuyển dụng, Yêu cầu công việc, lĩnh vực tuyển dụng và địa điểm tuyển dụng")
 async def TimKiemTD(Text: str = Form(...), LinhVucTD: str = Form(...), DiaDiem: str = Form(...)):

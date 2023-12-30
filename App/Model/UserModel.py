@@ -36,8 +36,8 @@ class UserLogin(BaseModel):
 class UserRegister(UserLogin):
     @validator('Gmail')
     def gmail_validator(cls, Gmail):
-        if not re.match("^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$", Gmail, re.IGNORECASE):
-            raise UserExeception('Gmail phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
+        if not re.match("^[a-z0-9](\.?[a-z0-9]){5,}@((g(oogle)?mail)|(dut\.udn))\.(com|vn)$", Gmail, re.IGNORECASE):
+            raise UserExeception('Gmail phải bao gồm ít nhất 5 ký tự, đuôi có thể là @gmail.com, @dut.udn.vn, @googlemail.com')
         return Gmail
     @validator('Password')
     def password_validator(cls, Password):
@@ -53,8 +53,8 @@ class UserUpdate(BaseModel):
     Gmail: str
     @validator('Gmail')
     def gmail_validator(cls, Gmail):
-        if not re.match("^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$", Gmail, re.IGNORECASE):
-            raise UserExeception('Gmail phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
+        if not re.match("^[a-z0-9](\.?[a-z0-9]){5,}@((g(oogle)?mail)|(dut\.udn))\.(com|vn)$", Gmail, re.IGNORECASE):
+            raise UserExeception('Gmail phải bao gồm ít nhất 5 ký tự, đuôi có thể là @gmail.com, @dut.udn.vn, @googlemail.com')
         return Gmail
     Password: str
     @validator('Password')
@@ -67,8 +67,8 @@ class UserAdd(BaseModel):
     Gmail: str
     @validator('Gmail')
     def gmail_validator(cls, Gmail):
-        if not re.match("^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$", Gmail, re.IGNORECASE):
-            raise UserExeception('Gmail phải bao gồm ít nhất 5 ký tự, ít nhất 1 chữ cái và 1 số')
+        if not re.match("^[a-z0-9](\.?[a-z0-9]){5,}@((g(oogle)?mail)|(dut\.udn))\.(com|vn)$", Gmail, re.IGNORECASE):
+            raise UserExeception('Gmail phải bao gồm ít nhất 5 ký tự, đuôi có thể là @gmail.com, @dut.udn.vn, @googlemail.com')
         return Gmail
     Password: str
     @validator('Password')
@@ -85,6 +85,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
 
 class UserModel:
     def GetAllUser(self):
