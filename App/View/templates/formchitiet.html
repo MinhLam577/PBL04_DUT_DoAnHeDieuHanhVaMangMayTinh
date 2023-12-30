@@ -46,6 +46,7 @@
       if("{{user}}" != ""){
          userID = "{{user.Gmail}}"
          const tokenExists_localStorage = window.localStorage.getItem(userID)
+         console.log(tokenExists_localStorage)
          if(tokenExists_localStorage == null){
             window.location.href = "/"
          }
