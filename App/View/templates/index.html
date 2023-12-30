@@ -1014,12 +1014,15 @@
             Text = encodeURIComponent(Text);
             var userID = '{{userID}}';
             CurrentUrl = window.location.href
-            console.log(CurrentUrl)
             if(userID != "" && userID != null){
-               window.location.href = `${CurrentUrl}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}/${LuongTD}`
+               var part = CurrentUrl.split("/")
+               var url = part.slice(0, 4).join("/")
+               window.location.href = `${url}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}/${LuongTD}`
             }
             else{
-               window.location.href = `${CurrentUrl}tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}/${LuongTD}`
+               var part = CurrentUrl.split("/")
+               var url = part.slice(0, 3).join("/")
+               window.location.href = `${url}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}/${LuongTD}`
             }
          })
       </script>
