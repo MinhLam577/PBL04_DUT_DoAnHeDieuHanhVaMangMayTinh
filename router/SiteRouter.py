@@ -9,7 +9,7 @@ import json
 siteRouter = APIRouter()
 siteController = SiteController()
 
-@siteRouter.get("/", response_class=HTMLResponse, name = "Giao diện đăng nhập")
+@siteRouter.get("/", response_class=HTMLResponse, name = "Giao diện trang chủ")
 async def login(request: Request):
     return siteController.index(request)
 
@@ -17,7 +17,7 @@ async def login(request: Request):
 async def login(request: Request):
     return siteController.Login(request)
 
-@siteRouter.get("/{userID}", response_class=HTMLResponse, name = "Giao diện trang chủ admin khi đăng nhập thành công")
+@siteRouter.get("/{userID}", response_class=HTMLResponse, name = "Giao diện trang chủ user khi dùng get method")
 async def index(request: Request, userID: str):
     user = user_controller.GetUserByGmail(userID)
     if user is None:
@@ -27,8 +27,7 @@ async def index(request: Request, userID: str):
     else:
         return RedirectResponse(url="/admin/{userID}")
 
-#Trang chủ admin
-@siteRouter.get("/admin/{userID}", response_class=HTMLResponse, name = "Giao diện trang chủ admin khi đăng nhập thành công")
+@siteRouter.get("/admin/{userID}", response_class=HTMLResponse, name = "Giao diện trang chủ admin")
 async def index(request: Request, userID: str):
     user = user_controller.GetUserByGmail(userID)
     if user is None:
@@ -37,18 +36,15 @@ async def index(request: Request, userID: str):
         return siteController.adminIndex(request, userID)
     return RedirectResponse(url="/Login")
 
-#Chi tiết tuyển dụng theo userID
-@siteRouter.get("/{userID}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
+@siteRouter.get("/{userID}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng user")
 async def formChiTiet(request: Request, IDTD: str, userID: str):
     return siteController.formChiTiet(request, IDTD, userID)
 
-#Chi tiết tuyển dụng của admin đã đăng nhập
-@siteRouter.get("/admin/{userID}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
+@siteRouter.get("/admin/{userID}/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng admin")
 async def formChiTiet(request: Request, IDTD: str, userID: str = None):
     return siteController.formChiTiet(request, IDTD, userID)
 
-#Chi tiết tuyển dụng khi không đăng nhập
-@siteRouter.get("/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
+@siteRouter.get("/Chi-tiet-td/{IDTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng không đăng nhập")
 async def formChiTiet(request: Request, IDTD: str, userID: str = None):
     return siteController.formChiTiet(request, IDTD, userID)
 
@@ -56,36 +52,33 @@ async def formChiTiet(request: Request, IDTD: str, userID: str = None):
 async def danhsachtk(request: Request):
     return siteController.danhsachtk(request)
 
-@siteRouter.get("/{userID}/TongQuan", response_class=HTMLResponse, name = "Giao diện tổng quan")
+@siteRouter.get("/{userID}/TongQuan", response_class=HTMLResponse, name = "Giao diện tổng quan của admin")
 async def tongQuan(request: Request, userID: str):
     return siteController.TongQuan(request, userID)
 
-#Tìm kiếm khi đã đăng nhập 
-@siteRouter.get("/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/{LuongTD}", response_class=HTMLResponse, name = "Giao diện tìm kiếm có dữ liệu")
+@siteRouter.get("/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/{LuongTD}", response_class=HTMLResponse, name = "Giao diện tìm kiếm của user khi đăng nhập")
 async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None, LuongTD: str = None):
     return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, LuongTD, userID)
 
-@siteRouter.get("/admin/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/{LuongTD}", response_class=HTMLResponse, name = "Giao diện chi tiết tuyển dụng")
+@siteRouter.get("/admin/{userID}/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/{LuongTD}", response_class=HTMLResponse, name = "Giao diện tìm kiếm có dữ liệu của admin")
 async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None, LuongTD: str = None):
     return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, LuongTD, userID)
 
-#Tìm kiếm khi chưa đăng nhập
-@siteRouter.get("/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/{LuongTD}", response_class=HTMLResponse, name = "Giao diện tìm kiếm có dữ liệu")
+@siteRouter.get("/tim-kiem-DuLieu/{Text}/{LinhVucTD}/{DiaDiem}/{LuongTD}", response_class=HTMLResponse, name = "Giao diện tìm kiếm không đăng nhập")
 async def formTimKiem(request: Request, Text: str = None, LinhVucTD: str = None, DiaDiem: str = None, userID: str = None, LuongTD: str = None):
     return siteController.formTimKiem(request, Text, LinhVucTD, DiaDiem, LuongTD, userID)
 
-#Tìm kiếm của admin khi không có dữ liệu
-@siteRouter.get("/admin/{userID}/tim-kiem-DuLieu", response_class=HTMLResponse, name="Giao diện tìm kiếm không có dữ liệu")
+@siteRouter.get("/admin/{userID}/tim-kiem-DuLieu", response_class=HTMLResponse, name="Giao diện tìm kiếm không có dữ liệu của admin")
 async def formTimKiem(request: Request, userID: str = None):
     return siteController.formTimKiem(request, None, None, None, None, userID)
 
 #Trang admin tuyển dụng
-@siteRouter.get("/{userID}/admin-Add-TD", response_class=HTMLResponse, name="Giao diện thêm tuyển dụng")
+@siteRouter.get("/{userID}/admin-Add-TD", response_class=HTMLResponse, name="Giao diện thêm tuyển dụng của admin")
 async def adminAddTD(request: Request, userID: str):
     return siteController.adminAddTD(request, userID)
 
 #Trang cật nhật bài tuyển dụng của admin
-@siteRouter.get("/{userID}/admin-Edit-TD/{IDTD}", response_class=HTMLResponse, name="Giao diện cật nhật tuyển dụng theo IDTD")
+@siteRouter.get("/{userID}/admin-Edit-TD/{IDTD}", response_class=HTMLResponse, name="Giao diện cật nhật tuyển dụng của admin")
 async def EditTDByID(request: Request, userID: str, IDTD: str):
     res = siteController.EditTDByID(request, userID, IDTD)
     if res == None:
@@ -94,8 +87,7 @@ async def EditTDByID(request: Request, userID: str, IDTD: str):
         )
     return res
 
-#Trang chủ chỉnh sửa tuyển dụng của admin
-@siteRouter.get("/{userID}/admin-Edit-TD", response_class=HTMLResponse, name = "Giao diện quản lí tuyển dụng của admin")
+@siteRouter.get("/{userID}/admin-Edit-TD", response_class=HTMLResponse, name = "Giao diện quản lí bài tuyển dụng của admin")
 async def adminEditTD(request: Request, userID: str):
     return siteController.adminEditTD(request, userID)
 
@@ -117,7 +109,7 @@ async def check_login_success(*, authorization: str = Form(), request: Request):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
 #Giao diện trang chủ tùy theo loại người dùng
-@siteRouter.post("/{userID}", response_class=HTMLResponse, name= "Giao diện trang chủ tùy theo loại người dùng")
+@siteRouter.post("/{userID}", response_class=HTMLResponse, name= "Giao diện trang chủ tùy theo loại người dùng khi đăng nhập")
 async def LoginSuccess(request: Request, token: str = Form()):
     try:
         token = json.loads(token)["access token"]
