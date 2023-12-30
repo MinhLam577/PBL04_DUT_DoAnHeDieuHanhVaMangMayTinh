@@ -426,7 +426,7 @@
          .catch(error => console.log(error));
          document.getElementById("btn_QuanTam").addEventListener("click", function(){
             IDTD = "{{IDTD}}";
-            IDUser = "{{user.IDUser if user.IDUser else ''}}";
+            IDUser = "{{user.Gmail if user != '' else ''}}";
             if(IDUser == ""){
                window.location.href = "/Login";
                return;
@@ -434,7 +434,7 @@
             else{
                const tokenExist = window.localStorage.getItem(IDUser);
                if(tokenExist == null){
-                  window.location.href = "/";
+                  window.location.href = "/Login";
                   return;
                }
             }
@@ -462,7 +462,7 @@
          });
          document.getElementById("btn_HuyQuantam").addEventListener("click", function(){
             IDTD = "{{IDTD}}";
-            IDUser = "{{user.IDUser if user.IDUser else ''}}";
+            IDUser = "{{user.Gmail if user != '' else ''}}";
             if(IDUser == ""){
                window.location.href = "/Login";
                return;
@@ -470,7 +470,7 @@
             else{
                const tokenExist = window.localStorage.getItem(IDUser);
                if(tokenExist == null){
-                  window.location.href = "/";
+                  window.location.href = "/Login";
                   return
                }
             }
