@@ -6,6 +6,13 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from App.Controllers.PostController import *
 postController = PostControllers()
+def writeFileTxtResult(fileName, content):
+    try:
+        path = os.path.dirname(os.path.abspath(__file__)) + "/" + fileName
+        with open(path, 'a') as f1:
+            f1.writelines(content + "\n")
+    except Exception:
+        traceback.print_exc()
 class Threading(threading.Thread):
     def __init__(self, driver, type="fanpage", nameOrID = 103274306376166, numberPost = 100, txt = None, timeout = 60):
         threading.Thread.__init__(self)
@@ -65,7 +72,7 @@ class Threading(threading.Thread):
                                     if(tuKhoa in Text and one_week_ago <= TimePost <= now):
                                         print("Crawl thành công bài viết:", cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost, "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
                                         post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
-                                        writeFileTxtID(filePostFanpageID, IDPost)
+                                        writeFileTxtResult(filePostFanpageID, IDPost)
                                         if(LinkImg != None):
                                             download_image(self.driver, LinkImg, LinkPost)
                                         postController.AddPost(post)
@@ -100,7 +107,7 @@ class Threading(threading.Thread):
                                         print("Crawl thành công bài viết:",cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost,
                                                 "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
                                         post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
-                                        writeFileTxtID(filePostGroupID, LinkPost)
+                                        writeFileTxtResult(filePostGroupID, LinkPost)
                                         if(LinkImg != None):
                                             download_image(self.driver, LinkImg, IDPost)
                                         postController.AddPost(post)
