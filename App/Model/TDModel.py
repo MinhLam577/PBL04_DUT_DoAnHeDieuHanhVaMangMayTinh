@@ -53,11 +53,12 @@ async def Save_image(image, IDPost):
 def Delete_image(IDPost):
     try:
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/View/static/images/TDImages/" + IDPost + ".jpg"
-        if(os.path.exists(path)):
+        if os.path.exists(path) == False:
             return
         os.remove(path)
     except Exception as e:
         raise TDException(getattr(e, 'message', repr(e)))
+
 class TDModel:
     async def AddTD(self, td: TuyenDung, image: UploadFile):
         with SessionLocal() as db:
@@ -87,7 +88,6 @@ class TDModel:
                 filename = image.filename
                 if(filename != ""):
                     await Save_image(await image.read(), td.IDPost)
-                await Save_image(await image.read(), td.IDPost)
                 return True
             except ValueError:
                 raise TDException("Lương tuyển dụng phải là số thực")
