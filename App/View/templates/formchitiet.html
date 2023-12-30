@@ -46,7 +46,6 @@
       if("{{user}}" != ""){
          userID = "{{user.Gmail}}"
          const tokenExists_localStorage = window.localStorage.getItem(userID)
-         console.log(tokenExists_localStorage)
          if(tokenExists_localStorage == null){
             window.location.href = "/"
          }
@@ -113,8 +112,8 @@
 
                <div class="col-md-9 col-sm-12 header-right">
                   <div class="ad-banner float-right">
-                     <a href="#"><img src="{{ url_for('static', path='/images/banner-ads/ad-top-header.png') }}"
-                           class="img-fluid" alt=""></a>
+                     <a href="/{{user.Gmail if user != '' else ''}}"><img src="{{ url_for('static', path='/images/banner-ads/ad-top-header.png') }}"
+                           class="img-fluid" alt="" id="banner"></a>
                   </div>
                </div><!-- header right end -->
             </div><!-- Row end -->
@@ -331,6 +330,42 @@
    <!-- Javascript Files
 	================================================== -->
    <script>
+      const Home = document.getElementById("Home");
+      const banner = document.getElementById("banner");
+      if('{{user.QuyenUser}}' == "admin"){
+         Home.addEventListener("click", function(e){
+            e.preventDefault();
+         });
+         banner.addEventListener("click", function(e){
+            e.preventDefault();
+         });
+      }
+      else{
+         Home.addEventListener("click", function(e){
+            e.preventDefault();
+            userID = "{{user.Gmail}}"
+            const tokenExists_localStorage = window.localStorage.getItem(userID)
+            if(tokenExists_localStorage == null){
+               window.location.href = "/";
+               return;
+            }
+            else{
+               window.location.href = `/${userID}`;
+            }
+         });
+         banner.addEventListener("click", function(e){
+            e.preventDefault();
+            userID = "{{user.Gmail}}"
+            const tokenExists_localStorage = window.localStorage.getItem(userID)
+            if(tokenExists_localStorage == null){
+               window.location.href = "/";
+               return;
+            }
+            else{
+               window.location.href = `/${userID}`;
+            }
+         });
+      }
       var id = "{{IDTD}}";
       var NgayTD = "...";
       var SoLuongTD = "...";
@@ -432,10 +467,14 @@
                return;
             }
             else{
-               const tokenExist = window.localStorage.getItem(IDUser);
-               if(tokenExist == null){
-                  window.location.href = "/Login";
-                  return;
+               userType = "{{user.QuyenUser}}";
+               if(userType != "admin"){
+                  const tokenExist = window.localStorage.getItem(IDUser);
+                  console.log(tokenExist);
+                  if(tokenExist == null){
+                     window.location.href = "/Login";
+                     return;
+                  }
                }
             }
             dulieu = {
@@ -463,15 +502,20 @@
          document.getElementById("btn_HuyQuantam").addEventListener("click", function(){
             IDTD = "{{IDTD}}";
             IDUser = "{{user.Gmail if user != '' else ''}}";
+            
             if(IDUser == ""){
                window.location.href = "/Login";
                return;
             }
             else{
-               const tokenExist = window.localStorage.getItem(IDUser);
-               if(tokenExist == null){
-                  window.location.href = "/Login";
-                  return
+               userType = "{{user.QuyenUser}}";
+               if(userType != "admin"){
+                  const tokenExist = window.localStorage.getItem(IDUser);
+                  console.log(tokenExist);
+                  if(tokenExist == null){
+                     window.location.href = "/Login";
+                     return;
+                  }
                }
             }
             fetch("/TuongTac/DeleteTT/", {

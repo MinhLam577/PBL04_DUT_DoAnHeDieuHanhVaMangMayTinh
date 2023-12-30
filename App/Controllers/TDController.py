@@ -4,12 +4,12 @@ class TDController:
         self.TDModel = TDModel()
     def GetAllTDs(self):
         return self.TDModel.GetAllTD()
-    def AddTD(self, td: TuyenDung):
-        return self.TDModel.AddTD(td)
+    async def AddTD(self, td: TuyenDung, image: UploadFile):
+        return await self.TDModel.AddTD(td, image)
     def DeleteTD(self, IDTD: str):
         return self.TDModel.DeleteTD(IDTD)
-    def UpdateTD(self, td: TuyenDung):
-        return self.TDModel.UpdateTD(td)
+    async def UpdateTD(self, td: TuyenDung, image: UploadFile):
+        return await self.TDModel.UpdateTD(td, image)
     def GetTDByIDTD(self, IDTD: str):
         return self.TDModel.GetTDByIDTD(IDTD)
     def TimKiemTD(self, Text: str, LinhVucTD: str, DiaDiem: str, LuongTD: str):
