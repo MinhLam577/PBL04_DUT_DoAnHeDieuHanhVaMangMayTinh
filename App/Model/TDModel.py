@@ -10,6 +10,8 @@ from sqlalchemy import String, DateTime, UnicodeText
 from App.Model.PostModel import PostModel
 from App.Model.TuongTacModel import *
 import os
+import io
+from PIL import Image
 class TDException(Exception):
     def __init__(self, message: str):
         self.message = message
@@ -38,11 +40,13 @@ def ConvertTD(td: TuyenDung):
         "IDPost": td.IDPost
     }
 
-async def Save_image(file, IDPost):
+async def Save_image(image, IDPost):
     try:
+        image = Image.open(io.BytesIO(image))
+        img = image.convert('RGB')
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         with open(path + "/View/static/images/TDImages/" + IDPost + ".jpg", "wb") as f:
-            f.write(file)    
+            img.save(f, "JPEG")
     except Exception as e:
         raise TDException(getattr(e, 'message', repr(e)))
 
@@ -80,6 +84,9 @@ class TDModel:
                     raise TDException("Ngày tuyển dụng phải nhỏ hơn ngày hiện tại")
                 db.add(td)
                 db.commit()
+                filename = image.filename
+                if(filename != ""):
+                    await Save_image(await image.read(), td.IDPost)
                 await Save_image(await image.read(), td.IDPost)
                 return True
             except ValueError:
@@ -139,7 +146,9 @@ class TDModel:
                     "IDPost": td.IDPost
                 })
                 db.commit()
-                await Save_image(await image.read(), td.IDPost)
+                filename = image.filename
+                if(filename != ""):
+                    await Save_image(await image.read(), td.IDPost)
                 return True
             except Exception as e:
                 raise TDException(getattr(e, 'message', repr(e)))
