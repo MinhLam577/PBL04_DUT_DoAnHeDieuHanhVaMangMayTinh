@@ -477,6 +477,7 @@
                   }
                }
             }
+            IDUser = "{{user.IDUser if user != '' else ''}}";
             dulieu = {
                IDTD: IDTD,
                IDUser: IDUser
@@ -502,7 +503,6 @@
          document.getElementById("btn_HuyQuantam").addEventListener("click", function(){
             IDTD = "{{IDTD}}";
             IDUser = "{{user.Gmail if user != '' else ''}}";
-            
             if(IDUser == ""){
                window.location.href = "/Login";
                return;
@@ -517,6 +517,11 @@
                      return;
                   }
                }
+            }
+            IDUser = "{{user.IDUser if user != '' else ''}}";
+            dulieu = {
+               IDTD: IDTD,
+               IDUser: IDUser
             }
             fetch("/TuongTac/DeleteTT/", {
                method: "DELETE",

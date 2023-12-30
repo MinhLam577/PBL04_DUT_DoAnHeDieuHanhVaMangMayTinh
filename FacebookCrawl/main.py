@@ -42,10 +42,13 @@ class Threading(threading.Thread):
         # Lấy thời gian cách hiện tại 1 tuần
         one_week_ago = now - dt.timedelta(weeks=1)
         cnt = 1
+        path = os.path.dirname(os.path.abspath(__file__)) + "/"
         try:
             if(self.type == "fanpage"):
                 getPostIDFanpage(self.driver, FanpageOrGroupID, self.numberPost)
                 listPostFanpageID = readDataFileITxtID(filePostFanpageID)
+                with open(path + filePostFanpageID, 'w') as file:
+                    pass
                 print("\n\n=================Bắt đầu crawl nội dung================\n\n") 
                 for i, ID in enumerate(listPostFanpageID):
                     try:
@@ -62,8 +65,9 @@ class Threading(threading.Thread):
                                     if(tuKhoa in Text and one_week_ago <= TimePost <= now):
                                         print("Crawl thành công bài viết:", cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost, "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
                                         post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
+                                        writeFileTxtID(filePostFanpageID, IDPost)
                                         if(LinkImg != None):
-                                            download_image(self.driver, LinkImg, IDPost)
+                                            download_image(self.driver, LinkImg, LinkPost)
                                         postController.AddPost(post)
                                         cnt = cnt + 1
                                         break
@@ -74,6 +78,8 @@ class Threading(threading.Thread):
             elif(self.type == "group"):
                 getPostsIDGroup(self.driver, FanpageOrGroupID, self.numberPost)
                 listPostGroupID = readDataFileITxtID(filePostGroupID)
+                with open(path + filePostGroupID, 'w') as file:
+                    pass
                 print("\n\n=================Bắt đầu crawl nội dung================\n\n")
                 for i, ID in enumerate(listPostGroupID):
                     try:
@@ -94,6 +100,7 @@ class Threading(threading.Thread):
                                         print("Crawl thành công bài viết:",cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost,
                                                 "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
                                         post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
+                                        writeFileTxtID(filePostGroupID, LinkPost)
                                         if(LinkImg != None):
                                             download_image(self.driver, LinkImg, IDPost)
                                         postController.AddPost(post)
@@ -141,16 +148,18 @@ def getContentPostFanpageOrGroupBySelenium(*,driver, type = 'fanpage', NameOrID,
 def startGetContentPostBySelenium(driver, type: str = "fanpage", NameOrID: str = None, numberPost: int = 10):
     path = os.path.dirname(os.path.abspath(__file__)) + "/"
     try:
-        getContentPostFanpageOrGroupBySelenium(driver=driver, type=type, numberPost=numberPost, NameOrID=NameOrID)
-        print(f"Đã lấy xong bài viết của {type} có", "NameOrID là:", NameOrID)
-        postController.DeleteDuplicatePost()
-    except Exception:
-        traceback.print_exc()
-    finally:
         with open(path + filePostFanpageID, 'w') as file:
             pass
         with open(path + filePostGroupID, 'w') as file:
             pass
+        getContentPostFanpageOrGroupBySelenium(driver=driver, type=type, numberPost=numberPost, NameOrID=NameOrID)
+        if(type == "fanpage"):
+            print(f"Đã lấy xong bài viết của {type} có", "NameOrID là:", NameOrID, "vui lòng kiểm tra file " + filePostFanpageID + " để xem chi tiết các link bài viết đã lấy")
+        elif(type == "group"):
+            print(f"Đã lấy xong bài viết của {type} có", "NameOrID là:", NameOrID, "vui lòng kiểm tra file " + filePostGroupID + " để xem chi tiết các link bài viết đã lấy")
+        postController.DeleteDuplicatePost()
+    except Exception:
+        traceback.print_exc()        
         
 driver = initDriverProfile()
 cookie = getCookieFromFile("cookies.txt")

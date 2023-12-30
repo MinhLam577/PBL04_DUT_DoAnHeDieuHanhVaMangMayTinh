@@ -25,13 +25,6 @@ async def GetTD(IDTD: str):
 @tdRouter.post("/TDs/AddTD/", name="Thêm mới tuyển dụng")
 async def AddTD(NoiTD: str = Form(None), NgayTD: datetime = Form(None), SoLuongTD: str = Form(None), LinhVucTD: str = Form(None), ViTriTD: str = Form(None), MoTaCongViec: str = Form(None), YeuCauCongViec: str = Form(None), QuyenLoi: str = Form(None), DiaDiem: str = Form(None), SDT: str = Form(None), Gmail: str = Form(None), LuongTD: str = Form(None), IDPost: str = Form(None), image: UploadFile = File(None)):
     try:
-        # filename = image.filename
-        # if filename != "":
-        #     if filename.endswith(".jpg") == False:
-        #         raise Exception("File ảnh chỉ nhận định dạng .jpg")
-        #     else:
-        #         if(filename.split(".jpg")[0] != IDPost):
-        #             raise Exception("Tên file ảnh phải trùng với IDPost")
         listTD = tdController.GetAllTDs()
         listIDTD = [td["IDTD"] for td in listTD]
         IDTD = ""

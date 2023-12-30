@@ -47,13 +47,14 @@ class TuongTacModel:
                 db.add(TuongTac(**tt.dict()))
                 db.commit()
                 return True
-            except IntegrityError:
+            except IntegrityError as e:
                 raise TuongTacException("Bạn đã quan tâm bài tuyển dụng rồi")
             except Exception as e:
                 raise TuongTacException(getattr(e, 'message', repr(e)))
     def DeleteTT(self, tt: TuongTacDel):
         with SessionLocal() as db:
             try:
+                print(tt)
                 db.query(TuongTac).filter((TuongTac.IDUser == tt.IDUser) & (TuongTac.IDTD == tt.IDTD)).delete()
                 db.commit()
                 return True
