@@ -124,21 +124,27 @@
         var CurrentUrl = window.location.href
         var part = CurrentUrl.split('/')
         var url = part.slice(0, 4).join('/')
+        var isImage = true
         document.getElementById('AnhPost').addEventListener('change', function(e) {
             // Lấy file đầu tiên từ danh sách các file người dùng đã chọn
             var file = e.target.files[0];
             const imageDiv = document.getElementById("{{td.IDPost}}")
             let IDPost = '{{td.IDPost}}'
             if(!file.type.startsWith('image/')){
-                alert("Vui lòng chọn file ảnh")
+                isImage = false
                 imageDiv.src = "{{ url_for('static', path='/images/TDImages/default.png') }}"
             }
             else{
+                isImage = true
                 imageDiv.src = URL.createObjectURL(file);
             }
           });
         UpdateTDForm.onsubmit = function(e) {
             e.preventDefault();
+            if(!isImage){
+                alert("Vui lòng chọn file ảnh")
+                return
+            }
             const formData = new FormData(UpdateTDForm);
             formData.append('IDTD', '{{td.IDTD}}')
             fetch('/TDs/UpdateTD/', {
