@@ -84,9 +84,12 @@ class SiteController:
         listTDTT = tdController.GetTDTuongTac()
         percentage = user_controller.GetPhanTramSoVoiThangTruoc()
         return template.TemplateResponse("tongquan.html", {"request": request, 'userID': userID, 'listTD': listTD, 'listUser': listUser, 'listTT': listTT, 'listTDTT': listTDTT, 'percentage': percentage})
-    def danhsachtk(self, request):
+    def danhsachtk(self, request, userID: str):
         dstk = user_controller.GetAllUser()
-        return template.TemplateResponse("danhsachtk.html", {"request": request, 'dstk': dstk})
+        return template.TemplateResponse("danhsachtk.html", {"request": request, 'dstk': dstk, 'userID': userID})
+    def danhsachQuanTam(self, request, IDTD: str):
+        dstk = tdController.GetListUserTuongTacByIDTD(IDTD) 
+        return template.TemplateResponse("danhsachQuanTam.html", {"request": request, 'dstk': dstk, 'IDTD': IDTD})
     def formChiTiet(self, request, IDTD: str, userID: str):
         user = user_controller.GetUserByGmail(userID)
         if user is None:

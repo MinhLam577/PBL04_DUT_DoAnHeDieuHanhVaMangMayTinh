@@ -18,3 +18,9 @@ class TDController:
         return self.TDModel.TimKiemTDByID(IDTD)
     def GetTDTuongTac(self):
         return self.TDModel.GetTDTuongTac()
+    def GetListUserTuongTacByIDTD(self, IDTD: str):
+        return self.TDModel.GetListUserTuongTacByIDTD(IDTD)
+    def SearchUserByGmailAndIDTD(self, Gmail: str, IDTD: str):
+        return self.TDModel.SearchUserByGmailAndIDTD(Gmail, IDTD)
+    def SendGmail(self, IDTD: str):
+        self.TDModel.SendGmail(IDTD)

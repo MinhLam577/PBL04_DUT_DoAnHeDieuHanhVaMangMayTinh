@@ -69,3 +69,24 @@ async def TimKiemTDByID(IDTD: str = Form(None)):
     if IDTD is None:
         IDTD = ""
     return tdController.TimKiemTDByID(IDTD)
+
+@tdRouter.post("/TDs/ListUserTTByIDTD/", name="Tìm kiếm danh sách người dùng tương tác theo IDTD")
+async def GetListUserTuongTacByIDTD(IDTD: str = Form(...), userID: str = Form(...)):
+     return RedirectResponse(url=f"/{userID}/danh-sach-QuanTam/{IDTD}", status_code=303)
+ 
+@tdRouter.post("/TDs/SearchUserByGmailAndIDTD", name="Tìm kiếm user theo gmail và IDTD")
+async def SearchUserByGmailAndIDTD(Gmail: str = Form(None), IDTD: str = Form(...)):
+    if Gmail is None:
+        Gmail = ""
+    return tdController.SearchUserByGmailAndIDTD(Gmail, IDTD)
+
+@tdRouter.post("/TDs/SendGmail/", name = "Gửi gmail")
+async def SendGmail(IDTD: str = Form(...)):
+    try:
+        tdController.SendGmail(IDTD)
+        return True
+    except Exception as e:
+        return JSONResponse(
+            content={"message": getattr(e, 'message', repr(e))},
+        )
+   
