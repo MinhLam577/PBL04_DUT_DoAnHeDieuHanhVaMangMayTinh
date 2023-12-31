@@ -171,7 +171,6 @@ def startGetContentPostBySelenium(driver, type: str = "fanpage", NameOrID: str =
 driver = initDriverProfile()
 cookie = getCookieFromFile("cookies.txt")
 loginFacebookByCookie(driver, cookie)
-
 while True:
     try:
         Check_type = False

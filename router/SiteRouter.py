@@ -113,7 +113,7 @@ async def check_login_success(*, authorization: str = Form(), request: Request):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
 #Giao diện trang chủ tùy theo loại người dùng
-@siteRouter.post("/{userID}", response_class=HTMLResponse, name= "Giao diện trang chủ tùy theo loại người dùng khi đăng nhập")
+@siteRouter.post("/", response_class=HTMLResponse, name= "Giao diện trang chủ tùy theo loại người dùng khi đăng nhập")
 async def LoginSuccess(request: Request, token: str = Form()):
     try:
         token = json.loads(token)["access token"]

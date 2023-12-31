@@ -4,6 +4,7 @@ from pydantic import BaseModel, validator
 from sqlalchemy import text, extract, func
 from fastapi.responses import JSONResponse
 from email.message import EmailMessage
+from sqlalchemy.exc import IntegrityError
 import ssl
 import smtplib
 import numpy as np
@@ -131,15 +132,14 @@ class UserModel:
                 if(us == None):
                     raise UserExeception("IDUser không tồn tại")
                 else:
-                    us = db.query(User).filter(User.Gmail == user.Gmail).first()
-                    if(us != None):
-                        raise UserExeception("Gmail đã tồn tại")
                     us = db.query(User).filter(User.IDUser == user.IDUser).update({
                         "Gmail": user.Gmail,
                         "Password": user.Password
                     })
                     db.commit()
                     return True
+            except IntegrityError:
+                raise UserExeception('Gmail đã tồn tại')
             except Exception as e:
                 raise UserExeception(getattr(e, 'message', repr(e)))
     def DeleteUserByGmail(self, Gmail: str):

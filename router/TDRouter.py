@@ -21,6 +21,7 @@ async def GetAllTDs():
 async def GetTD(IDTD: str):
     td = tdController.GetTDByIDTD(IDTD)
     return td
+
 #Thêm mới tuyển dụng
 @tdRouter.post("/TDs/AddTD/", name="Thêm mới tuyển dụng")
 async def AddTD(NoiTD: str = Form(None), NgayTD: datetime = Form(None), SoLuongTD: str = Form(None), LinhVucTD: str = Form(None), ViTriTD: str = Form(None), MoTaCongViec: str = Form(None), YeuCauCongViec: str = Form(None), QuyenLoi: str = Form(None), DiaDiem: str = Form(None), SDT: str = Form(None), Gmail: str = Form(None), LuongTD: str = Form(None), IDPost: str = Form(None), image: UploadFile = File(None)):
@@ -38,6 +39,7 @@ async def AddTD(NoiTD: str = Form(None), NgayTD: datetime = Form(None), SoLuongT
         return JSONResponse(
             content={"message": getattr(e, 'message', repr(e))},
         )
+
 #Xóa tuyển dụng theo IDTD 
 @tdRouter.delete("/TDs/DeleteTD/", name="Xóa tuyển dụng theo IDTD")
 async def DeleteTD(IDTD: str = Form(...)):
@@ -58,10 +60,10 @@ async def UpdateTD(IDTD: str = Form(), NoiTD: str = Form(None), NgayTD: datetime
         return JSONResponse(
             content={"message": getattr(e, 'message', repr(e))},
         )
-#Tìm kiếm tuyển dụng
-@tdRouter.post('/TDs/SearchTD/', name="Tìm kiếm tuyển dụng theo Nơi tuyển dụng, Vị trí tuyển dụng, Yêu cầu công việc, lĩnh vực tuyển dụng và địa điểm tuyển dụng")
-async def TimKiemTD(Text: str = Form(...), LinhVucTD: str = Form(...), DiaDiem: str = Form(...)):
-    return tdController.TimKiemTD(Text, LinhVucTD, DiaDiem)
+# #Tìm kiếm tuyển dụng
+# @tdRouter.post('/TDs/SearchTD/', name="Tìm kiếm tuyển dụng theo Nơi tuyển dụng, Vị trí tuyển dụng, Yêu cầu công việc, lĩnh vực tuyển dụng và địa điểm tuyển dụng")
+# async def TimKiemTD(Text: str = Form(...), LinhVucTD: str = Form(...), DiaDiem: str = Form(...)):
+#     return tdController.TimKiemTD(Text, LinhVucTD, DiaDiem)
 
 #Tìm kiếm tuyển dụng theo IDTD
 @tdRouter.post('/TDs/SearchTDByID/', name="Tìm kiếm tuyển dụng theo IDTD")
