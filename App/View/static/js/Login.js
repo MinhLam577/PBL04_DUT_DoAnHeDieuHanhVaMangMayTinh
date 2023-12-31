@@ -42,7 +42,7 @@ LoginForm.addEventListener("submit", function(event){
                 window.sessionStorage.setItem(Gmail, Token);
                 const form_submit = document.createElement("form");
                 form_submit.setAttribute("method", "POST");
-                form_submit.setAttribute("action", "/"+Gmail);
+                form_submit.setAttribute("action", "/");
                 const input_token = document.createElement("input");
                 input_token.setAttribute("type", "hidden");
                 input_token.setAttribute("name", "token");

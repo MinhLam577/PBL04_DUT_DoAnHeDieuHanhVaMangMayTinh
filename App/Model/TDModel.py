@@ -89,7 +89,11 @@ class TDModel:
                     raise TDException("Ngày tuyển dụng phải nhỏ hơn ngày hiện tại")
                 db.add(td)
                 db.commit()
-                filename = image.filename
+                filename = ""
+                if(image.filename == None):
+                    filename = ""
+                else:   
+                    filename = image.filename
                 if(filename != ""):
                     await Save_image(await image.read(), td.IDPost)
                 return True
@@ -150,7 +154,11 @@ class TDModel:
                     "IDPost": td.IDPost
                 })
                 db.commit()
-                filename = image.filename
+                filename = ""
+                if(image.filename == None):
+                    filename = ""
+                else:   
+                    filename = image.filename
                 if(filename != ""):
                     await Save_image(await image.read(), td.IDPost)
                 return True
