@@ -15,12 +15,12 @@ class UserExeception(Exception):
     def __init__(self, message: str):
         self.message = message
     
-def SendMail(message, receiveMail):
+def SendMail(message, receiveMail, subject, subtype = "text/plain"):
     Email_sender = "lambachu352@gmail.com"
     Email_Password = "bewh hhfx mxqd qqfy"
     msg = EmailMessage()
-    msg.set_content(message)
-    msg['Subject'] = "Forgot Password"
+    msg.set_content(message, subtype=subtype)
+    msg['Subject'] = subject
     msg['From'] = Email_sender
     msg['To'] = receiveMail
     msg.set_content(message)
@@ -120,7 +120,7 @@ class UserModel:
             else:
                 Password = us.Password
                 message = "Mật khẩu của bạn là: " + Password
-                SendMail(message, Gmail)
+                SendMail(message, Gmail, "Forgot Password", "text/plain")
                 return JSONResponse(
                     content={"message": "Mật khẩu đã được gửi đến Gmail của bạn"},
                 )

@@ -69,3 +69,4 @@ class TuongTacModel:
             except Exception as e:
                 raise TuongTacException(getattr(e, 'message', repr(e)))
     
+    

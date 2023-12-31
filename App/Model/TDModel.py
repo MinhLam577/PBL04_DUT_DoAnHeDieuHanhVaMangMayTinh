@@ -8,9 +8,13 @@ from fastapi import Request, Depends, Form, UploadFile
 from App.Model.TDEntity import *
 from sqlalchemy import String, DateTime, UnicodeText    
 from App.Model.PostModel import PostModel
-from App.Model.TuongTacModel import *
+from App.Model.TuongTacEntity import *
+from App.Model.UserModel import *
 import os
 import io
+import re
+from datetime import datetime
+import datetime as dt
 from PIL import Image
 class TDException(Exception):
     def __init__(self, message: str):
@@ -378,6 +382,55 @@ class TDModel:
                 for TD in res:
                     listTDConvert.append(ConvertTD(TD))
                 return listTDConvert
+            except Exception as e:
+                raise TDException(getattr(e, 'message', repr(e)))
+    def GetListUserTuongTacByIDTD(self, IDTD: str):
+        with SessionLocal() as db:
+            try:
+                res = db.query(User.IDUser, User.Gmail, TuongTac.ThoiDiem)\
+                    .join(TuongTac, User.IDUser == TuongTac.IDUser)\
+                    .filter(TuongTac.IDTD == IDTD).all()
+                for i in range(len(res)):
+                        res[i] = {"IDUser": res[i][0], "Gmail": res[i][1], "ThoiDiem": res[i][2]}
+                return res    
+            except Exception as e:
+                raise TDException(getattr(e, 'message', repr(e)))
+    def SearchUserByGmailAndIDTD(self, Gmail: str, IDTD: str):
+        with SessionLocal() as db:
+            try:
+                res = db.query(User.IDUser, User.Gmail, TuongTac.ThoiDiem)\
+                    .join(TuongTac, User.IDUser == TuongTac.IDUser)\
+                    .filter(TuongTac.IDTD == IDTD, User.Gmail.like('%'+Gmail+'%')).all()
+                for i in range(len(res)):
+                        res[i] = {"IDUser": res[i][0], "Gmail": res[i][1], "ThoiDiem": res[i][2]}
+                return res    
+            except Exception as e:
+                raise TDException(getattr(e, 'message', repr(e)))
+    def SendGmail(self, IDTD: str):
+        with SessionLocal() as db:
+            try:
+                listuser = self.GetListUserTuongTacByIDTD(IDTD)
+                td = self.GetTDByIDTD(IDTD)
+                if(len(listuser) > 0):
+                    listGmail = [user["Gmail"] for user in listuser]
+                    message = f""" 
+Bài viết có ID là {IDTD} đã được thay đổi \n
+Nội dung thay đổi là: \n
+Nơi tuyển dụng: {td.NoiTD} \n
+Ngày tuyển dụng: {td.NgayTD} \n
+Số lượng tuyển dụng: {td.SoLuongTD} \n
+Lĩnh vực tuyển dụng: {td.LinhVucTD} \n
+Vị trí tuyển dụng: \n {td.ViTriTD} \n
+Mô tả công việc: \n {td.MotaCongViec} \n
+Yêu cầu công việc: \n {td.YeuCauCongViec} \n
+Quyền lợi: \n {td.QuyenLoi} \n
+Địa điểm: \n {td.DiaDiem} \n
+Số điện thoại: {td.SDT} \n
+Gmail: {td.Gmail} \n
+Lương: {td.LuongTD} \n
+"""
+                    for gmail in listGmail:
+                        SendMail(message, gmail, "Thông báo thay đổi bài tuyển dụng")
             except Exception as e:
                 raise TDException(getattr(e, 'message', repr(e)))
 

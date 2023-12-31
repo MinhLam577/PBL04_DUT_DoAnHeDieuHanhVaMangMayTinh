@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/danhsach.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+<body>
+    <style>
+        th,td {   
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 35ch;
+            white-space: nowrap;
+        }
+    </style>
+    <div class="table">
+        <div class="table_header">
+            <h3>DANH SÁCH NGƯỜI DÙNG TƯƠNG TÁC</h3>
+            <div>
+                <input id="Find_ListUserTT" placeholder="Tìm kiếm theo gmail">
+            </div>
+        </div>
+        <div class="table_section">
+            <table id="DuLieuTK">
+                <thead>
+                    <tr>
+                        <th scope="col" width="50">#</th>
+                        <th scope="col">IDUser</th>
+                        <th scope="col">Tên tài khoản</th>
+                        <th scope="col">Thời điểm quan tâm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ds in dstk%}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{ds.IDUser}}</td>
+                        <td>{{ds.Gmail}}</td>
+                        <td>{{ds.ThoiDiem}}</td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        document.getElementById("Find_ListUserTT").addEventListener("input", function () {
+            var value = this.value;
+            var formdata = new FormData();
+            formdata.append('Gmail', value);
+            formdata.append('IDTD', '{{IDTD}}')
+            fetch('/TDs/SearchUserByGmailAndIDTD', {
+                method: 'POST',
+                body: formdata
+            })
+                .then(response => response.json())
+                .then(data => {
+                    var tbody = document.querySelector("#DuLieuTK tbody");
+                    tbody.innerHTML = '';
+                    for (var i = 0; i < data.length; i++) {
+                        tbody.innerHTML += `
+                        <tr>
+                            <td>${i + 1}</td>
+                            <td>${data[i].IDUser}</td>
+                            <td>${data[i].Gmail}</td>
+                            <td>${data[i].ThoiDiem}</td>
+                        </tr>
+                    `;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
