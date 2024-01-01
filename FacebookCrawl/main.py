@@ -66,15 +66,18 @@ class Threading(threading.Thread):
                             TimePost = postContent["TimePost"]
                             IDPost = postContent["IDPost"]
                             LinkPost = "https://www.facebook.com/"+IDPost
-                            LinkImg = postContent["LinkImg"]
+                            if postContent["LinkImg"] != None:
+                                LinkImg = postContent["LinkImg"]
+                            else:
+                                LinkImg = None
                             if(Text not in listAllContentPost and ID not in listAllIDPOST):
                                 for tuKhoa in listTuKhoaViecLam:
                                     if(tuKhoa in Text and one_week_ago <= TimePost <= now):
                                         print("Crawl thành công bài viết:", cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost, "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
                                         post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
-                                        writeFileTxtResult(filePostFanpageID, IDPost)
+                                        writeFileTxtResult(filePostFanpageID, LinkPost)
                                         if(LinkImg != None):
-                                            download_image(self.driver, LinkImg, LinkPost)
+                                            download_image(self.driver, LinkImg, IDPost)
                                         postController.AddPost(post)
                                         cnt = cnt + 1
                                         break

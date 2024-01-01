@@ -334,9 +334,12 @@ def getContentFromPostID(driver, postID):
             obj['TimePost'] = timepost
         if(imgGroup != None):
             list_a = imgGroup.find_all('a', attrs={'href': lambda x: x and ("photo" in x)})
-            list_href = ["http://www.facebook.com"+i['href'] for i in list_a]
-            LinkImg = list_href[0]
-            obj['LinkImg'] = LinkImg
+            if(list_a != None and len(list_a) > 0):
+                list_href = ["http://www.facebook.com"+i['href'] for i in list_a]
+                LinkImg = list_href[0]
+                obj['LinkImg'] = LinkImg
+            else:
+                obj['LinkImg'] = None
         else:
             obj['LinkImg'] = None
         obj['LinkPost'] = "http://www.facebook.com/" + postID
