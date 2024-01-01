@@ -77,7 +77,6 @@ class Threading(threading.Thread):
                     writeFileTxtID(fileGroupID, ID)
     #Bắt đầu lấy nội dung bài viết 
     def startGetContentPostBySelenium(self):
-        listTuKhoaViecLam = ["tuyển", "tuyển dụng", "vị trí", "chiêu mộ", "lương", "năm kinh nghiệm", "năm kn", "phúc lợi", "benefit", "job", "offer", "offer up to", "đãi ngộ", "chế độ đãi ngộ", "ứng viên", "cơ hội", "YÊU CẦU", "quyền lợi", "CV", "mô tả công việc", "nhân sự", "up to"]
         listAllContentPost = postController.GetAllContentPost()
         listAllIDPOST = postController.GetAllIDPost()
         FanpageOrGroupID = self.nameOrId
@@ -109,25 +108,25 @@ class Threading(threading.Thread):
                             else:
                                 LinkImg = None
                             if(Text not in listAllContentPost and ID not in listAllIDPOST):
-                                for tuKhoa in listTuKhoaViecLam:
-                                    if(tuKhoa in Text and two_week_ago <= TimePost <= now):
-                                        print("Crawl thành công bài viết:", cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost, "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
-                                        post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
-                                        listpost.append({
-                                            "IDPost": IDPost,
-                                            "TimePost": TimePost,
-                                            "ContentPost": Text,
-                                            "LinkPost": LinkPost,
-                                            "LinkImg": LinkImg
-                                        })
-                                        writeFileTxtResult(filePostFanpageID, LinkPost)
-                                        if(LinkImg != None):
-                                            download_image(self.driver, LinkImg, IDPost)
-                                        postController.AddPost(post)
-                                        cnt = cnt + 1
-                                        break
+                                if(two_week_ago <= TimePost <= now):
+                                    print("Crawl thành công bài viết:", cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost, "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
+                                    post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
+                                    postController.AddPost(post)
+                                    if(LinkImg != None):
+                                        download_image(self.driver, LinkImg, IDPost)
+                                    writeFileTxtResult(filePostFanpageID, LinkPost)
+                                    listpost.append({
+                                        "IDPost": IDPost,
+                                        "TimePost": TimePost,
+                                        "ContentPost": Text,
+                                        "LinkPost": LinkPost,
+                                        "LinkImg": LinkImg
+                                    })
+                                    cnt = cnt + 1
                     except AttributeError:
                         raise AttributeError
+                    except IntegrityError:
+                        print("Đã tồn tại nội dung bài viết có ID = ", IDPost)
                     except Exception as e:
                         print(f"Crawl bài viết có ID = {ID} của {self.type} thất bại, lỗi: " + getattr(e, 'message', repr(e)))
                 if len(listpost) > 0:
@@ -152,24 +151,22 @@ class Threading(threading.Thread):
                             else:
                                 LinkImg = None
                             if(Text not in listAllContentPost and ID not in listAllIDPOST):
-                                for tuKhoa in listTuKhoaViecLam:
-                                    if(tuKhoa in Text and two_week_ago <= TimePost <= now):
-                                        print("Crawl thành công bài viết:",cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost,
-                                                "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
-                                        post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
-                                        listpost.append({
-                                            "IDPost": IDPost,
-                                            "TimePost": TimePost,
-                                            "ContentPost": Text,
-                                            "LinkPost": LinkPost,
-                                            "LinkImg": LinkImg
-                                        })
-                                        writeFileTxtResult(filePostGroupID, LinkPost)
-                                        if(LinkImg != None):
-                                            download_image(self.driver, LinkImg, IDPost)
-                                        postController.AddPost(post)
-                                        cnt = cnt + 1
-                                        break
+                                if(two_week_ago <= TimePost <= now):
+                                    print("Crawl thành công bài viết:",cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost,
+                                            "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
+                                    post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
+                                    postController.AddPost(post)
+                                    listpost.append({
+                                        "IDPost": IDPost,
+                                        "TimePost": TimePost,
+                                        "ContentPost": Text,
+                                        "LinkPost": LinkPost,
+                                        "LinkImg": LinkImg
+                                    })
+                                    writeFileTxtResult(filePostGroupID, LinkPost)
+                                    if(LinkImg != None):
+                                        download_image(self.driver, LinkImg, IDPost)
+                                    cnt = cnt + 1
                     except AttributeError:
                         raise AttributeError
                     except Exception as e:

@@ -290,7 +290,7 @@ def parse_date(date_string):
             try:
                 # Thử định dạng "Hôm qua lúc giờ:phút"
                 if "Hôm qua" in date_string:
-                    yesterday = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+                    yesterday = datetime.now().replace(microsecond=0) - timedelta(days=1)
                     time = datetime.strptime(date_string.split(" lúc ")[1], "%H:%M").time()
                     return datetime.combine(yesterday, time)
                 else: 
@@ -299,7 +299,7 @@ def parse_date(date_string):
                 try:
                     # Thử định dạng "x giờ"
                     if "giờ" in date_string:
-                        hours_ago = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(hours=int(date_string.split(" ")[0]))
+                        hours_ago = datetime.now().replace(microsecond=0) - timedelta(hours=int(date_string.split(" ")[0]))
                         return hours_ago
                     else:
                         raise ValueError(date_string)
@@ -307,7 +307,7 @@ def parse_date(date_string):
                     try:
                         # Thử định dạng "x phút"
                         if "phút" in date_string:
-                            minutes_ago = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(minutes=int(date_string.split(" ")[0]))
+                            minutes_ago = datetime.now().replace(microsecond=0) - timedelta(minutes=int(date_string.split(" ")[0]))
                             return minutes_ago
                         else:
                             raise ValueError(date_string)
@@ -315,7 +315,7 @@ def parse_date(date_string):
                         try:
                             # Thử định dạng "x giây"
                             if "giây" in date_string:
-                                seconds_ago = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(seconds=int(date_string.split(" ")[0]))
+                                seconds_ago = datetime.now().replace(microsecond=0) - timedelta(seconds=int(date_string.split(" ")[0]))
                                 return seconds_ago
                             else:
                                 raise ValueError(date_string)

@@ -24,7 +24,7 @@ class PostModel:
                 db.commit()
                 return True
             except IntegrityError as e:
-                raise PostException(getattr(e, 'message', repr(e)))
+                raise PostException("Nội dung bài viết đã được thêm trước đó rồi")
             except Exception as e:
                 raise PostException(getattr(e, 'message', repr(e)))
     def GetAllPost(self):
