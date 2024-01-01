@@ -185,10 +185,6 @@ class TDModel:
                 interaction_count = func.count(TuongTac.IDTD)
                 listTD = db.query(TuyenDung, interaction_count)\
                         .join(TuongTac, TuyenDung.IDTD == TuongTac.IDTD)\
-                        .filter(
-                            extract('month', TuyenDung.NgayTD) == extract('month', func.now()),
-                            extract('year', TuyenDung.NgayTD) == extract('year', func.now())
-                        )\
                         .group_by(TuyenDung.IDTD)\
                         .all()
                 listTDConvert = []

@@ -99,6 +99,8 @@ def getCookieFromFile(filename):
             if(re.findall(r'c_user=(.*?);', cookie)[0] == ''):
                 raise Exception("Cookie not found")
             return cookie
+    except IndexError:
+        raise IndexError
     except Exception:
         traceback.print_exc()
         return None
@@ -196,6 +198,8 @@ def getPostsIDGroup(driver, idGroup, numberPost=10):
     try:
         driver.get('https://mbasic.facebook.com/groups/' + str(idGroup))
         sleep(2)
+        if(driver.title.__contains__('Không tìm thấy')):
+            raise NoSuchElementException
         listAllIDPOST = postController.GetAllIDPost()
         sumLinks = readDataFileITxtID(filePostGroupID)
         while (len(sumLinks) < numberPost):
@@ -233,8 +237,12 @@ def getPostIDFanpage(driver, idFanpage, numberpost=10):
         driver.get("https://mbasic.facebook.com/" + str(idFanpage));
         sleep(2)
         listAllIDPOST = postController.GetAllIDPost()
+        if(driver.title.__contains__('Không tìm thấy')):
+            raise NoSuchElementException
+        
         # địa chỉ URL hiện tại
         current_url = driver.current_url
+
         # lấy tên người dùng
         nameUser = current_url.split("/")[-1]
         timeline = driver.find_element(By.XPATH, "//a[starts-with(@href, '/" + nameUser + "?v=timeline')]")
@@ -282,7 +290,7 @@ def parse_date(date_string):
             try:
                 # Thử định dạng "Hôm qua lúc giờ:phút"
                 if "Hôm qua" in date_string:
-                    yesterday = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+                    yesterday = datetime.now().replace(microsecond=0) - timedelta(days=1)
                     time = datetime.strptime(date_string.split(" lúc ")[1], "%H:%M").time()
                     return datetime.combine(yesterday, time)
                 else: 
@@ -291,7 +299,7 @@ def parse_date(date_string):
                 try:
                     # Thử định dạng "x giờ"
                     if "giờ" in date_string:
-                        hours_ago = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(hours=int(date_string.split(" ")[0]))
+                        hours_ago = datetime.now().replace(microsecond=0) - timedelta(hours=int(date_string.split(" ")[0]))
                         return hours_ago
                     else:
                         raise ValueError(date_string)
@@ -299,7 +307,7 @@ def parse_date(date_string):
                     try:
                         # Thử định dạng "x phút"
                         if "phút" in date_string:
-                            minutes_ago = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(minutes=int(date_string.split(" ")[0]))
+                            minutes_ago = datetime.now().replace(microsecond=0) - timedelta(minutes=int(date_string.split(" ")[0]))
                             return minutes_ago
                         else:
                             raise ValueError(date_string)
@@ -307,13 +315,14 @@ def parse_date(date_string):
                         try:
                             # Thử định dạng "x giây"
                             if "giây" in date_string:
-                                seconds_ago = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(seconds=int(date_string.split(" ")[0]))
+                                seconds_ago = datetime.now().replace(microsecond=0) - timedelta(seconds=int(date_string.split(" ")[0]))
                                 return seconds_ago
                             else:
                                 raise ValueError(date_string)
                         except ValueError:
                             # Nếu tất cả các định dạng trên đều không khớp, sử dụng dateutil.parser
                             return dateutil.parser.parse(date_string)
+
 #Lấy nội dung bài viết từ ID post
 def getContentFromPostID(driver, postID):
     try:

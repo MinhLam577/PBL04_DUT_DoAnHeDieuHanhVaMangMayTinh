@@ -9,6 +9,7 @@ from openpyxl.styles import Alignment
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from App.Controllers.PostController import *
 postController = PostControllers()
+
 def writeFileTxtResult(fileName, content):
     try:
         path = os.path.dirname(os.path.abspath(__file__)) + "/" + fileName
@@ -34,7 +35,7 @@ def Save_Excel(listpost):
                     max_length = len(cell.value)
             except:
                 pass
-        adjusted_width = 40  # Set the width of all cells to 15
+        adjusted_width = 40  # Set the width of all cells to 40
         sheet.column_dimensions[column[0].column_letter].width = adjusted_width
 
     # Center align headers
@@ -48,6 +49,7 @@ def Save_Excel(listpost):
 
     # Save the changes
     book.save('FacebookCrawl/DulieuCrawl.xlsx')
+
 class Threading(threading.Thread):
     def __init__(self, driver, type="fanpage", nameOrID = 103274306376166, numberPost = 100, txt = None, timeout = 60):
         threading.Thread.__init__(self)
@@ -75,7 +77,6 @@ class Threading(threading.Thread):
                     writeFileTxtID(fileGroupID, ID)
     #Bắt đầu lấy nội dung bài viết 
     def startGetContentPostBySelenium(self):
-        listTuKhoaViecLam = ["tuyển", "tuyển dụng", "vị trí", "chiêu mộ", "lương", "năm kinh nghiệm", "năm kn", "phúc lợi", "benefit", "job", "offer", "offer up to", "đãi ngộ", "chế độ đãi ngộ", "ứng viên", "cơ hội", "YÊU CẦU", "quyền lợi", "CV", "mô tả công việc", "nhân sự", "up to"]
         listAllContentPost = postController.GetAllContentPost()
         listAllIDPOST = postController.GetAllIDPost()
         FanpageOrGroupID = self.nameOrId
@@ -107,25 +108,25 @@ class Threading(threading.Thread):
                             else:
                                 LinkImg = None
                             if(Text not in listAllContentPost and ID not in listAllIDPOST):
-                                for tuKhoa in listTuKhoaViecLam:
-                                    if(tuKhoa in Text and two_week_ago <= TimePost <= now):
-                                        print("Crawl thành công bài viết:", cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost, "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
-                                        post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
-                                        listpost.append({
-                                            "IDPost": IDPost,
-                                            "TimePost": TimePost,
-                                            "ContentPost": Text,
-                                            "LinkPost": LinkPost,
-                                            "LinkImg": LinkImg
-                                        })
-                                        writeFileTxtResult(filePostFanpageID, LinkPost)
-                                        if(LinkImg != None):
-                                            download_image(self.driver, LinkImg, IDPost)
-                                        postController.AddPost(post)
-                                        cnt = cnt + 1
-                                        break
+                                if(two_week_ago <= TimePost <= now):
+                                    print("Crawl thành công bài viết:", cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost, "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
+                                    post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
+                                    postController.AddPost(post)
+                                    if(LinkImg != None):
+                                        download_image(self.driver, LinkImg, IDPost)
+                                    writeFileTxtResult(filePostFanpageID, LinkPost)
+                                    listpost.append({
+                                        "IDPost": IDPost,
+                                        "TimePost": TimePost,
+                                        "ContentPost": Text,
+                                        "LinkPost": LinkPost,
+                                        "LinkImg": LinkImg
+                                    })
+                                    cnt = cnt + 1
                     except AttributeError:
                         raise AttributeError
+                    except IntegrityError:
+                        print("Đã tồn tại nội dung bài viết có ID = ", IDPost)
                     except Exception as e:
                         print(f"Crawl bài viết có ID = {ID} của {self.type} thất bại, lỗi: " + getattr(e, 'message', repr(e)))
                 if len(listpost) > 0:
@@ -150,24 +151,22 @@ class Threading(threading.Thread):
                             else:
                                 LinkImg = None
                             if(Text not in listAllContentPost and ID not in listAllIDPOST):
-                                for tuKhoa in listTuKhoaViecLam:
-                                    if(tuKhoa in Text and two_week_ago <= TimePost <= now):
-                                        print("Crawl thành công bài viết:",cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost,
-                                                "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
-                                        post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
-                                        listpost.append({
-                                            "IDPost": IDPost,
-                                            "TimePost": TimePost,
-                                            "ContentPost": Text,
-                                            "LinkPost": LinkPost,
-                                            "LinkImg": LinkImg
-                                        })
-                                        writeFileTxtResult(filePostGroupID, LinkPost)
-                                        if(LinkImg != None):
-                                            download_image(self.driver, LinkImg, IDPost)
-                                        postController.AddPost(post)
-                                        cnt = cnt + 1
-                                        break
+                                if(two_week_ago <= TimePost <= now):
+                                    print("Crawl thành công bài viết:",cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost,
+                                            "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
+                                    post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
+                                    postController.AddPost(post)
+                                    listpost.append({
+                                        "IDPost": IDPost,
+                                        "TimePost": TimePost,
+                                        "ContentPost": Text,
+                                        "LinkPost": LinkPost,
+                                        "LinkImg": LinkImg
+                                    })
+                                    writeFileTxtResult(filePostGroupID, LinkPost)
+                                    if(LinkImg != None):
+                                        download_image(self.driver, LinkImg, IDPost)
+                                    cnt = cnt + 1
                     except AttributeError:
                         raise AttributeError
                     except Exception as e:
@@ -188,7 +187,8 @@ class Threading(threading.Thread):
         if(self.txt != None):
             self.startLocIDGroupOrFanpage()
         elif(self.txt == None):
-            self.startGetContentPostBySelenium()             
+            self.startGetContentPostBySelenium() 
+            
 def LocIDFanpageAndGroupPost(*,driver1, driver2, cookie1, cookie2, type1 = 'fanpage', type2 = 'group', txt, timeout = 60):
     try:
         driver1 = initDriverProfile("--headless=new")
@@ -206,13 +206,14 @@ def LocIDFanpageAndGroupPost(*,driver1, driver2, cookie1, cookie2, type1 = 'fanp
     finally:
         thread1.closeDriverProfile()
         thread2.closeDriverProfile()
+
 def getContentPostFanpageOrGroupBySelenium(*,driver, type = 'fanpage', NameOrID, numberPost = 100):
     try:
         thread = Threading(driver, type=type, numberPost=numberPost, nameOrID=NameOrID)
         thread.start()
         thread.join()
-    except Exception:
-        traceback.print_exc()
+    except Exception as e:
+        print("Lấy nội dung bài viết thất bại, lỗi: " + getattr(e, 'message', repr(e)))
 def clearExcelData(path):
     wb = load_workbook(path)
     ws = wb.active
@@ -238,114 +239,120 @@ def startGetContentPostBySelenium(driver, type: str = "fanpage", NameOrID: str =
         print("Vui lòng đóng file DulieuCrawl.xlsx trước khi chạy chương trình")
     except Exception:
         traceback.print_exc()        
-        
-driver = initDriverProfile()
-cookie = getCookieFromFile("cookies.txt")
-loginFacebookByCookie(driver, cookie)
-while True:
-    try:
-        Check_type = False
-        print("================================================")
-        print("Các chức năng chính của chương trình: ")
-        print("0. Crawl bài viết từ Fanpages")
-        print("1. Crawl bài viết từ group")
-        print("2. Lọc ID Fanpages theo từ khóa tìm kiếm")
-        print("3. Lọc ID Group public theo từ khóa tìm kiếm")
-        print("4. Lọc ID Group đã gia nhập(join) theo từ khóa tìm kiếm")
-        print("5. Thoát chương trình")
-        print("================================================")
-        type = None
-        while not Check_type:
-            type = input("Nhập vào lựa chọn: ")
-            Check_type = bool(re.match('^[0-5]$', type))
-            if not Check_type:
-                print("Vui lòng nhập các số nguyên từ 0 đến 5")
-        if(type == "0"):
-            NameOrID = input("Nhập vào ID hoặc tên của fanpage: ")
+
+try:
+    driver = initDriverProfile()
+    cookie = getCookieFromFile("cookies.txt")
+    loginFacebookByCookie(driver, cookie)
+    if(driver.title.__contains__("log in") or driver.title == ""):
+        raise IndexError
+    while True:
+        try:
             Check_type = False
-            Count = None
+            print("================================================")
+            print("Các chức năng chính của chương trình: ")
+            print("0. Crawl bài viết từ Fanpages")
+            print("1. Crawl bài viết từ group")
+            print("2. Lọc ID Fanpages theo từ khóa tìm kiếm")
+            print("3. Lọc ID Group public theo từ khóa tìm kiếm")
+            print("4. Lọc ID Group đã gia nhập(join) theo từ khóa tìm kiếm")
+            print("5. Thoát chương trình")
+            print("================================================")
+            type = None
             while not Check_type:
-                Count = input("Nhập vào số lượng bài viết cần crawl: ")
-                Check_type = bool(re.match('^\d+$', Count))
+                type = input("Nhập vào lựa chọn: ")
+                Check_type = bool(re.match('^[0-5]$', type))
                 if not Check_type:
-                    print("Số lượng bài viết phải là số nguyên")
-                else:
-                    if(int(Count) <= 0):
-                        print("Số lượng bài viết phải lớn hơn 0")
-            startGetContentPostBySelenium(driver, 'fanpage', NameOrID, int(Count))
-        elif type == "1":
-            NameOrID = input("Nhập vào ID hoặc tên của group: ")
-            Check_cnt = False
-            Count = None
-            while not Check_cnt:
-                Count = input("Nhập vào số lượng bài viết cần crawl: ")
-                Check_cnt = bool(re.match('^\d+$', Count))
-                if not Check_cnt:
-                    print("Số lượng bài viết phải là số nguyên")
-                else:
-                    if(int(Count) <= 0):
-                        print("Số lượng bài viết phải lớn hơn 0")
-            startGetContentPostBySelenium(driver, 'group', NameOrID, int(Count))
-        elif type == "2":
-            Key = input("Nhập vào từ khóa fanpage cần tìm: ")
-            Check_cnt = False
-            Count = None
-            while not Check_cnt:
-                Count = input("Nhập vào khoảng thời gian tìm kiếm(giây) cố định là 15 giây: ")
-                Check_cnt = bool(re.match('^\d+$', Count))
-                if not Check_cnt:
-                    print("Thời gian phải là số nguyên")
-                else:
-                    if(int(Count) <= 0):
-                        print("Thời gian phải lớn hơn 0")
-            res = get_FangpageID_By_Search(driver, Key, Count)
-            print(f"Danh sách các ID Fanpages đã lọc được lưu vào trong file {fileFanpageID}: \n{res}\n\n")
-            store_res = readDataFileITxtID(fileFanpageID)
-            for i in res:
-                if i not in store_res:
-                    writeFileTxtID(fileFanpageID, i)
-        elif type == "3":
-            Key = input("Nhập vào từ khóa group cần tìm: ")
-            Check_cnt = False
-            Count = None
-            while not Check_cnt:
-                Count = input("Nhập vào khoảng thời gian tìm kiếm(giây) cố định là 15 giây: ")
-                Check_cnt = bool(re.match('^\d+$', Count))
-                if not Check_cnt:
-                    print("Thời gian phải là số nguyên")
-                else:
-                    if(int(Count) <= 0):
-                        print("Thời gian phải lớn hơn 0")
-            res = get_GroupPublicID_By_Search(driver, Key, Count)
-            print(f"Danh sách các ID group đã lọc được lưu vào file {fileGroupID}: \n{res}\n\n")
-            store_res = readDataFileITxtID(fileGroupID)
-            for i in res:
-                if i not in store_res:
-                    writeFileTxtID(fileGroupID, i)
-        elif type == "4":
-            Key = input("Nhập vào từ khóa group cần tìm: ")
-            Check_cnt = False
-            Count = None
-            while not Check_cnt:
-                Count = input("Nhập vào khoảng thời gian tìm kiếm(giây) cố định là 15 giây: ")
-                Check_cnt = bool(re.match('^\d+$', Count))
-                if not Check_cnt:
-                    print("Thời gian phải là số nguyên")
-                else:
-                    if(int(Count) <= 0):
-                        print("Thời gian phải lớn hơn 0")
-            res = get_JoinedGroupID_By_Search(driver, Key, Count)
-            print(f"Danh sách các ID group đã lọc được lưu vào file {fileGroupIDJoin}: \n{res}\n\n")
-            store_res = readDataFileITxtID(fileGroupIDJoin)
-            for i in res:
-                if i not in store_res:
-                    writeFileTxtID(fileGroupIDJoin, i)
-        elif type == "5":
-            break
-        input("Nhấn Enter để tiếp tục...")
-        os.system('cls' if os.name == 'nt' else 'clear')
-    except NoSuchElementException:
-        print("Không tìm thấy bài viết cần tìm")
-    except Exception as e:
-        print("Lỗi chương trình: ", getattr(e, 'message', repr(e)))
+                    print("Vui lòng nhập các số nguyên từ 0 đến 5")
+            if(type == "0"):
+                NameOrID = input("Nhập vào ID hoặc tên của fanpage: ")
+                Check_type = False
+                Count = None
+                while not Check_type:
+                    Count = input("Nhập vào số lượng bài viết cần crawl: ")
+                    Check_type = bool(re.match('^\d+$', Count))
+                    if not Check_type:
+                        print("Số lượng bài viết phải là số nguyên")
+                    else:
+                        if(int(Count) <= 0):
+                            print("Số lượng bài viết phải lớn hơn 0")
+                startGetContentPostBySelenium(driver, 'fanpage', NameOrID, int(Count))
+            elif type == "1":
+                NameOrID = input("Nhập vào ID hoặc tên của group: ")
+                Check_cnt = False
+                Count = None
+                while not Check_cnt:
+                    Count = input("Nhập vào số lượng bài viết cần crawl: ")
+                    Check_cnt = bool(re.match('^\d+$', Count))
+                    if not Check_cnt:
+                        print("Số lượng bài viết phải là số nguyên")
+                    else:
+                        if(int(Count) <= 0):
+                            print("Số lượng bài viết phải lớn hơn 0")
+                startGetContentPostBySelenium(driver, 'group', NameOrID, int(Count))
+            elif type == "2":
+                Key = input("Nhập vào từ khóa fanpage cần tìm: ")
+                Check_cnt = False
+                Count = None
+                while not Check_cnt:
+                    Count = input("Nhập vào khoảng thời gian tìm kiếm(giây) cố định là 15 giây: ")
+                    Check_cnt = bool(re.match('^\d+$', Count))
+                    if not Check_cnt:
+                        print("Thời gian phải là số nguyên")
+                    else:
+                        if(int(Count) <= 0):
+                            print("Thời gian phải lớn hơn 0")
+                res = get_FangpageID_By_Search(driver, Key, Count)
+                print(f"Danh sách các ID Fanpages đã lọc được lưu vào trong file {fileFanpageID}: \n{res}\n\n")
+                store_res = readDataFileITxtID(fileFanpageID)
+                for i in res:
+                    if i not in store_res:
+                        writeFileTxtID(fileFanpageID, i)
+            elif type == "3":
+                Key = input("Nhập vào từ khóa group cần tìm: ")
+                Check_cnt = False
+                Count = None
+                while not Check_cnt:
+                    Count = input("Nhập vào khoảng thời gian tìm kiếm(giây) cố định là 15 giây: ")
+                    Check_cnt = bool(re.match('^\d+$', Count))
+                    if not Check_cnt:
+                        print("Thời gian phải là số nguyên")
+                    else:
+                        if(int(Count) <= 0):
+                            print("Thời gian phải lớn hơn 0")
+                res = get_GroupPublicID_By_Search(driver, Key, Count)
+                print(f"Danh sách các ID group đã lọc được lưu vào file {fileGroupID}: \n{res}\n\n")
+                store_res = readDataFileITxtID(fileGroupID)
+                for i in res:
+                    if i not in store_res:
+                        writeFileTxtID(fileGroupID, i)
+            elif type == "4":
+                Key = input("Nhập vào từ khóa group cần tìm: ")
+                Check_cnt = False
+                Count = None
+                while not Check_cnt:
+                    Count = input("Nhập vào khoảng thời gian tìm kiếm(giây) cố định là 15 giây: ")
+                    Check_cnt = bool(re.match('^\d+$', Count))
+                    if not Check_cnt:
+                        print("Thời gian phải là số nguyên")
+                    else:
+                        if(int(Count) <= 0):
+                            print("Thời gian phải lớn hơn 0")
+                res = get_JoinedGroupID_By_Search(driver, Key, Count)
+                print(f"Danh sách các ID group đã lọc được lưu vào file {fileGroupIDJoin}: \n{res}\n\n")
+                store_res = readDataFileITxtID(fileGroupIDJoin)
+                for i in res:
+                    if i not in store_res:
+                        writeFileTxtID(fileGroupIDJoin, i)
+            elif type == "5":
+                break
+            input("Nhấn Enter để tiếp tục...")
+            os.system('cls' if os.name == 'nt' else 'clear')
+        except NoSuchElementException:
+            print("Không tìm thấy bài viết cần tìm")
+        except Exception as e:
+            print("Lỗi chương trình: ", getattr(e, 'message', repr(e)))
+except IndexError:
+    print("Cookie không hợp lệ")
+    input("Nhấn Enter để tiếp tục...")
 os.system('cls' if os.name == 'nt' else 'clear')
