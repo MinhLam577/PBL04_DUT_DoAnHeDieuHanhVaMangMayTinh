@@ -60,10 +60,6 @@ async def UpdateTD(IDTD: str = Form(), NoiTD: str = Form(None), NgayTD: datetime
         return JSONResponse(
             content={"message": getattr(e, 'message', repr(e))},
         )
-# #Tìm kiếm tuyển dụng
-# @tdRouter.post('/TDs/SearchTD/', name="Tìm kiếm tuyển dụng theo Nơi tuyển dụng, Vị trí tuyển dụng, Yêu cầu công việc, lĩnh vực tuyển dụng và địa điểm tuyển dụng")
-# async def TimKiemTD(Text: str = Form(...), LinhVucTD: str = Form(...), DiaDiem: str = Form(...)):
-#     return tdController.TimKiemTD(Text, LinhVucTD, DiaDiem)
 
 #Tìm kiếm tuyển dụng theo IDTD
 @tdRouter.post('/TDs/SearchTDByID/', name="Tìm kiếm tuyển dụng theo IDTD")

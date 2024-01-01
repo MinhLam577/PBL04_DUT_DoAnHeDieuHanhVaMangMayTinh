@@ -3,6 +3,9 @@ import traceback
 import threading
 import os
 import sys
+import pandas as pd
+from openpyxl import load_workbook
+from openpyxl.styles import Alignment
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from App.Controllers.PostController import *
 postController = PostControllers()
@@ -13,6 +16,38 @@ def writeFileTxtResult(fileName, content):
             f1.writelines(content + "\n")
     except Exception:
         traceback.print_exc()
+    
+def Save_Excel(listpost):
+    df = pd.DataFrame(listpost) 
+    with pd.ExcelWriter('FacebookCrawl/DulieuCrawl.xlsx', mode='w') as writer:
+        df.to_excel(writer, sheet_name='Sheet1', index=False)
+    # Load the workbook and select the sheet
+    book = load_workbook('FacebookCrawl/DulieuCrawl.xlsx')
+    sheet = book['Sheet1']
+    # Iterate over the columns
+    for column in sheet.columns:
+        max_length = 0
+        column = [cell for cell in column]
+        for cell in column:
+            try:  # Necessary to avoid error on empty cells
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = 40  # Set the width of all cells to 15
+        sheet.column_dimensions[column[0].column_letter].width = adjusted_width
+
+    # Center align headers
+    for cell in sheet[1]:
+        cell.alignment = Alignment(horizontal='center')
+
+    # Top align all other cells and left align content
+    for row in sheet.iter_rows(min_row=2):
+        for cell in row:
+            cell.alignment = Alignment(vertical='top', horizontal='left')
+
+    # Save the changes
+    book.save('FacebookCrawl/DulieuCrawl.xlsx')
 class Threading(threading.Thread):
     def __init__(self, driver, type="fanpage", nameOrID = 103274306376166, numberPost = 100, txt = None, timeout = 60):
         threading.Thread.__init__(self)
@@ -47,9 +82,10 @@ class Threading(threading.Thread):
         # Lấy thời gian hiện tại
         now = dt.datetime.now().replace(microsecond=0)
         # Lấy thời gian cách hiện tại 1 tuần
-        one_week_ago = now - dt.timedelta(weeks=1)
+        two_week_ago = now - dt.timedelta(weeks=2)
         cnt = 1
         path = os.path.dirname(os.path.abspath(__file__)) + "/"
+        listpost = []
         try:
             if(self.type == "fanpage"):
                 getPostIDFanpage(self.driver, FanpageOrGroupID, self.numberPost)
@@ -72,9 +108,16 @@ class Threading(threading.Thread):
                                 LinkImg = None
                             if(Text not in listAllContentPost and ID not in listAllIDPOST):
                                 for tuKhoa in listTuKhoaViecLam:
-                                    if(tuKhoa in Text and one_week_ago <= TimePost <= now):
+                                    if(tuKhoa in Text and two_week_ago <= TimePost <= now):
                                         print("Crawl thành công bài viết:", cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost, "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
                                         post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
+                                        listpost.append({
+                                            "IDPost": IDPost,
+                                            "TimePost": TimePost,
+                                            "ContentPost": Text,
+                                            "LinkPost": LinkPost,
+                                            "LinkImg": LinkImg
+                                        })
                                         writeFileTxtResult(filePostFanpageID, LinkPost)
                                         if(LinkImg != None):
                                             download_image(self.driver, LinkImg, IDPost)
@@ -85,6 +128,8 @@ class Threading(threading.Thread):
                         raise AttributeError
                     except Exception as e:
                         print(f"Crawl bài viết có ID = {ID} của {self.type} thất bại, lỗi: " + getattr(e, 'message', repr(e)))
+                if len(listpost) > 0:
+                    Save_Excel(listpost)
             elif(self.type == "group"):
                 getPostsIDGroup(self.driver, FanpageOrGroupID, self.numberPost)
                 listPostGroupID = readDataFileITxtID(filePostGroupID)
@@ -106,10 +151,17 @@ class Threading(threading.Thread):
                                 LinkImg = None
                             if(Text not in listAllContentPost and ID not in listAllIDPOST):
                                 for tuKhoa in listTuKhoaViecLam:
-                                    if(tuKhoa in Text and one_week_ago <= TimePost <= now):
+                                    if(tuKhoa in Text and two_week_ago <= TimePost <= now):
                                         print("Crawl thành công bài viết:",cnt, "\n\n","postID:", IDPost, "\nText:",Text, "\nTime:", TimePost,
                                                 "\npostLink:",LinkPost, "\npostImage:",LinkImg, "\n\n")
                                         post = Post(IDPost=IDPost, TimePost=TimePost, ContentPost=Text, LinkPost=LinkPost, LinkImg=LinkImg)
+                                        listpost.append({
+                                            "IDPost": IDPost,
+                                            "TimePost": TimePost,
+                                            "ContentPost": Text,
+                                            "LinkPost": LinkPost,
+                                            "LinkImg": LinkImg
+                                        })
                                         writeFileTxtResult(filePostGroupID, LinkPost)
                                         if(LinkImg != None):
                                             download_image(self.driver, LinkImg, IDPost)
@@ -120,9 +172,15 @@ class Threading(threading.Thread):
                         raise AttributeError
                     except Exception as e:
                         print(f"Crawl bài viết có ID = {ID} của {self.type} thất bại, lỗi: " + getattr(e, 'message', repr(e)))
+                if len(listpost) > 0:
+                    Save_Excel(listpost)
+        except PermissionError:
+            print("Vui lòng đóng file excel trước khi chạy chương trình")
         except NoSuchElementException:
             print("Không tìm thấy Fanpages hoặc group, vui lòng kiếm tra lại ID hoặc tên đã nhập")
         except AttributeError:
+            if len(listpost) > 0:
+                Save_Excel(listpost)
             print("Đã bị ban")
     def closeDriverProfile(self):
         self.driver.close()
@@ -155,6 +213,13 @@ def getContentPostFanpageOrGroupBySelenium(*,driver, type = 'fanpage', NameOrID,
         thread.join()
     except Exception:
         traceback.print_exc()
+def clearExcelData(path):
+    wb = load_workbook(path)
+    ws = wb.active
+    # Xóa tất cả các hàng
+    ws.delete_rows(1, ws.max_row)
+    # Save the changes
+    wb.save(path)
 def startGetContentPostBySelenium(driver, type: str = "fanpage", NameOrID: str = None, numberPost: int = 10):
     path = os.path.dirname(os.path.abspath(__file__)) + "/"
     try:
@@ -162,12 +227,15 @@ def startGetContentPostBySelenium(driver, type: str = "fanpage", NameOrID: str =
             pass
         with open(path + filePostGroupID, 'w') as file:
             pass
+        clearExcelData(path + "DulieuCrawl.xlsx")
         getContentPostFanpageOrGroupBySelenium(driver=driver, type=type, numberPost=numberPost, NameOrID=NameOrID)
         if(type == "fanpage"):
-            print(f"Đã lấy xong bài viết của {type} có", "NameOrID là:", NameOrID, "vui lòng kiểm tra file " + filePostFanpageID + " để xem chi tiết các link bài viết đã lấy")
+            print(f"Đã lấy xong bài viết của {type} có", "NameOrID là:", NameOrID, "vui lòng kiểm tra file " + filePostFanpageID + " để xem các link bài viết đã lấy, để biết thêm chi tiết về bài viết vui lòng kiểm tra file DulieuCrawl.xlsx")
         elif(type == "group"):
-            print(f"Đã lấy xong bài viết của {type} có", "NameOrID là:", NameOrID, "vui lòng kiểm tra file " + filePostGroupID + " để xem chi tiết các link bài viết đã lấy")
+            print(f"Đã lấy xong bài viết của {type} có", "NameOrID là:", NameOrID, "vui lòng kiểm tra file " + filePostGroupID + " để xem các link bài viết đã lấy, để biết thêm chi tiết về bài viết vui lòng kiểm tra file DulieuCrawl.xlsx")
         postController.DeleteDuplicatePost()
+    except PermissionError:
+        print("Vui lòng đóng file DulieuCrawl.xlsx trước khi chạy chương trình")
     except Exception:
         traceback.print_exc()        
         
