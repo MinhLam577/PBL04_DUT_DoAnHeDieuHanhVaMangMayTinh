@@ -247,11 +247,7 @@ try:
     driver = initDriverProfile()
     cookie = getCookieFromFile("cookies.txt")
     loginFacebookByCookie(driver, cookie)
-    if(driver.title.__contains__("log in")):
-        raise IndexError
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    body = soup.find('body')
-    if(body.get_text().__contains__("Sorry"))
+    if(driver.title.__contains__("log in") or driver.title == ""):
         raise IndexError
     while True:
         try:
