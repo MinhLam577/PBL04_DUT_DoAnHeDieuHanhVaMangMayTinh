@@ -40,16 +40,15 @@ async def GetAllTDs(request: Request):
 async def GetTD(IDTD: str, request: Request):
     try:
         authorization = request.headers.get('Authorization')
+        print(authorization)
         if "Bearer " in authorization:
             token = json.loads(authorization.split("Bearer ")[1])["access token"]
+            if(token == None):
+                return tdController.GetTDByIDTD(IDTD)
             jwt_bearer = jwtBearer()
             payload = jwt_bearer.verify_jwt(token)
             if payload:
-                userType = payload["userType"]
-                if(userType == "admin"):
-                    return tdController.GetTDByIDTD(IDTD)
-                else:
-                    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
+                return tdController.GetTDByIDTD(IDTD)
             else:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Token không hợp lệ")
         else:
