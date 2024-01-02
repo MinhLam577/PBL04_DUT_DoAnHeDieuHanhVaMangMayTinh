@@ -37,16 +37,13 @@ def Save_Excel(listpost):
                 pass
         adjusted_width = 40  # Set the width of all cells to 40
         sheet.column_dimensions[column[0].column_letter].width = adjusted_width
-
     # Center align headers
     for cell in sheet[1]:
         cell.alignment = Alignment(horizontal='center')
-
     # Top align all other cells and left align content
     for row in sheet.iter_rows(min_row=2):
         for cell in row:
             cell.alignment = Alignment(vertical='top', horizontal='left')
-
     # Save the changes
     book.save('FacebookCrawl/DulieuCrawl.xlsx')
 
@@ -214,21 +211,24 @@ def getContentPostFanpageOrGroupBySelenium(*,driver, type = 'fanpage', NameOrID,
         thread.join()
     except Exception as e:
         print("Lấy nội dung bài viết thất bại, lỗi: " + getattr(e, 'message', repr(e)))
-def clearExcelData(path):
+        
+def clearData(path):
+    with open(path + filePostFanpageID, 'w') as file:
+        pass
+    with open(path + filePostGroupID, 'w') as file:
+        pass
+    path = path + "DulieuCrawl.xlsx"
     wb = load_workbook(path)
     ws = wb.active
     # Xóa tất cả các hàng
     ws.delete_rows(1, ws.max_row)
     # Save the changes
     wb.save(path)
+
 def startGetContentPostBySelenium(driver, type: str = "fanpage", NameOrID: str = None, numberPost: int = 10):
     path = os.path.dirname(os.path.abspath(__file__)) + "/"
     try:
-        with open(path + filePostFanpageID, 'w') as file:
-            pass
-        with open(path + filePostGroupID, 'w') as file:
-            pass
-        clearExcelData(path + "DulieuCrawl.xlsx")
+        clearData(path)
         getContentPostFanpageOrGroupBySelenium(driver=driver, type=type, numberPost=numberPost, NameOrID=NameOrID)
         if(type == "fanpage"):
             print(f"Đã lấy xong bài viết của {type} có", "NameOrID là:", NameOrID, "vui lòng kiểm tra file " + filePostFanpageID + " để xem các link bài viết đã lấy, để biết thêm chi tiết về bài viết vui lòng kiểm tra file DulieuCrawl.xlsx")
