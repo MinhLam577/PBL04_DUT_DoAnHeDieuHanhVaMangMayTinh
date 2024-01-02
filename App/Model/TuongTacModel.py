@@ -54,7 +54,6 @@ class TuongTacModel:
     def DeleteTT(self, tt: TuongTacDel):
         with SessionLocal() as db:
             try:
-                print(tt)
                 db.query(TuongTac).filter((TuongTac.IDUser == tt.IDUser) & (TuongTac.IDTD == tt.IDTD)).delete()
                 db.commit()
                 return True

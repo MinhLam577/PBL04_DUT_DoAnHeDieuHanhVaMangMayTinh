@@ -380,6 +380,8 @@
       var LuongTD = "...";
       var userID = "{{user.Gmail}}"
       var token = window.localStorage.getItem(userID);
+      if(token == null)
+         token = '{"access token": null}'
       fetch("/TDs/" + id, {
          method: "GET",
          headers: {

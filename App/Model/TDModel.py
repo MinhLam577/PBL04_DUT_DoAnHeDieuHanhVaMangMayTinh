@@ -111,7 +111,8 @@ class TDModel:
                 postModel.DeletePostByIDPost(IDPost)
                 db.query(TuyenDung).filter(TuyenDung.IDTD == IDTD).delete()
                 db.commit()
-                Delete_image(IDPost)
+                if(IDPost != None):
+                    Delete_image(IDPost)
                 return True
             except Exception as e:
                 raise TDException(getattr(e, 'message', repr(e)))
