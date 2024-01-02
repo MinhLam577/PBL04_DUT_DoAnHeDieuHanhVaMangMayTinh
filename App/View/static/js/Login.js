@@ -37,7 +37,6 @@ LoginForm.addEventListener("submit", function(event){
                 const existingToken = window.localStorage.getItem(Gmail);
                 if(!existingToken){
                     window.localStorage.setItem(Gmail, Token);
-                    
                 }
                 window.sessionStorage.setItem(Gmail, Token);
                 const form_submit = document.createElement("form");

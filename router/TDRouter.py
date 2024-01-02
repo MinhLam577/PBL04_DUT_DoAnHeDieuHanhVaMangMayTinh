@@ -12,15 +12,52 @@ tdRouter = APIRouter()
 tdController = TDController()
 
 #Lấy tất cả tuyển dụng
-@tdRouter.get('/TDs/', name="Lấy tất cả bài tuyển dụng")
-async def GetAllTDs():
-    return tdController.GetAllTDs()
+@tdRouter.get('/TDs/', name="Lấy tất cả bài tuyển dụng", dependencies=[Depends(jwtBearer())])
+async def GetAllTDs(request: Request):
+    try:
+        authorization = request.headers.get('Authorization')
+        if "Bearer " in authorization:
+            token = json.loads(authorization.split("Bearer ")[1])["access token"]
+            jwt_bearer = jwtBearer()
+            payload = jwt_bearer.verify_jwt(token)
+            if payload:
+                userType = payload["userType"]
+                if(userType == "admin"):
+                    return tdController.GetAllTDs()
+                else:
+                    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
+            else:
+                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Token không hợp lệ hoặc đã hết hạn")
+        else:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Header xác thực không hợp lệ")
+    except Exception as e:
+        return JSONResponse(
+            content={"message": getattr(e, 'message', repr(e))},
+        )
 
 #Lấy tuyển dụng theo IDTD
-@tdRouter.get("/TDs/{IDTD}", name="Lấy tuyển dụng theo IDTD")
-async def GetTD(IDTD: str):
-    td = tdController.GetTDByIDTD(IDTD)
-    return td
+@tdRouter.get("/TDs/{IDTD}", name="Lấy tuyển dụng theo IDTD", dependencies=[Depends(jwtBearer())])
+async def GetTD(IDTD: str, request: Request):
+    try:
+        authorization = request.headers.get('Authorization')
+        if "Bearer " in authorization:
+            token = json.loads(authorization.split("Bearer ")[1])["access token"]
+            jwt_bearer = jwtBearer()
+            payload = jwt_bearer.verify_jwt(token)
+            if payload:
+                userType = payload["userType"]
+                if(userType == "admin"):
+                    return tdController.GetTDByIDTD(IDTD)
+                else:
+                    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
+            else:
+                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Token không hợp lệ")
+        else:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Header xác thực không hợp lệ")
+    except Exception as e:
+        return JSONResponse(
+            content={"message": getattr(e, 'message', repr(e))},
+        )
 
 #Thêm mới tuyển dụng
 @tdRouter.post("/TDs/AddTD/", name="Thêm mới tuyển dụng")

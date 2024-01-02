@@ -2,21 +2,61 @@ from fastapi import APIRouter, Depends, HTTPException, status, Body, Form
 from App.Controllers.UserController import *
 from fastapi.responses import RedirectResponse, HTMLResponse
 from App.auth.jwt_handler import signJWT
+from App.auth.jwt_bearer import jwtBearer
 import json
+from fastapi import Request
 userRoute = APIRouter()
 userController = UserController()
 
 #Lấy tất cả user 
-@userRoute.get("/Users/", name = "Lấy tất cả user")
-async def GetAllUser():
-    return userController.GetAllUser()
+@userRoute.get("/Users/", name = "Lấy tất cả user", dependencies=[Depends(jwtBearer())])
+async def GetAllUser(request: Request):
+    try:
+        authorization = request.headers.get('Authorization')
+        if "Bearer " in authorization:
+            token = json.loads(authorization.split("Bearer ")[1])["access token"]
+            jwt_bearer = jwtBearer()
+            payload = jwt_bearer.verify_jwt(token)
+            if payload:
+                userType = payload["userType"]
+                if(userType == "admin"):
+                    return userController.GetAllUser()
+                else:
+                    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
+            else:
+                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Token không hợp lệ")
+        else:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Header xác thực không hợp lệ")
+    except Exception as e:
+        return JSONResponse(
+            content={"message": getattr(e, 'message', repr(e))},
+        )
 
 def CheckLogin(user: UserLogin):
     return userController.CheckLogin(user.Gmail, user.Password)
 
-@userRoute.get("/Users/{Gmail}", name="Lấy user theo Gmail")
-def GetUserByGmail(Gmail: str):
-    return userController.GetUserByGmail(Gmail)
+@userRoute.get("/Users/{Gmail}", name="Lấy user theo Gmail", dependencies=[Depends(jwtBearer())])
+def GetUserByGmail(Gmail: str, request: Request):
+    try:
+        authorization = request.headers.get('Authorization')
+        if "Bearer " in authorization:
+            token = json.loads(authorization.split("Bearer ")[1])["access token"]
+            jwt_bearer = jwtBearer()
+            payload = jwt_bearer.verify_jwt(token)
+            if payload:
+                userType = payload["userType"]
+                if(userType == "admin"):
+                    return userController.GetUserByGmail(Gmail)
+                else:
+                    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
+            else:
+                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Token không hợp lệ")
+        else:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Header xác thực không hợp lệ")
+    except Exception as e:
+        return JSONResponse(
+            content={"message": getattr(e, 'message', repr(e))},
+        )
 
 #Kiểm tra đăng nhập theo JWT handler
 @userRoute.post("/CheckLoginJWT/", name="Kiểm tra đăng nhập bằng JWT")
