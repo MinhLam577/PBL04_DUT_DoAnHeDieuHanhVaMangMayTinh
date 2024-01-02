@@ -89,6 +89,7 @@
         </div>
     </div>
     <script>
+        const token = window.localStorage.getItem('{{userID}}');
         function del(Gmail, userType) {
             formdata = new FormData();
             if(userType == "admin"){
@@ -163,12 +164,37 @@
                 })
                 .catch(err => alert("Lỗi hệ thống: " + err))
         });
+        document.querySelectorAll(".update").forEach(function(element) {
+            element.addEventListener("click", function() {
+                document.querySelector(".modal2").style.display = "flex";
+                var elemet_id = element.getAttribute("id").split("_")[1];
+                fetch("/Users/"+elemet_id, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    }
+                })
+                .then(Response => Response.json())
+                .then(data => {
+                    document.getElementById("email1").value = data.Gmail;
+                    document.getElementById("password1").value = data.Password;
+                    document.getElementById("IDUser").value = data.IDUser;
+                })
+            });
+        });
         function attachUpdateEvent() {
             document.querySelectorAll(".update").forEach(function (element) {
                 element.addEventListener("click", function () {
                     document.querySelector(".modal2").style.display = "flex";
                     var element_id = element.getAttribute("id").split("_")[1];
-                    fetch("/Users/" + element_id)
+                    fetch("/Users/" + element_id, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + token
+                        }
+                    })
                         .then(response => response.json())
                         .then(data => {
                             document.getElementById("email1").value = data.Gmail;

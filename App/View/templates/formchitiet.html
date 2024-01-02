@@ -378,8 +378,14 @@
       var QuyenLoi = "...";
       var DiaDiem = "...";
       var LuongTD = "...";
+      var userID = "{{user.Gmail}}"
+      var token = window.localStorage.getItem(userID);
       fetch("/TDs/" + id, {
-         method: "GET"
+         method: "GET",
+         headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+         }
       })
          .then(response => response.json())
          .then(data => {
@@ -458,7 +464,7 @@
             document.getElementById("QuyenLoi").innerHTML = QuyenLoi;
             document.getElementById("DiaDiem").innerHTML = DiaDiem;
          })
-         .catch(error => console.log(error));
+         .catch(error => alert(error));
          document.getElementById("btn_QuanTam").addEventListener("click", function(){
             IDTD = "{{IDTD}}";
             IDUser = "{{user.Gmail if user != '' else ''}}";
