@@ -4,6 +4,7 @@ from App.Controllers.UserController import UserController
 from App.Controllers.TuongTacController import TuongTacController
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from fastapi import HTTPException, status
 import json
 template = Jinja2Templates(directory="App/View/templates")
 tdController = TDController()
@@ -48,14 +49,29 @@ class SiteController:
         return template.TemplateResponse("index.html", {"request": request, 'userID':userID, 'listTD': listTD, 'LinhVucTD': LinhVucTD, 'DiaDiem': DiaDiem, 'ViTriTD': ViTriTD, 'NoiTD': NoiTD, 'userType': "admin", 'YeuCauCongViec': YeuCauCongViec})
     def adminEditTD(self, request, userID: str):
         listTD = tdController.GetAllTDs()
+        user = user_controller.GetUserByGmail(userID)
+        if(user == None):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
+        if(user.QuyenUser == "user"):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
         listTD = sorted(listTD, key=lambda x: datetime.strptime(str(x['NgayTD']), '%Y-%m-%d %H:%M:%S'), reverse=True)
         return template.TemplateResponse("formSuaXoaTD.html", {"request": request, 'userID': userID, 'listTD': listTD})
     def EditTDByID(self, request, userID: str, IDTD: str):
+        user = user_controller.GetUserByGmail(userID)
+        if(user == None):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
+        if(user.QuyenUser == "user"):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
         td = tdController.GetTDByIDTD(IDTD)
         if td is None:
             return None
         return template.TemplateResponse("adminEditTD.html", {"request": request, 'userID': userID, 'td': td})
     def adminAddTD(self, request, userID: str):
+        user = user_controller.GetUserByGmail(userID)
+        if(user == None):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
+        if(user.QuyenUser == "user"):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
         return template.TemplateResponse("adminAddTD.html", {"request": request, 'userID': userID})
     def LoginSuccess(self, request, userType: str | None = None, userID: str | None = None):
         if(userType == 'admin'):
@@ -78,6 +94,11 @@ class SiteController:
             ]
             return template.TemplateResponse("index.html", {"request": request, 'listTD': listTD, 'userID' : userID, 'LinhVucTD': LinhVucTD, 'DiaDiem': DiaDiem, 'ViTriTD': ViTriTD, 'NoiTD': NoiTD, 'userType': "user", 'YeuCauCongVIec': YeuCauCongViec})
     def TongQuan(self, request, userID: str):
+        user = user_controller.GetUserByGmail(userID)
+        if(user == None):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
+        if(user.QuyenUser == "user"):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
         listTD = tdController.GetAllTDs()
         listUser = user_controller.GetAllUser()
         listTT = tt_Controller.GetAllTT()
@@ -85,9 +106,19 @@ class SiteController:
         percentage = user_controller.GetPhanTramSoVoiThangTruoc()
         return template.TemplateResponse("tongquan.html", {"request": request, 'userID': userID, 'listTD': listTD, 'listUser': listUser, 'listTT': listTT, 'listTDTT': listTDTT, 'percentage': percentage})
     def danhsachtk(self, request, userID: str):
+        user = user_controller.GetUserByGmail(userID)
+        if(user == None):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
+        if(user.QuyenUser == "user"):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
         dstk = user_controller.GetAllUser()
         return template.TemplateResponse("danhsachtk.html", {"request": request, 'dstk': dstk, 'userID': userID})
-    def danhsachQuanTam(self, request, IDTD: str):
+    def danhsachQuanTam(self, request, IDTD: str, userID: str):
+        user = user_controller.GetUserByGmail(userID)
+        if(user == None):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
+        if(user.QuyenUser == "user"):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Không có quyền truy cập")
         dstk = tdController.GetListUserTuongTacByIDTD(IDTD) 
         return template.TemplateResponse("danhsachQuanTam.html", {"request": request, 'dstk': dstk, 'IDTD': IDTD})
     def formChiTiet(self, request, IDTD: str, userID: str):

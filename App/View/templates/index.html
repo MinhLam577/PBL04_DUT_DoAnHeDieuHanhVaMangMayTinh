@@ -1014,16 +1014,13 @@
             Text = encodeURIComponent(Text);
             var userID = '{{userID}}';
             CurrentUrl = window.location.href
+            var part = CurrentUrl.split("/")
+            var url = part.slice(0, 3).join("/")
             if(userID != "" && userID != null){
-               var part = CurrentUrl.split("/")
-               var url = part.slice(0, 4).join("/")
-               if('{{userType}}' == "admin")
-                  url = part.slice(0, 5).join("/")
+               url = url + `/${userID}`
                window.location.href = `${url}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}/${LuongTD}`
             }
-            else{
-               var part = CurrentUrl.split("/")
-               var url = part.slice(0, 3).join("/")
+            else{ 
                window.location.href = `${url}/tim-kiem-DuLieu/${Text}/${LinhVucTD}/${DiaDiem}/${LuongTD}`
             }
          })
