@@ -93,7 +93,7 @@
                             </div>
                             <div class="form-group d-flex justify-content-around align-items-center">
                                 <button type="submit" class="btn btn-primary">Thêm</button>
-                                <button type="button" class="btn btn-primary" onclick="reset()">Reset</button>
+                                <button type="button" class="btn btn-primary" id = 'reset'>Reset</button>
                             </div>
                         </form>
                     </div>
@@ -102,6 +102,9 @@
         </div>
     </section>
     <script>
+        document.getElementById('reset').addEventListener('click', function(e) {
+            reset();
+        })
         function reset() {
             const NoiTD = document.getElementById('NoiTD');
             const NgayTD = document.getElementById('NgayTD');
@@ -116,6 +119,8 @@
             const SDT = document.getElementById('SDT');
             const Gmail = document.getElementById('Gmail');
             const IDPost = document.getElementById('IDPost');
+            const AnhPost = document.getElementById("AnhPost")
+            const AnhMacDinh = document.getElementById("AnhMacDinh")
             NoiTD.value = '';
             NgayTD.value = '';
             SoLuongTD.value = '';
@@ -129,6 +134,8 @@
             SDT.value = '';
             Gmail.value = '';
             IDPost.value = '';
+            AnhPost.value = '';
+            AnhMacDinh.src = `{{ url_for('static', path='/images/TDImages/default.png') }}`;
         }
         const AddTDForm = document.getElementById('AddTD');
         var CurrentUrl = window.location.href

@@ -104,21 +104,21 @@
     </section>
     <script>
         document.getElementById("Reset").addEventListener('click', function(){
-            const NoiTD = document.getElementById('NoiTD').value = `{{td.NoiTD if td.NoiTD is not none else ''}}`;
-            const NgayTD = document.getElementById('NgayTD').value = `{{td.NgayTD}}`;
-            const SoLuongTD = document.getElementById('SoLuongTD').value = `{{td.SoLuongTD if td.SoLuongTD is not none else ''}}`;
-            const LinhVucTD = document.getElementById('LinhVucTD').value = `{{td.LinhVucTD}}`;
-            const ViTriTD = document.getElementById('ViTriTD').value = `{{td.ViTriTD}}`;
-            const LuongTD = document.getElementById('LuongTD').value = `{{td.LuongTD if td.LuongTD is not none else ''}}`;
-            const YeuCauCongViec = document.getElementById('YeuCauCongViec').value = `{{td.YeuCauCongViec if td.YeuCauCongViec is not none else ''}}`;
-            const MoTaCongViec = document.getElementById('MoTaCongViec').value = `{{td.MotaCongViec if td.MotaCongViec is not none else ''}}`;
-            const QuyenLoi = document.getElementById('QuyenLoi').value = `{{td.QuyenLoi if td.QuyenLoi is not none else ''}}`;
-            const DiaDiem = document.getElementById('DiaDiem').value = `{{td.DiaDiem if td.DiaDiem is not none else ''}}`;
-            const SDT = document.getElementById('SDT').value = `{{td.SDT if td.SDT is not none else ''}}`;
-            const Gmail = document.getElementById('Gmail').value = `{{td.Gmail if td.Gmail is not none else ''}}`;
-            const IDPost = document.getElementById('IDPost').value = `{{td.IDPost}}`;
-            const imageDiv = document.getElementById("{{td.IDPost}}")
-            imageDiv.src = `{{ url_for('static', path='/images/TDImages/' ~ td.IDPost ~ '.jpg') }}`
+            document.getElementById('NoiTD').value = `{{td.NoiTD if td.NoiTD is not none else ''}}`;
+            document.getElementById('NgayTD').value = `{{td.NgayTD}}`;
+            document.getElementById('SoLuongTD').value = `{{td.SoLuongTD if td.SoLuongTD is not none else ''}}`;
+            document.getElementById('LinhVucTD').value = `{{td.LinhVucTD}}`;
+            document.getElementById('ViTriTD').value = `{{td.ViTriTD}}`;
+            document.getElementById('LuongTD').value = `{{td.LuongTD if td.LuongTD is not none else ''}}`;
+            document.getElementById('YeuCauCongViec').value = `{{td.YeuCauCongViec if td.YeuCauCongViec is not none else ''}}`;
+            document.getElementById('MoTaCongViec').value = `{{td.MotaCongViec if td.MotaCongViec is not none else ''}}`;
+            document.getElementById('QuyenLoi').value = `{{td.QuyenLoi if td.QuyenLoi is not none else ''}}`;
+            document.getElementById('DiaDiem').value = `{{td.DiaDiem if td.DiaDiem is not none else ''}}`;
+            document.getElementById('SDT').value = `{{td.SDT if td.SDT is not none else ''}}`;
+            document.getElementById('Gmail').value = `{{td.Gmail if td.Gmail is not none else ''}}`;
+            document.getElementById('IDPost').value = `{{td.IDPost}}`;
+            document.getElementById("{{td.IDPost}}").src = `{{ url_for('static', path='/images/TDImages/' ~ td.IDPost ~ '.jpg') }}`
+            document.getElementById("AnhPost").value = ""
         })
         const UpdateTDForm = document.getElementById('UpdateTD');
         var CurrentUrl = window.location.href
