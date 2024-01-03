@@ -53,8 +53,8 @@ async def danhsachtk(request: Request, userID: str):
     return siteController.danhsachtk(request, userID)
 
 @siteRouter.get("/{userID}/danh-sach-QuanTam/{IDTD}", response_class=HTMLResponse, name = "Giao diện danh sách người quan tâm tuyển dụng của admin")
-async def danhsachQuanTam(request: Request, IDTD: str):
-    return siteController.danhsachQuanTam(request, IDTD)
+async def danhsachQuanTam(request: Request, IDTD: str, userID: str):
+    return siteController.danhsachQuanTam(request, IDTD, userID)
 
 @siteRouter.get("/{userID}/TongQuan", response_class=HTMLResponse, name = "Giao diện tổng quan của admin")
 async def tongQuan(request: Request, userID: str):

@@ -40,7 +40,6 @@ async def GetAllTDs(request: Request):
 async def GetTD(IDTD: str, request: Request):
     try:
         authorization = request.headers.get('Authorization')
-        print(authorization)
         if "Bearer " in authorization:
             token = json.loads(authorization.split("Bearer ")[1])["access token"]
             if(token == None):
